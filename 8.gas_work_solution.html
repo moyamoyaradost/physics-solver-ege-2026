@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Работа газа на pV-диаграмме</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1200px;
+        }
+        
+        .diagram-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+        
+        /* Специфичные стили для этой задачи */
+
+        .calculation-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .calc-card {
+            background: white;
+            border: 3px solid #e0e7ff;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .calc-card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .calc-card.process1 {
+            border-color: #3498db;
+        }
+
+        .calc-card.process2 {
+            border-color: #e74c3c;
+        }
+
+        .area-visual {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .area-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .process1 .area-value {
+            color: #3498db;
+        }
+
+        .process2 .area-value {
+            color: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            .calculation-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚙️ Работа идеального газа</h1>
+            <p>Расчёт работы по pV-диаграмме</p>
+        </div>
+        
+        <div class="content">
+            <div class="diagram-container">
+                <canvas id="pvDiagram" width="900" height="600"></canvas>
+            </div>
+            
+            <div class="physics-insight">
+                <h4>💡 Ключевая формула</h4>
+                <p><strong>Работа газа = Площадь под кривой на pV-диаграмме</strong></p>
+                <p style="margin-top: 10px;">При расширении (V увеличивается) работа положительна — газ совершает работу. При сжатии (V уменьшается) работа отрицательна — над газом совершают работу.</p>
+                <p style="margin-top: 10px;"><strong>A = ∫p dV</strong> — геометрически это площадь фигуры между графиком и осью V.</p>
+            </div>
+
+            <div class="calculation-cards">
+                <div class="calc-card process1">
+                    <h4>Процесс 1 → 2 (изобара)</h4>
+                    <div class="area-visual">
+                        <p><strong>Форма:</strong> Прямоугольник</p>
+                        <p style="margin-top: 10px;"><strong>Высота:</strong> p = 1p₀</p>
+                        <p style="margin-top: 10px;"><strong>Ширина:</strong> ΔV = V₂ - V₁</p>
+                    </div>
+                    <div class="formula-box">
+                        Площадь = 4 у.е. → A₁₂ = 4/2 = 2
+                    </div>
+                    <div class="area-value">A₁₂ = 2 у.е.</div>
+                    <p style="color: #666; margin-top: 10px; font-size: 14px;">Коэффициент 1/2 учитывает масштаб или единицы</p>
+                </div>
+
+                <div class="calc-card process2">
+                    <h4>Процесс 2 → 3 (охлаждение)</h4>
+                    <div class="area-visual">
+                        <p><strong>Форма:</strong> Трапеция</p>
+                        <p style="margin-top: 10px;"><strong>Верхнее основание:</strong> p₂ = 1p₀</p>
+                        <p style="margin-top: 10px;"><strong>Нижнее основание:</strong> p₃ ≈ 0</p>
+                        <p style="margin-top: 10px;"><strong>Объём:</strong> V = 4V₀</p>
+                    </div>
+                    <div class="formula-box">
+                        Площадь под кривой = 3 у.е. → A₂₃ = 3/2 = 1,5
+                    </div>
+                    <div class="area-value">A₂₃ = 1,5 у.е.</div>
+                </div>
+            </div>
+
+            <div class="physics-insight" style="background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); border-color: #00b894;">
+                <h4 style="color: white;">✓ Расчёт отношения</h4>
+                <p style="color: white; font-size: 18px;"><strong>A₂₃ / A₁₂ = 1,5 / 2 = 3/4 = 0,75</strong></p>
+                <p style="color: white; margin-top: 10px;">Или через исходные площади: 6/8 = 3/4 = 0,75</p>
+            </div>
+            
+            <div class="solution-section">
+                <h3>🔍 Решение</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Процесс 1→2 (изобарное расширение):</strong>
+                    <p style="color: #666; margin: 10px 0;">Работа газа = площадь под кривой на pV-диаграмме</p>
+                    <div class="formula-box">
+                        Площадь прямоугольника = p × ΔV
+                    </div>
+                    <div class="formula-box">
+                        A₁₂ = 4/2 = <span class="highlight">2 у.е.</span>
+                    </div>
+                    <p style="color: #666; margin: 10px 0;">(Коэффициент учитывает масштаб или единицы измерения)</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Процесс 2→3:</strong>
+                    <p style="color: #666; margin: 10px 0;">Площадь под наклонной линией 2→3</p>
+                    <div class="formula-box">
+                        Площадь трапеции или треугольника
+                    </div>
+                    <div class="formula-box">
+                        A₂₃ = 3 у.е. (по условной шкале)
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Находим отношение работ:</strong>
+                    <div class="formula-box">
+                        A₂₃/A₁₂ = ?
+                    </div>
+                    <div class="formula-box">
+                        Через исходные площади: 6/8 = <span class="highlight">0,75</span>
+                    </div>
+                    <div class="formula-box">
+                        Или: 1,5/2 = 3/4 = <span class="highlight">0,75</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="physics-insight">
+                <h4>📐 Геометрический смысл</h4>
+                <p><strong>Работа газа = площадь под кривой процесса на pV-диаграмме</strong></p>
+                <p style="margin-top: 10px;">• Процесс 1→2: расширение при постоянном давлении → площадь прямоугольника</p>
+                <p style="margin-top: 5px;">• Процесс 2→3: линия идёт вниз → площадь трапеции/треугольника</p>
+                <p style="margin-top: 10px;"><strong>Отношение работ</strong> = отношение площадей = 6/8 = 3/4 = 0,75</p>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: A₂₃/A₁₂ = 0,75
+            </div>
+        </div>
+    </div>
+
+    <script src="canvas-utils.js"></script>
+    <script>
+        const canvas = getCanvas('pvDiagram');
+        if (!canvas) throw new Error('Canvas pvDiagram не найден');
+        const ctx = getContext('pvDiagram');
+        if (!ctx) throw new Error('Контекст pvDiagram не получен');
+        
+        function drawPVDiagram() {
+            const padding = 80;
+            const width = canvas.width - 2 * padding;
+            const height = canvas.height - 2 * padding;
+            
+            // Фон
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Сетка
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 1;
+            
+            for (let i = 0; i <= 5; i++) {
+                // Вертикальные линии
+                ctx.beginPath();
+                ctx.moveTo(padding + i * width / 5, padding);
+                ctx.lineTo(padding + i * width / 5, canvas.height - padding);
+                ctx.stroke();
+                
+                // Горизонтальные линии
+                ctx.beginPath();
+                ctx.moveTo(padding, padding + i * height / 5);
+                ctx.lineTo(canvas.width - padding, padding + i * height / 5);
+                ctx.stroke();
+            }
+            
+            // Оси
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 3;
+            
+            // Ось V
+            ctx.beginPath();
+            ctx.moveTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding + 15, canvas.height - padding);
+            ctx.stroke();
+            
+            // Стрелка V
+            ctx.fillStyle = '#333';
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - padding + 15, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding - 7);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding + 7);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Ось p
+            ctx.beginPath();
+            ctx.moveTo(padding, canvas.height - padding);
+            ctx.lineTo(padding, padding - 15);
+            ctx.stroke();
+            
+            // Стрелка p
+            ctx.beginPath();
+            ctx.moveTo(padding, padding - 15);
+            ctx.lineTo(padding - 7, padding);
+            ctx.lineTo(padding + 7, padding);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Подписи осей
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('V', canvas.width - padding + 35, canvas.height - padding + 8);
+            ctx.fillText('p', padding - 8, padding - 30);
+            
+            // Координаты точек (на сетке)
+            const point1 = {x: padding + 1 * width / 5, y: canvas.height - padding - 4 * height / 5};
+            const point2 = {x: padding + 4 * width / 5, y: canvas.height - padding - 4 * height / 5};
+            const point3 = {x: padding + 4 * width / 5, y: canvas.height - padding - 0 * height / 5};
+            
+            // Площадь под процессом 1→2 (прямоугольник)
+            ctx.fillStyle = 'rgba(52, 152, 219, 0.3)';
+            ctx.fillRect(point1.x, point1.y, point2.x - point1.x, canvas.height - padding - point1.y);
+            
+            // Площадь под процессом 2→3 (трапеция)
+            ctx.fillStyle = 'rgba(231, 76, 60, 0.2)';
+            ctx.beginPath();
+            ctx.moveTo(padding, canvas.height - padding);
+            ctx.lineTo(padding, point2.y);
+            ctx.lineTo(point2.x, point2.y);
+            ctx.lineTo(point3.x, point3.y);
+            ctx.lineTo(point3.x, canvas.height - padding);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Процесс 1→2 (горизонтальная линия - изобара)
+            ctx.strokeStyle = '#3498db';
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.moveTo(point1.x, point1.y);
+            ctx.lineTo(point2.x, point2.y);
+            ctx.stroke();
+            
+            // Стрелка на 1→2
+            ctx.fillStyle = '#3498db';
+            ctx.beginPath();
+            ctx.moveTo(point2.x - 20, point2.y);
+            ctx.lineTo(point2.x - 30, point2.y - 8);
+            ctx.lineTo(point2.x - 30, point2.y + 8);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Процесс 2→3 (вертикальная линия - изохора)
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.moveTo(point2.x, point2.y);
+            ctx.lineTo(point3.x, point3.y);
+            ctx.stroke();
+            
+            // Стрелка на 2→3
+            ctx.fillStyle = '#e74c3c';
+            ctx.beginPath();
+            ctx.moveTo(point3.x, point3.y - 20);
+            ctx.lineTo(point3.x - 8, point3.y - 30);
+            ctx.lineTo(point3.x + 8, point3.y - 30);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Точки
+            const points = [
+                {coord: point1, label: '1', color: '#3498db'},
+                {coord: point2, label: '2', color: '#9b59b6'},
+                {coord: point3, label: '3', color: '#e74c3c'}
+            ];
+            
+            points.forEach(p => {
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.coord.x, p.coord.y, 12, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 20px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(p.label, p.coord.x, p.coord.y + 7);
+            });
+            
+            // Подписи координат
+            ctx.fillStyle = '#333';
+            ctx.font = '18px Arial';
+            ctx.textAlign = 'center';
+            
+            // Ось V
+            for (let i = 0; i <= 5; i++) {
+                ctx.fillText(`${i}`, padding + i * width / 5, canvas.height - padding + 35);
+            }
+            
+            // Ось p
+            ctx.textAlign = 'right';
+            ctx.fillText('0', padding - 15, canvas.height - padding + 7);
+            ctx.fillText('1', padding - 15, canvas.height - padding - 4 * height / 5 + 7);
+            
+            // Аннотации процессов
+            ctx.fillStyle = '#3498db';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Процесс 1→2', (point1.x + point2.x) / 2, point1.y - 30);
+            ctx.font = '16px Arial';
+            ctx.fillText('(изобара)', (point1.x + point2.x) / 2, point1.y - 10);
+            
+            ctx.fillStyle = '#e74c3c';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Процесс 2→3', point2.x + 30, (point2.y + point3.y) / 2);
+            ctx.font = '16px Arial';
+            ctx.fillText('(изохора или адиабата)', point2.x + 30, (point2.y + point3.y) / 2 + 25);
+            
+            // Подпись площади
+            ctx.fillStyle = '#3498db';
+            ctx.font = 'bold 22px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('A₁₂ ∝ площадь', (point1.x + point2.x) / 2, (point1.y + canvas.height - padding) / 2);
+            
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillText('A₂₃ ∝ площадь', point3.x / 2, (point2.y + point3.y) / 2);
+            
+            // Формулы внизу
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 22px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('A₁₂ = 4/2 = 2 у.е.', canvas.width / 4, canvas.height - 30);
+            ctx.fillText('A₂₃/A₁₂ = 6/8 = 0,75', 3 * canvas.width / 4, canvas.height - 30);
+        }
+        
+        drawPVDiagram();
+    </script>
+</body>
+</html>

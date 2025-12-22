@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Равномерное движение саней — Решение</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1000px;
+        }
+        
+        .animation-container {
+            background: linear-gradient(to bottom, #e3f2fd 0%, #fff 100%);
+            border-radius: 15px;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+            height: 300px;
+        }
+        
+        canvas {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* Специфичные стили для этой задачи */
+        
+        .force-legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .legend-color {
+            width: 30px;
+            height: 20px;
+            border-radius: 5px;
+        }
+        
+        .equilibrium-badge {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            font-weight: bold;
+            margin: 10px 0;
+            box-shadow: 0 4px 12px rgba(0, 184, 148, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛷 Равномерное движение саней</h1>
+            <p>Задача на работу силы и равновесие</p>
+        </div>
+        
+        <div class="content">
+            <div class="animation-container">
+                <canvas id="sledCanvas" width="900" height="300"></canvas>
+            </div>
+            
+            <div class="force-legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #e74c3c;"></div>
+                    <span><strong>F<sub>тяги</sub></strong> — Сила тяги</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #3498db;"></div>
+                    <span><strong>F<sub>тр</sub></strong> — Сила трения</span>
+                </div>
+            </div>
+            
+            <div class="solution-section">
+                <h3>📋 Исходные данные</h3>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="label">Путь S</div>
+                        <div class="value">50 м</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Работа A</div>
+                        <div class="value">500 Дж</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Характер движения</div>
+                        <div class="value">Равномерно</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="physics-insight">
+                <h4>💡 Ключевая идея</h4>
+                <p><strong>Равномерное движение</strong> означает, что скорость постоянна → ускорение a = 0 → по второму закону Ньютона сумма сил равна нулю.</p>
+                <div class="equilibrium-badge">✓ F<sub>тяги</sub> = F<sub>тр</sub></div>
+                <p style="margin-top: 10px;">Сила тяги полностью уравновешивается силой трения.</p>
+            </div>
+            
+            <div class="solution-section">
+                <h3>🔍 Решение</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Формула работы:</strong>
+                    <div class="formula-box">
+                        A = F × S × cos(α)
+                    </div>
+                    <p style="margin-top: 10px; color: #666;">где α — угол между силой и перемещением</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Упрощение формулы:</strong>
+                    <div class="formula-box">
+                        Сила тяги направлена по движению → α = 0° → cos(0°) = 1
+                    </div>
+                    <div class="formula-box">
+                        A = F<sub>тяги</sub> × S
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Находим силу тяги:</strong>
+                    <div class="formula-box">
+                        F<sub>тяги</sub> = A / S = 500 Дж / 50 м = <span class="highlight">10 Н</span>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Применяем условие равновесия:</strong>
+                    <div class="formula-box">
+                        Равномерно → F<sub>тяги</sub> = F<sub>тр</sub>
+                    </div>
+                    <div class="formula-box">
+                        F<sub>тр</sub> = <span class="highlight">10 Н</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="physics-insight">
+                <h4>⚡ Проверка через энергию</h4>
+                <p>Вся работа силы тяги A = 500 Дж расходуется на преодоление трения (переходит в тепло). Если бы трения не было, сани двигались бы с ускорением, а их кинетическая энергия росла бы. При равномерном движении v = const → ΔE<sub>к</sub> = 0 → вся работа идёт на трение.</p>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: F<sub>тр</sub> = 10 Н
+            </div>
+        </div>
+    </div>
+
+    <script src="canvas-utils.js"></script>
+    <script>
+        const canvas = getCanvas('sledCanvas');
+        if (!canvas) {
+            console.error('Canvas не найден');
+            throw new Error('Canvas не найден');
+        }
+        const ctx = getContext('sledCanvas');
+        if (!ctx) {
+            console.error('Контекст не получен');
+            throw new Error('Контекст не получен');
+        }
+        
+        let sledX = 100;
+        const sledY = 180;
+        const sledSpeed = 1.5;
+        
+        function drawSled(x, y) {
+            // Тень
+            ctx.fillStyle = 'rgba(0,0,0,0.15)';
+            ctx.beginPath();
+            ctx.ellipse(x + 40, y + 65, 50, 10, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Корпус саней
+            const gradient = ctx.createLinearGradient(x, y, x + 80, y + 40);
+            gradient.addColorStop(0, '#8B4513');
+            gradient.addColorStop(1, '#A0522D');
+            ctx.fillStyle = gradient;
+            
+            ctx.beginPath();
+            ctx.moveTo(x, y + 30);
+            ctx.lineTo(x + 20, y);
+            ctx.lineTo(x + 80, y);
+            ctx.lineTo(x + 80, y + 40);
+            ctx.lineTo(x, y + 40);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.strokeStyle = '#654321';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Полозья
+            ctx.strokeStyle = '#C0C0C0'; // серебристый цвет
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(x - 5, y + 45);
+            ctx.lineTo(x + 85, y + 45);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(x - 5, y + 55);
+            ctx.lineTo(x + 85, y + 55);
+            ctx.stroke();
+            
+            // Груз
+            ctx.fillStyle = '#34495e';
+            ctx.fillRect(x + 20, y + 10, 40, 20);
+            ctx.strokeStyle = '#2c3e50';
+            ctx.strokeRect(x + 20, y + 10, 40, 20);
+        }
+        
+        function drawArrow(x, y, length, color, label) {
+            // Тень
+            ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+            ctx.lineWidth = 6;
+            ctx.beginPath();
+            ctx.moveTo(x + 2, y + 2);
+            ctx.lineTo(x + length + 2, y + 2);
+            ctx.stroke();
+            
+            // Стрелка
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 5;
+            
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + length, y);
+            ctx.stroke();
+            
+            // Наконечник
+            ctx.beginPath();
+            if (length > 0) {
+                ctx.moveTo(x + length, y);
+                ctx.lineTo(x + length - 15, y - 10);
+                ctx.lineTo(x + length - 15, y + 10);
+            } else {
+                ctx.moveTo(x + length, y);
+                ctx.lineTo(x + length + 15, y - 10);
+                ctx.lineTo(x + length + 15, y + 10);
+            }
+            ctx.closePath();
+            ctx.fill();
+            
+            // Подпись
+            ctx.fillStyle = color;
+            ctx.font = 'bold 18px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, x + length/2, y - 20);
+        }
+        
+        function drawGround(y) {
+            // Поверхность
+            ctx.fillStyle = '#ecf0f1';
+            ctx.fillRect(0, y, canvas.width, canvas.height - y);
+            
+            // Линия горизонта
+            ctx.strokeStyle = '#bdc3c7';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(canvas.width, y);
+            ctx.stroke();
+            
+            // Штриховка
+            ctx.strokeStyle = '#95a5a6';
+            ctx.lineWidth = 2;
+            for (let i = 0; i < canvas.width; i += 30) {
+                ctx.beginPath();
+                ctx.moveTo(i, y);
+                ctx.lineTo(i + 15, y + 15);
+                ctx.stroke();
+            }
+        }
+        
+        function drawDistanceMarker(startX, endX, y) {
+            ctx.strokeStyle = '#2c3e50';
+            ctx.fillStyle = '#2c3e50';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            
+            // Линия
+            ctx.beginPath();
+            ctx.moveTo(startX, y);
+            ctx.lineTo(endX, y);
+            ctx.stroke();
+            
+            // Стрелки
+            ctx.setLineDash([]);
+            ctx.beginPath();
+            ctx.moveTo(startX, y);
+            ctx.lineTo(startX + 10, y - 5);
+            ctx.lineTo(startX + 10, y + 5);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.moveTo(endX, y);
+            ctx.lineTo(endX - 10, y - 5);
+            ctx.lineTo(endX - 10, y + 5);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Текст
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('S = 50 м', (startX + endX) / 2, y - 10);
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Фон - небо
+            const skyGradient = ctx.createLinearGradient(0, 0, 0, 250);
+            skyGradient.addColorStop(0, '#e3f2fd');
+            skyGradient.addColorStop(1, '#fff');
+            ctx.fillStyle = skyGradient;
+            ctx.fillRect(0, 0, canvas.width, 250);
+            
+            // Земля
+            drawGround(250);
+            
+            // Маркер расстояния
+            if (sledX < 200) {
+                drawDistanceMarker(100, 600, 120);
+            }
+            
+            // Сани
+            drawSled(sledX, sledY);
+            
+            // Силы
+            drawArrow(sledX + 80, sledY + 20, 100, '#e74c3c', 'F тяги = 10 Н');
+            drawArrow(sledX, sledY + 20, -100, '#3498db', 'F тр = 10 Н');
+            
+            // Равновесие (равные стрелки)
+            if (sledX > 300 && sledX < 350) {
+                ctx.fillStyle = '#00b894';
+                ctx.font = 'bold 20px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('⚖️ F тяги = F тр', canvas.width / 2, 50);
+                ctx.fillText('v = const', canvas.width / 2, 80);
+            }
+            
+            // Анимация движения
+            sledX += sledSpeed;
+            if (sledX > 700) {
+                sledX = 100;
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>

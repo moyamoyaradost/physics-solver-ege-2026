@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Идеальный газ — pV-диаграмма</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1200px;
+        }
+        
+        .main-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .diagram-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .diagram-title {
+            text-align: center;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+        
+        /* Специфичные стили для этой задачи */
+
+        .comparison-table {
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e0e7ff;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        @media (max-width: 968px) {
+            .main-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 Идеальный газ под поршнем</h1>
+            <p>Изменение температуры при изменении давления и объёма</p>
+        </div>
+        
+        <div class="content">
+            <div class="main-section">
+                <div class="diagram-container">
+                    <div class="diagram-title">pV-диаграмма</div>
+                    <canvas id="pvDiagram" width="500" height="500"></canvas>
+                </div>
+                
+                <div class="diagram-container">
+                    <div class="diagram-title">Визуализация газа</div>
+                    <canvas id="gasVisualization" width="500" height="500"></canvas>
+                </div>
+            </div>
+            
+            <div class="solution-section">
+                <h3>📋 Исходные данные</h3>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="label">Состояние 1: p₁</div>
+                        <div class="value">3p₀</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Состояние 1: V₁</div>
+                        <div class="value">V₀</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Состояние 2: p₂</div>
+                        <div class="value">4p₀</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Состояние 2: V₂</div>
+                        <div class="value">3V₀</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="physics-insight">
+                <h4>💡 Ключевая идея</h4>
+                <p><strong>Уравнение Клапейрона-Менделеева:</strong> pV = νRT, где ν — количество вещества (постоянно), R — универсальная газовая постоянная.</p>
+                <p style="margin-top: 10px;">Если количество газа не меняется, то отношение <strong>pV/T = const</strong> для любого состояния. Это позволяет найти изменение температуры через изменение давления и объёма.</p>
+            </div>
+            
+            <div class="solution-section">
+                <h3>🔍 Решение</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Уравнение Клапейрона-Менделеева для обоих состояний:</strong>
+                    <div class="formula-box">
+                        p₁V₁ = νRT₁
+                    </div>
+                    <div class="formula-box">
+                        p₂V₂ = νRT₂
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Делим второе уравнение на первое:</strong>
+                    <div class="formula-box">
+                        (p₂V₂)/(p₁V₁) = (νRT₂)/(νRT₁) = T₂/T₁
+                    </div>
+                    <p style="margin-top: 10px; color: #666;">ν и R сокращаются</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Подставляем значения:</strong>
+                    <div class="formula-box">
+                        T₂/T₁ = (p₂V₂)/(p₁V₁) = (4p₀ × 3V₀)/(3p₀ × V₀)
+                    </div>
+                    <div class="formula-box">
+                        T₂/T₁ = 12p₀V₀/(3p₀V₀) = 12/3 = <span class="highlight">4</span>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Вывод:</strong>
+                    <div class="formula-box">
+                        T₂ = 4T₁
+                    </div>
+                    <p style="margin-top: 10px; color: #666;">Температура увеличилась в <strong>4 раза</strong></p>
+                </div>
+            </div>
+
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Параметр</th>
+                            <th>Состояние 1</th>
+                            <th>Состояние 2</th>
+                            <th>Изменение</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Давление p</strong></td>
+                            <td>3p₀</td>
+                            <td>4p₀</td>
+                            <td style="color: #e74c3c; font-weight: bold;">×1,33</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Объём V</strong></td>
+                            <td>V₀</td>
+                            <td>3V₀</td>
+                            <td style="color: #e74c3c; font-weight: bold;">×3</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Температура T</strong></td>
+                            <td>T₁</td>
+                            <td>4T₁</td>
+                            <td style="color: #ff6b6b; font-weight: bold;">×4</td>
+                        </tr>
+                        <tr>
+                            <td><strong>pV</strong></td>
+                            <td>3p₀V₀</td>
+                            <td>12p₀V₀</td>
+                            <td style="color: #ff6b6b; font-weight: bold;">×4</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="physics-insight">
+                <h4>⚡ Физический смысл</h4>
+                <p>Газ перешёл из состояния с меньшим объёмом и умеренным давлением в состояние с большим объёмом и немного большим давлением. Произведение pV увеличилось в 4 раза (3p₀V₀ → 12p₀V₀), следовательно, и температура увеличилась в 4 раза.</p>
+                <p style="margin-top: 10px;"><strong>Качественно:</strong> газ расширился (V увеличился в 3 раза), но давление выросло не сильно (в 1,33 раза). Это возможно только при значительном нагреве газа.</p>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: температура увеличится в 4 раза
+            </div>
+        </div>
+    </div>
+
+    <script src="canvas-utils.js"></script>
+    <script>
+        // pV-диаграмма
+        const pvCanvas = getCanvas('pvDiagram');
+        if (!pvCanvas) throw new Error('Canvas pvDiagram не найден');
+        const pvCtx = getContext('pvDiagram');
+        if (!pvCtx) throw new Error('Контекст pvDiagram не получен');
+        
+        // Визуализация газа
+        const gasCanvas = getCanvas('gasVisualization');
+        if (!gasCanvas) throw new Error('Canvas gasVisualization не найден');
+        const gasCtx = getContext('gasVisualization');
+        if (!gasCtx) throw new Error('Контекст gasVisualization не получен');
+        
+        let animationTime = 0;
+        const animationDuration = 3; // секунды
+        
+        function drawPVDiagram() {
+            pvCtx.clearRect(0, 0, pvCanvas.width, pvCanvas.height);
+            
+            const padding = 60;
+            const width = pvCanvas.width - 2 * padding;
+            const height = pvCanvas.height - 2 * padding;
+            
+            // Фон
+            pvCtx.fillStyle = '#fff';
+            pvCtx.fillRect(0, 0, pvCanvas.width, pvCanvas.height);
+            
+            // Сетка
+            pvCtx.strokeStyle = '#e0e0e0';
+            pvCtx.lineWidth = 1;
+            
+            for (let i = 0; i <= 4; i++) {
+                // Вертикальные линии
+                pvCtx.beginPath();
+                pvCtx.moveTo(padding + i * width / 4, padding);
+                pvCtx.lineTo(padding + i * width / 4, pvCanvas.height - padding);
+                pvCtx.stroke();
+                
+                // Горизонтальные линии
+                pvCtx.beginPath();
+                pvCtx.moveTo(padding, padding + i * height / 4);
+                pvCtx.lineTo(pvCanvas.width - padding, padding + i * height / 4);
+                pvCtx.stroke();
+            }
+            
+            // Оси
+            pvCtx.strokeStyle = '#333';
+            pvCtx.lineWidth = 2;
+            
+            // Ось V
+            pvCtx.beginPath();
+            pvCtx.moveTo(padding, pvCanvas.height - padding);
+            pvCtx.lineTo(pvCanvas.width - padding + 10, pvCanvas.height - padding);
+            pvCtx.stroke();
+            
+            // Стрелка V
+            pvCtx.fillStyle = '#333';
+            pvCtx.beginPath();
+            pvCtx.moveTo(pvCanvas.width - padding + 10, pvCanvas.height - padding);
+            pvCtx.lineTo(pvCanvas.width - padding, pvCanvas.height - padding - 5);
+            pvCtx.lineTo(pvCanvas.width - padding, pvCanvas.height - padding + 5);
+            pvCtx.closePath();
+            pvCtx.fill();
+            
+            // Ось p
+            pvCtx.beginPath();
+            pvCtx.moveTo(padding, pvCanvas.height - padding);
+            pvCtx.lineTo(padding, padding - 10);
+            pvCtx.stroke();
+            
+            // Стрелка p
+            pvCtx.beginPath();
+            pvCtx.moveTo(padding, padding - 10);
+            pvCtx.lineTo(padding - 5, padding);
+            pvCtx.lineTo(padding + 5, padding);
+            pvCtx.closePath();
+            pvCtx.fill();
+            
+            // Подписи осей
+            pvCtx.fillStyle = '#333';
+            pvCtx.font = 'bold 20px Arial';
+            pvCtx.textAlign = 'center';
+            pvCtx.fillText('V', pvCanvas.width - padding + 30, pvCanvas.height - padding + 5);
+            pvCtx.fillText('p', padding - 5, padding - 25);
+            
+            // Метки на осях
+            pvCtx.font = '16px Arial';
+            pvCtx.textAlign = 'center';
+            
+            // Ось V
+            pvCtx.fillText('V₀', padding + width / 4, pvCanvas.height - padding + 25);
+            pvCtx.fillText('2V₀', padding + width / 2, pvCanvas.height - padding + 25);
+            pvCtx.fillText('3V₀', padding + 3 * width / 4, pvCanvas.height - padding + 25);
+            pvCtx.fillText('4V₀', padding + width, pvCanvas.height - padding + 25);
+            
+            // Ось p
+            pvCtx.textAlign = 'right';
+            pvCtx.fillText('p₀', padding - 15, pvCanvas.height - padding - 0 * height / 4 + 5);
+            pvCtx.fillText('2p₀', padding - 15, pvCanvas.height - padding - 1 * height / 4 + 5);
+            pvCtx.fillText('3p₀', padding - 15, pvCanvas.height - padding - 2 * height / 4 + 5);
+            pvCtx.fillText('4p₀', padding - 15, pvCanvas.height - padding - 3 * height / 4 + 5);
+            
+            // Состояние 1: (V₀, 3p₀)
+            const x1 = padding + width / 4;
+            const y1 = pvCanvas.height - padding - 3 * height / 4;
+            
+            // Состояние 2: (3V₀, 4p₀)
+            const x2 = padding + 3 * width / 4;
+            const y2 = pvCanvas.height - padding - 4 * height / 4;
+            
+            // Линия перехода
+            const t = Math.min(animationTime / animationDuration, 1);
+            const currentX = x1 + (x2 - x1) * t;
+            const currentY = y1 + (y2 - y1) * t;
+            
+            pvCtx.strokeStyle = '#667eea';
+            pvCtx.lineWidth = 4;
+            pvCtx.setLineDash([10, 5]);
+            pvCtx.beginPath();
+            pvCtx.moveTo(x1, y1);
+            pvCtx.lineTo(currentX, currentY);
+            pvCtx.stroke();
+            pvCtx.setLineDash([]);
+            
+            // Точка 1
+            pvCtx.fillStyle = '#3498db';
+            pvCtx.beginPath();
+            pvCtx.arc(x1, y1, 10, 0, Math.PI * 2);
+            pvCtx.fill();
+            
+            pvCtx.fillStyle = '#3498db';
+            pvCtx.font = 'bold 24px Arial';
+            pvCtx.textAlign = 'center';
+            pvCtx.fillText('1', x1, y1 + 40);
+            
+            // Точка 2
+            if (t > 0.8) {
+                pvCtx.fillStyle = '#e74c3c';
+                pvCtx.beginPath();
+                pvCtx.arc(x2, y2, 10, 0, Math.PI * 2);
+                pvCtx.fill();
+                
+                pvCtx.fillStyle = '#e74c3c';
+                pvCtx.font = 'bold 24px Arial';
+                pvCtx.fillText('2', x2, y2 + 40);
+            }
+            
+            // Текущая точка
+            pvCtx.fillStyle = '#667eea';
+            pvCtx.beginPath();
+            pvCtx.arc(currentX, currentY, 8, 0, Math.PI * 2);
+            pvCtx.fill();
+            
+            // Изотермы (для справки)
+            pvCtx.strokeStyle = 'rgba(255, 107, 107, 0.3)';
+            pvCtx.lineWidth = 2;
+            pvCtx.setLineDash([5, 5]);
+            
+            // Изотерма через точку 1 (T₁)
+            pvCtx.beginPath();
+            for (let v = 0.2; v <= 4; v += 0.05) {
+                const xIso = padding + v * width / 4;
+                const pIso = 3 * 1 / v; // p₁V₁ = p×V
+                const yIso = pvCanvas.height - padding - pIso * height / 4;
+                
+                if (v === 0.2) {
+                    pvCtx.moveTo(xIso, yIso);
+                } else {
+                    pvCtx.lineTo(xIso, yIso);
+                }
+            }
+            pvCtx.stroke();
+            
+            // Изотерма через точку 2 (T₂ = 4T₁)
+            pvCtx.strokeStyle = 'rgba(231, 76, 60, 0.5)';
+            pvCtx.beginPath();
+            for (let v = 0.2; v <= 4; v += 0.05) {
+                const xIso = padding + v * width / 4;
+                const pIso = 12 / v; // p₂V₂ = p×V
+                const yIso = pvCanvas.height - padding - pIso * height / 4;
+                
+                if (yIso >= padding && yIso <= pvCanvas.height - padding) {
+                    if (v === 0.2) {
+                        pvCtx.moveTo(xIso, yIso);
+                    } else {
+                        pvCtx.lineTo(xIso, yIso);
+                    }
+                }
+            }
+            pvCtx.stroke();
+            pvCtx.setLineDash([]);
+            
+            // Подписи изотерм
+            pvCtx.fillStyle = 'rgba(255, 107, 107, 0.6)';
+            pvCtx.font = '14px Arial';
+            pvCtx.fillText('T = T₁', padding + 200, pvCanvas.height - padding - 80);
+            
+            pvCtx.fillStyle = 'rgba(231, 76, 60, 0.8)';
+            pvCtx.fillText('T = 4T₁', padding + 200, pvCanvas.height - padding - 200);
+        }
+        
+        function drawGasVisualization() {
+            gasCtx.clearRect(0, 0, gasCanvas.width, gasCanvas.height);
+            
+            const t = Math.min(animationTime / animationDuration, 1);
+            
+            // Параметры состояний
+            const V1 = 1;
+            const V2 = 3;
+            const p1 = 3;
+            const p2 = 4;
+            const T1 = 1;
+            const T2 = 4;
+            
+            // Интерполяция
+            const currentV = V1 + (V2 - V1) * t;
+            const currentP = p1 + (p2 - p1) * t;
+            const currentT = T1 + (T2 - T1) * t;
+            
+            // Размеры сосуда
+            const containerWidth = 200 + currentV * 80;
+            const containerHeight = 300;
+            const containerX = (gasCanvas.width - containerWidth) / 2;
+            const containerY = 150;
+            
+            // Поршень
+            const pistonY = containerY;
+            
+            // Рисуем сосуд
+            gasCtx.strokeStyle = '#34495e';
+            gasCtx.lineWidth = 4;
+            gasCtx.strokeRect(containerX, pistonY, containerWidth, containerHeight);
+            
+            // Заливка газа (цвет зависит от температуры)
+            const tempColor = Math.floor(currentT / T2 * 255);
+            gasCtx.fillStyle = `rgba(255, ${255 - tempColor}, ${255 - tempColor}, 0.3)`;
+            gasCtx.fillRect(containerX, pistonY, containerWidth, containerHeight);
+            
+            // Поршень
+            const gradient = gasCtx.createLinearGradient(0, pistonY - 20, 0, pistonY);
+            gradient.addColorStop(0, '#95a5a6');
+            gradient.addColorStop(1, '#7f8c8d');
+            gasCtx.fillStyle = gradient;
+            gasCtx.fillRect(containerX, pistonY - 20, containerWidth, 20);
+            
+            // Ручка поршня
+            gasCtx.strokeStyle = '#34495e';
+            gasCtx.lineWidth = 3;
+            gasCtx.beginPath();
+            gasCtx.moveTo(containerX + containerWidth / 2, pistonY - 20);
+            gasCtx.lineTo(containerX + containerWidth / 2, pistonY - 50);
+            gasCtx.stroke();
+            
+            gasCtx.fillStyle = '#7f8c8d';
+            gasCtx.beginPath();
+            gasCtx.arc(containerX + containerWidth / 2, pistonY - 50, 10, 0, Math.PI * 2);
+            gasCtx.fill();
+            
+            // Молекулы газа (количество зависит от плотности)
+            const numMolecules = Math.floor(50 * currentP / currentV);
+            const moleculeSpeed = currentT * 2;
+            
+            gasCtx.fillStyle = '#3498db';
+            for (let i = 0; i < numMolecules; i++) {
+                const x = containerX + 10 + Math.random() * (containerWidth - 20);
+                const y = pistonY + 10 + Math.random() * (containerHeight - 20);
+                const offset = Math.sin(animationTime * moleculeSpeed + i) * 3;
+                
+                gasCtx.beginPath();
+                gasCtx.arc(x + offset, y + offset, 4, 0, Math.PI * 2);
+                gasCtx.fill();
+            }
+            
+            // Информация о состоянии
+            gasCtx.fillStyle = '#2c3e50';
+            gasCtx.font = 'bold 18px Arial';
+            gasCtx.textAlign = 'left';
+            
+            const infoX = 50;
+            const infoY = 50;
+            
+            gasCtx.fillText(`Объём: ${currentV.toFixed(1)}V₀`, infoX, infoY);
+            gasCtx.fillText(`Давление: ${currentP.toFixed(1)}p₀`, infoX, infoY + 30);
+            gasCtx.fillText(`Температура: ${currentT.toFixed(1)}T₁`, infoX, infoY + 60);
+            
+            // Прогресс
+            gasCtx.fillStyle = t < 0.5 ? '#3498db' : '#e74c3c';
+            gasCtx.font = 'bold 24px Arial';
+            gasCtx.textAlign = 'center';
+            gasCtx.fillText(t < 0.5 ? 'Состояние 1 → 2' : 'Состояние 2', gasCanvas.width / 2, gasCanvas.height - 30);
+        }
+        
+        function animate() {
+            animationTime += 0.016; // ~60 FPS
+            
+            if (animationTime > animationDuration + 1) {
+                animationTime = 0;
+            }
+            
+            drawPVDiagram();
+            drawGasVisualization();
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>

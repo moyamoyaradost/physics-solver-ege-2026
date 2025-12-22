@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Колебательный контур — Решение</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1400px;
+        }
+        
+        .graphs-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .graph-container {
+            background: linear-gradient(to bottom, #e3f2fd 0%, #fff 100%);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .graph-title {
+            text-align: center;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+        
+        /* Специфичные стили для этой задачи */
+        .statements-section {
+            margin: 30px 0;
+        }
+
+        .statement {
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid;
+            transition: transform 0.3s ease;
+        }
+
+        .statement:hover {
+            transform: translateX(5px);
+        }
+
+        .statement.correct {
+            background: linear-gradient(to right, #d4edda, #ffffff);
+            border-color: #28a745;
+        }
+
+        .statement.incorrect {
+            background: linear-gradient(to right, #f8d7da, #ffffff);
+            border-color: #dc3545;
+        }
+
+        .statement-number {
+            display: inline-block;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .statement.correct .statement-number {
+            color: #28a745;
+        }
+
+        .statement.incorrect .statement-number {
+            color: #dc3545;
+        }
+
+        .verdict {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+        .verdict.correct {
+            background: #28a745;
+            color: white;
+        }
+
+        .verdict.incorrect {
+            background: #dc3545;
+            color: white;
+        }
+
+        .explanation {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            font-size: 14px;
+            color: #666;
+        }
+
+        .answer-box {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .circuit-diagram {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        @media (max-width: 1200px) {
+            .graphs-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ Колебательный контур LC</h1>
+            <p>Электромагнитные колебания заряда, тока и энергии</p>
+        </div>
+        
+        <div class="content">
+            <div class="circuit-diagram">
+                <canvas id="circuitCanvas" width="1200" height="250"></canvas>
+            </div>
+
+            <div class="graphs-section">
+                <div class="graph-container">
+                    <div class="graph-title">График заряда q(t)</div>
+                    <canvas id="chargeGraph" width="600" height="400"></canvas>
+                </div>
+                
+                <div class="graph-container">
+                    <div class="graph-title">График тока i(t)</div>
+                    <canvas id="currentGraph" width="600" height="400"></canvas>
+                </div>
+                
+                <div class="graph-container">
+                    <div class="graph-title">Энергия электрического поля W<sub>C</sub>(t)</div>
+                    <canvas id="electricEnergyGraph" width="600" height="400"></canvas>
+                </div>
+                
+                <div class="graph-container">
+                    <div class="graph-title">Энергия магнитного поля W<sub>L</sub>(t)</div>
+                    <canvas id="magneticEnergyGraph" width="600" height="400"></canvas>
+                </div>
+            </div>
+            
+            <div class="physics-insight">
+                <h4>💡 Колебания в LC-контуре</h4>
+                <p><strong>Заряд конденсатора:</strong> q(t) = q<sub>max</sub>·cos(ωt + φ)</p>
+                <p style="margin-top: 10px;"><strong>Ток в катушке:</strong> i(t) = dq/dt = -q<sub>max</sub>·ω·sin(ωt + φ)</p>
+                <p style="margin-top: 10px;"><strong>Энергия электрического поля:</strong> W<sub>C</sub> = q²/(2C) ~ cos²(ωt)</p>
+                <p style="margin-top: 10px;"><strong>Энергия магнитного поля:</strong> W<sub>L</sub> = Li²/2 ~ sin²(ωt)</p>
+                <p style="margin-top: 10px;"><strong>Ключевой факт:</strong> Когда q максимален → i = 0, W<sub>C</sub> макс, W<sub>L</sub> = 0</p>
+                <p style="margin-top: 5px;">Когда q = 0 → i максимален, W<sub>C</sub> = 0, W<sub>L</sub> макс</p>
+            </div>
+
+            <div class="statements-section">
+                <h3 style="color: #667eea; margin-bottom: 20px;">✅❌ Проверка утверждений</h3>
+
+                <div class="statement correct">
+                    <span class="statement-number">1.</span>
+                    Период колебаний равен T = 8·10⁻⁶ с.
+                    <span class="verdict correct">✓ ВЕРНО</span>
+                    <div class="explanation">
+                        <strong>Анализ таблицы:</strong> q(0) = 1·10⁻⁹ Кл, q(8) = 1·10⁻⁹ Кл — заряд вернулся к исходному значению. Полный цикл колебаний занял 8·10⁻⁶ с, следовательно T = 8·10⁻⁶ с.
+                    </div>
+                </div>
+
+                <div class="statement incorrect">
+                    <span class="statement-number">2.</span>
+                    Частота колебаний равна ν = 250 кГц.
+                    <span class="verdict incorrect">✗ НЕВЕРНО</span>
+                    <div class="explanation">
+                        <strong>Расчёт:</strong> ν = 1/T = 1/(8×10⁻⁶) = 125 000 Гц = 125 кГц ≠ 250 кГц. Утверждение неверно.
+                    </div>
+                </div>
+
+                <div class="statement correct">
+                    <span class="statement-number">3.</span>
+                    В момент времени t = 2·10⁻⁶ с модуль силы тока в катушке максимален.
+                    <span class="verdict correct">✓ ВЕРНО</span>
+                    <div class="explanation">
+                        <strong>Из таблицы:</strong> q(2) = 0. В колебательном контуре ток i = dq/dt. Когда заряд проходит через ноль (q=0), его производная (скорость изменения) максимальна → |i| максимален.
+                    </div>
+                </div>
+
+                <div class="statement incorrect">
+                    <span class="statement-number">4.</span>
+                    В момент времени t = 8·10⁻⁶ с энергия магнитного поля катушки максимальна.
+                    <span class="verdict incorrect">✗ НЕВЕРНО</span>
+                    <div class="explanation">
+                        <strong>Из таблицы:</strong> q(8) = 1·10⁻⁹ Кл (максимальное значение). W<sub>L</sub> = Li²/2 максимальна при i<sub>max</sub>, что происходит при q=0. При q=max ток i=0, следовательно W<sub>L</sub>=0 (минимальна).
+                    </div>
+                </div>
+
+                <div class="statement incorrect">
+                    <span class="statement-number">5.</span>
+                    В момент времени t = 4·10⁻⁶ с энергия электрического поля конденсатора минимальна.
+                    <span class="verdict incorrect">✗ НЕВЕРНО</span>
+                    <div class="explanation">
+                        <strong>Из таблицы:</strong> q(4) = -1·10⁻⁹ Кл. W<sub>C</sub> = q²/(2C) зависит от q². При q(4)=-1 имеем |q|=1 (максимум) → W<sub>C</sub> максимальна. Энергия минимальна при q=0, например при t=2 или t=6.
+                    </div>
+                </div>
+            </div>
+
+            <div class="physics-insight" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); border-color: #0984e3;">
+                <h4 style="color: white;">⚙️ Сдвиг фаз между q и i</h4>
+                <p style="color: white;"><strong>q(t)</strong> и <strong>i(t)</strong> колеблются с разностью фаз π/2 (90°):</p>
+                <p style="color: white; margin-top: 10px;">• Когда q = max → i = 0</p>
+                <p style="color: white; margin-top: 5px;">• Когда q = 0 → i = max</p>
+                <p style="color: white; margin-top: 5px;">• Когда q = min → i = 0</p>
+                <p style="color: white; margin-top: 10px;"><strong>Энергии:</strong> W<sub>C</sub> + W<sub>L</sub> = const (закон сохранения энергии)</p>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: утверждения 1 и 3 верны
+            </div>
+        </div>
+    </div>
+
+    <script src="canvas-utils.js"></script>
+    <script>
+        // Данные из таблицы
+        const timeData = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; // в единицах 10^-6 с
+        const chargeData = [1, 0.71, 0, -0.71, -1, -0.71, 0, 0.71, 1, 0.71]; // в единицах 10^-9 Кл
+        
+        let animTime = 0;
+        const period = 8; // в единицах 10^-6 с
+        const omega = 2 * Math.PI / period;
+        
+        function drawCircuit() {
+            const canvas = getCanvas('circuitCanvas');
+            if (!canvas) {
+                console.error('Canvas circuitCanvas не найден');
+                return;
+            }
+            const ctx = getContext('circuitCanvas');
+            if (!ctx) {
+                console.error('Контекст circuitCanvas не получен');
+                return;
+            }
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 80;
+            
+            // Конденсатор (слева)
+            const capX = centerX - 200;
+            ctx.strokeStyle = '#3498db';
+            ctx.lineWidth = 4;
+            
+            // Обкладки конденсатора
+            ctx.beginPath();
+            ctx.moveTo(capX - 30, centerY - 40);
+            ctx.lineTo(capX - 30, centerY + 40);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(capX + 30, centerY - 40);
+            ctx.lineTo(capX + 30, centerY + 40);
+            ctx.stroke();
+            
+            // Заряды на конденсаторе (анимированные)
+            const currentCharge = Math.cos(omega * animTime);
+            ctx.fillStyle = currentCharge > 0 ? '#e74c3c' : '#3498db';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(currentCharge > 0 ? '+' : '−', capX - 30, centerY - 55);
+            ctx.fillStyle = currentCharge > 0 ? '#3498db' : '#e74c3c';
+            ctx.fillText(currentCharge > 0 ? '−' : '+', capX + 30, centerY - 55);
+            
+            // Подпись C
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText('C', capX, centerY + 70);
+            
+            // Катушка (справа)
+            const coilX = centerX + 200;
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 4;
+            
+            // Витки катушки
+            for (let i = 0; i < 5; i++) {
+                ctx.beginPath();
+                ctx.arc(coilX - 30 + i * 15, centerY, 7.5, Math.PI, 0);
+                ctx.stroke();
+            }
+            
+            // Подпись L
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText('L', coilX, centerY + 40);
+            
+            // Стрелка тока (анимированная)
+            const currentValue = -Math.sin(omega * animTime);
+            if (Math.abs(currentValue) > 0.1) {
+                ctx.strokeStyle = '#9b59b6';
+                ctx.fillStyle = '#9b59b6';
+                ctx.lineWidth = 3;
+                
+                const arrowY = centerY - 80;
+                const arrowLen = 100;
+                
+                if (currentValue > 0) {
+                    // Ток вправо
+                    ctx.beginPath();
+                    ctx.moveTo(centerX - arrowLen/2, arrowY);
+                    ctx.lineTo(centerX + arrowLen/2, arrowY);
+                    ctx.stroke();
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(centerX + arrowLen/2, arrowY);
+                    ctx.lineTo(centerX + arrowLen/2 - 15, arrowY - 10);
+                    ctx.lineTo(centerX + arrowLen/2 - 15, arrowY + 10);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    ctx.fillStyle = '#9b59b6';
+                    ctx.font = 'bold 18px Arial';
+                    ctx.fillText('i', centerX, arrowY - 20);
+                } else {
+                    // Ток влево
+                    ctx.beginPath();
+                    ctx.moveTo(centerX + arrowLen/2, arrowY);
+                    ctx.lineTo(centerX - arrowLen/2, arrowY);
+                    ctx.stroke();
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(centerX - arrowLen/2, arrowY);
+                    ctx.lineTo(centerX - arrowLen/2 + 15, arrowY - 10);
+                    ctx.lineTo(centerX - arrowLen/2 + 15, arrowY + 10);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    ctx.fillStyle = '#9b59b6';
+                    ctx.font = 'bold 18px Arial';
+                    ctx.fillText('i', centerX, arrowY - 20);
+                }
+            }
+            
+            // Провода
+            ctx.strokeStyle = '#7f8c8d';
+            ctx.lineWidth = 3;
+            
+            // Верхний провод
+            ctx.beginPath();
+            ctx.moveTo(capX + 30, centerY);
+            ctx.lineTo(coilX - 45, centerY);
+            ctx.stroke();
+            
+            // Нижний провод
+            ctx.beginPath();
+            ctx.moveTo(capX - 30, centerY);
+            ctx.arcTo(capX - 30, canvas.height - 50, coilX + 45, canvas.height - 50, 30);
+            ctx.lineTo(coilX + 45, canvas.height - 50);
+            ctx.arcTo(coilX + 45, canvas.height - 50, coilX + 45, centerY, 30);
+            ctx.lineTo(coilX + 45, centerY);
+            ctx.stroke();
+            
+            // Информация
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 18px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText(`t = ${animTime.toFixed(2)}×10⁻⁶ с`, 50, 50);
+            ctx.fillText(`q = ${currentCharge.toFixed(2)}×10⁻⁹ Кл`, 50, 80);
+            ctx.fillText(`i ∝ ${currentValue.toFixed(2)}`, 50, 110);
+        }
+        
+        function drawGraph(canvasId, dataFunc, label, color, showPoints = false) {
+            const canvas = getCanvas(canvasId);
+            if (!canvas) {
+                console.error(`Canvas ${canvasId} не найден`);
+                return;
+            }
+            const ctx = getContext(canvasId);
+            if (!ctx) {
+                console.error(`Контекст ${canvasId} не получен`);
+                return;
+            }
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const padding = 60;
+            const width = canvas.width - 2 * padding;
+            const height = canvas.height - 2 * padding;
+            
+            // Фон
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Сетка
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 1;
+            
+            for (let i = 0; i <= 10; i++) {
+                ctx.beginPath();
+                ctx.moveTo(padding, padding + i * height / 10);
+                ctx.lineTo(canvas.width - padding, padding + i * height / 10);
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.moveTo(padding + i * width / 10, padding);
+                ctx.lineTo(padding + i * width / 10, canvas.height - padding);
+                ctx.stroke();
+            }
+            
+            // Оси
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            
+            ctx.beginPath();
+            ctx.moveTo(padding, canvas.height / 2);
+            ctx.lineTo(canvas.width - padding, canvas.height / 2);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.stroke();
+            
+            // График
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            for (let t = 0; t <= 10; t += 0.1) {
+                const x = padding + (t / 10) * width;
+                const value = dataFunc(t);
+                const y = canvas.height / 2 - value * (height / 3);
+                
+                if (t === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.stroke();
+            
+            // Точки из таблицы
+            if (showPoints) {
+                ctx.fillStyle = color;
+                for (let i = 0; i < timeData.length; i++) {
+                    const x = padding + (timeData[i] / 10) * width;
+                    const value = dataFunc(timeData[i]);
+                    const y = canvas.height / 2 - value * (height / 3);
+                    
+                    ctx.beginPath();
+                    ctx.arc(x, y, 5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            
+            // Текущая точка
+            const currentX = padding + (animTime / 10) * width;
+            const currentValue = dataFunc(animTime);
+            const currentY = canvas.height / 2 - currentValue * (height / 3);
+            
+            ctx.fillStyle = '#e74c3c';
+            ctx.beginPath();
+            ctx.arc(currentX, currentY, 7, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Подписи осей
+            ctx.fillStyle = '#333';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('t (10⁻⁶ с)', canvas.width / 2, canvas.height - 20);
+            
+            ctx.save();
+            ctx.translate(20, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText(label, 0, 0);
+            ctx.restore();
+            
+            // Метки времени
+            ctx.font = '14px Arial';
+            for (let i = 0; i <= 10; i += 2) {
+                const x = padding + (i / 10) * width;
+                ctx.fillText(i.toString(), x, canvas.height - padding + 20);
+            }
+        }
+        
+        function animate() {
+            animTime += 0.05;
+            if (animTime > 10) animTime = 0;
+            
+            drawCircuit();
+            
+            // q(t) = cos(ωt)
+            drawGraph('chargeGraph', 
+                (t) => Math.cos(omega * t), 
+                'q (10⁻⁹ Кл)', '#3498db', true);
+            
+            // i(t) = -sin(ωt)
+            drawGraph('currentGraph', 
+                (t) => -Math.sin(omega * t), 
+                'i (отн. ед.)', '#9b59b6', false);
+            
+            // W_C ~ q² ~ cos²(ωt)
+            drawGraph('electricEnergyGraph', 
+                (t) => Math.pow(Math.cos(omega * t), 2), 
+                'W_C (отн. ед.)', '#e74c3c', false);
+            
+            // W_L ~ i² ~ sin²(ωt)
+            drawGraph('magneticEnergyGraph', 
+                (t) => Math.pow(Math.sin(omega * t), 2), 
+                'W_L (отн. ед.)', '#2ecc71', false);
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>

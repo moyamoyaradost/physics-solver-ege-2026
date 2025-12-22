@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ферзь перед зеркалом — Решение</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1200px;
+        }
+        
+        .animation-container {
+            background: linear-gradient(to bottom, #e3f2fd 0%, #fff 100%);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+        
+        /* Специфичные стили для этой задачи */
+
+        .comparison-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-card {
+            background: white;
+            border: 3px solid #e0e7ff;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .comparison-card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .parameter {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .parameter-label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .parameter-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>♛ Ферзь перед плоским зеркалом</h1>
+            <p>Свойства изображения в плоском зеркале</p>
+        </div>
+        
+        <div class="content">
+            <div class="animation-container">
+                <canvas id="mirrorCanvas" width="1000" height="600"></canvas>
+            </div>
+            
+            <div class="physics-insight">
+                <h4>💡 Свойства плоского зеркала</h4>
+                <p><strong>Изображение в плоском зеркале:</strong></p>
+                <p style="margin-top: 10px;">1. <strong>Мнимое</strong> — находится за зеркалом</p>
+                <p style="margin-top: 5px;">2. <strong>Симметричное</strong> — на таком же расстоянии от зеркала, как предмет</p>
+                <p style="margin-top: 5px;">3. <strong>Того же размера</strong> — изображение равно предмету</p>
+                <p style="margin-top: 5px;">4. <strong>Зеркально отражённое</strong> — левое становится правым</p>
+                <p style="margin-top: 10px;"><strong>Ключевая формула:</strong> Если предмет на расстоянии d от зеркала, то расстояние между предметом и изображением = <strong>2d</strong></p>
+            </div>
+
+            <div class="comparison-section">
+                <div class="comparison-card">
+                    <h4>Начальное положение</h4>
+                    <div class="parameter">
+                        <div class="parameter-label">Расстояние до зеркала</div>
+                        <div class="parameter-value">d₁ = 3 клетки</div>
+                    </div>
+                    <div class="parameter">
+                        <div class="parameter-label">Расстояние ферзь ↔ изображение</div>
+                        <div class="parameter-value">2d₁ = 6 клеток</div>
+                    </div>
+                </div>
+
+                <div class="comparison-card">
+                    <h4>После приближения</h4>
+                    <div class="parameter">
+                        <div class="parameter-label">Расстояние до зеркала</div>
+                        <div class="parameter-value">d₂ = 1 клетка</div>
+                    </div>
+                    <div class="parameter">
+                        <div class="parameter-label">Расстояние ферзь ↔ изображение</div>
+                        <div class="parameter-value">2d₂ = 2 клетки</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="solution-section">
+                <h3>🔍 Решение</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Начальное расстояние между ферзём и изображением:</strong>
+                    <p style="color: #666; margin: 10px 0;">Ферзь на расстоянии d₁ = 3 клетки от зеркала</p>
+                    <p style="color: #666; margin: 10px 0;">Изображение находится симметрично за зеркалом на расстоянии 3 клетки</p>
+                    <div class="formula-box">
+                        L₁ = d₁ + d₁ = 2d₁ = 2 × 3 = 6 клеток
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Новое положение после приближения на 2 клетки:</strong>
+                    <div class="formula-box">
+                        d₂ = d₁ - 2 = 3 - 2 = 1 клетка
+                    </div>
+                    <p style="color: #666; margin: 10px 0;">Изображение теперь на расстоянии 1 клетка за зеркалом</p>
+                    <div class="formula-box">
+                        L₂ = 2d₂ = 2 × 1 = 2 клетки
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Уменьшение расстояния:</strong>
+                    <div class="formula-box">
+                        ΔL = L₁ - L₂ = 6 - 2 = <span class="highlight">4 клетки</span>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Общая формула (альтернативный метод):</strong>
+                    <p style="color: #666; margin: 10px 0;">При изменении расстояния до зеркала на Δd:</p>
+                    <div class="formula-box">
+                        ΔL = 2 × Δd = 2 × 2 = 4 клетки
+                    </div>
+                    <p style="color: #666; margin: 10px 0;">Перемещение на 1 клетку к зеркалу уменьшает расстояние ферзь↔изображение на 2 клетки!</p>
+                </div>
+            </div>
+
+            <div class="physics-insight" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); border-color: #0984e3;">
+                <h4 style="color: white;">⚙️ Почему коэффициент 2?</h4>
+                <p style="color: white;">Когда ферзь приближается к зеркалу на 1 клетку:</p>
+                <p style="color: white; margin-top: 10px;">• Расстояние от ферзя до зеркала уменьшается на 1 клетку</p>
+                <p style="color: white; margin-top: 5px;">• Расстояние от зеркала до изображения ТАКЖЕ уменьшается на 1 клетку</p>
+                <p style="color: white; margin-top: 5px;">• <strong>Итого:</strong> расстояние ферзь↔изображение уменьшается на 1+1 = 2 клетки</p>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: расстояние уменьшится на 4 клетки
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('mirrorCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let time = 0;
+        
+        function drawChessboard(startX, startY, cellSize) {
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const x = startX + col * cellSize;
+                    const y = startY + row * cellSize;
+                    
+                    // Шахматный узор
+                    if ((row + col) % 2 === 0) {
+                        ctx.fillStyle = '#f0d9b5';
+                    } else {
+                        ctx.fillStyle = '#b58863';
+                    }
+                    ctx.fillRect(x, y, cellSize, cellSize);
+                    
+                    // Рамка клетки
+                    ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(x, y, cellSize, cellSize);
+                }
+            }
+        }
+        
+        function drawQueen(x, y, isReal, opacity = 1) {
+            ctx.save();
+            ctx.globalAlpha = opacity;
+            
+            // Тень
+            if (isReal) {
+                ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                ctx.beginPath();
+                ctx.ellipse(x, y + 40, 25, 8, 0, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Цвет ферзя
+            const gradient = ctx.createRadialGradient(x - 10, y - 20, 10, x, y, 30);
+            if (isReal) {
+                gradient.addColorStop(0, '#f8f8f8');
+                gradient.addColorStop(1, '#d0d0d0');
+            } else {
+                gradient.addColorStop(0, 'rgba(248, 248, 248, 0.5)');
+                gradient.addColorStop(1, 'rgba(208, 208, 208, 0.5)');
+            }
+            
+            ctx.fillStyle = gradient;
+            
+            // База
+            ctx.beginPath();
+            ctx.ellipse(x, y + 30, 25, 10, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = isReal ? '#888' : 'rgba(136, 136, 136, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Ствол
+            ctx.beginPath();
+            ctx.moveTo(x - 15, y + 20);
+            ctx.lineTo(x - 10, y - 20);
+            ctx.lineTo(x + 10, y - 20);
+            ctx.lineTo(x + 15, y + 20);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Корона
+            ctx.beginPath();
+            ctx.arc(x, y - 20, 15, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Зубцы короны
+            for (let i = 0; i < 5; i++) {
+                const angle = (i / 5) * Math.PI * 2 - Math.PI / 2;
+                const tipX = x + Math.cos(angle) * 15;
+                const tipY = y - 20 + Math.sin(angle) * 15;
+                
+                ctx.beginPath();
+                ctx.arc(tipX, tipY, 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+            }
+            
+            // Подпись
+            ctx.fillStyle = isReal ? '#2c3e50' : 'rgba(44, 62, 80, 0.6)';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(isReal ? 'Ферзь' : 'Изображение', x, y + 60);
+            
+            ctx.restore();
+        }
+        
+        function drawMirror(x, y, height) {
+            // Зеркальная поверхность
+            const gradient = ctx.createLinearGradient(x - 10, 0, x + 10, 0);
+            gradient.addColorStop(0, 'rgba(200, 200, 255, 0.3)');
+            gradient.addColorStop(0.5, 'rgba(220, 220, 255, 0.6)');
+            gradient.addColorStop(1, 'rgba(200, 200, 255, 0.3)');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(x - 10, y, 20, height);
+            
+            // Рамка зеркала
+            ctx.strokeStyle = '#7f8c8d';
+            ctx.lineWidth = 6;
+            ctx.strokeRect(x - 10, y, 20, height);
+            
+            // Подпись
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 18px Arial';
+            ctx.textAlign = 'center';
+            ctx.save();
+            ctx.translate(x, y + height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('ЗЕРКАЛО', 0, -20);
+            ctx.restore();
+        }
+        
+        function drawDistanceArrow(x1, y1, x2, y2, label, color) {
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 3;
+            
+            // Линия
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            
+            // Стрелки на концах
+            const angle1 = Math.atan2(y2 - y1, x2 - x1);
+            const angle2 = Math.atan2(y1 - y2, x1 - x2);
+            
+            // Стрелка 1
+            ctx.save();
+            ctx.translate(x1, y1);
+            ctx.rotate(angle1);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(15, -8);
+            ctx.lineTo(15, 8);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+            
+            // Стрелка 2
+            ctx.save();
+            ctx.translate(x2, y2);
+            ctx.rotate(angle2);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(15, -8);
+            ctx.lineTo(15, 8);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+            
+            // Подпись
+            ctx.fillStyle = color;
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, (x1 + x2) / 2, y1 - 10);
+        }
+        
+        function drawScene() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Фон
+            const bgGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            bgGradient.addColorStop(0, '#e3f2fd');
+            bgGradient.addColorStop(1, '#f8f9fa');
+            ctx.fillStyle = bgGradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const cellSize = 50;
+            const boardStartX = 100;
+            const boardStartY = 200;
+            
+            // Анимация: плавное перемещение от 3 клеток к 1 клетке и обратно
+            const t = (Math.sin(time * 0.8) + 1) / 2; // от 0 до 1
+            const queenDistance = 3 - t * 2; // от 3 до 1 клетки
+            
+            // Шахматная доска
+            drawChessboard(boardStartX, boardStartY, cellSize);
+            
+            // Позиция зеркала (после 8 клеток)
+            const mirrorX = boardStartX + 8 * cellSize + 50;
+            drawMirror(mirrorX, boardStartY - 50, 8 * cellSize + 100);
+            
+            // Позиция ферзя (на расстоянии queenDistance клеток от зеркала)
+            const queenX = mirrorX - 50 - queenDistance * cellSize;
+            const queenY = boardStartY + 4 * cellSize;
+            
+            // Позиция изображения (симметрично за зеркалом)
+            const imageX = mirrorX + 50 + queenDistance * cellSize;
+            const imageY = queenY;
+            
+            // Рисуем изображение (полупрозрачное)
+            drawQueen(imageX, imageY, false, 0.5);
+            
+            // Рисуем ферзя
+            drawQueen(queenX, queenY, true);
+            
+            // Расстояния
+            const distanceY = boardStartY - 80;
+            
+            // Расстояние от ферзя до зеркала
+            drawDistanceArrow(queenX + 30, distanceY, mirrorX - 30, distanceY, 
+                            `d = ${queenDistance.toFixed(1)} кл.`, '#e74c3c');
+            
+            // Расстояние от зеркала до изображения
+            drawDistanceArrow(mirrorX + 30, distanceY, imageX - 30, distanceY, 
+                            `d = ${queenDistance.toFixed(1)} кл.`, '#3498db');
+            
+            // Общее расстояние ферзь-изображение
+            const totalDistance = 2 * queenDistance;
+            drawDistanceArrow(queenX + 30, canvas.height - 80, imageX - 30, canvas.height - 80, 
+                            `L = 2d = ${totalDistance.toFixed(1)} кл.`, '#9b59b6');
+            
+            // Информация
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            
+            const initialDistance = 6;
+            const currentDistance = totalDistance;
+            const decrease = initialDistance - currentDistance;
+            
+            ctx.fillText(`Начальное расстояние: 6 клеток → Текущее: ${currentDistance.toFixed(1)} кл.`, 
+                        canvas.width / 2, 50);
+            ctx.fillStyle = '#28a745';
+            ctx.fillText(`Уменьшение: ${decrease.toFixed(1)} клеток`, 
+                        canvas.width / 2, 80);
+            
+            // Легенда
+            ctx.fillStyle = '#666';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Реальный ферзь', boardStartX, canvas.height - 30);
+            ctx.fillText('Мнимое изображение (за зеркалом)', boardStartX + 250, canvas.height - 30);
+        }
+        
+        function animate() {
+            time += 0.016; // ~60 FPS
+            drawScene();
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>

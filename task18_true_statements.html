@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задача №18 — Верные утверждения</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1200px;
+        }
+        
+        .statement {
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 6px solid;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .statement:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .statement.correct {
+            background: linear-gradient(to right, #d4edda 0%, #f1f9f3 100%);
+            border-color: #28a745;
+        }
+
+        .statement.incorrect {
+            background: linear-gradient(to right, #f8d7da 0%, #fdf3f4 100%);
+            border-color: #dc3545;
+        }
+
+        .statement-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .statement-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            color: #667eea;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .statement.correct .statement-number {
+            background: #28a745;
+            color: white;
+        }
+
+        .statement.incorrect .statement-number {
+            background: #dc3545;
+            color: white;
+        }
+
+        .verdict {
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .verdict.correct {
+            background: #28a745;
+            color: white;
+        }
+
+        .verdict.incorrect {
+            background: #dc3545;
+            color: white;
+        }
+
+        .statement-text {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 10px;
+            font-size: 15px;
+            color: #555;
+            border-left: 3px solid #667eea;
+        }
+
+        .explanation strong {
+            color: #667eea;
+        }
+
+        .visualization {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .visualization canvas {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .answer-box {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(40, 167, 69, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+            margin-top: 30px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .summary-box h3 {
+            margin-bottom: 15px;
+        }
+
+        .summary-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✅❌ Задача №18: Верные утверждения</h1>
+            <p>Проверка знаний физических законов</p>
+        </div>
+        
+        <div class="content">
+            <div class="summary-box">
+                <h3>📊 Статистика</h3>
+                <div class="summary-stats">
+                    <div class="stat">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Всего утверждений</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" style="color: #00ff88;">3</div>
+                        <div class="stat-label">Верных</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" style="color: #ff6b6b;">2</div>
+                        <div class="stat-label">Неверных</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="statement incorrect">
+                <div class="statement-header">
+                    <div class="statement-number">1</div>
+                    <div class="verdict incorrect">✗ НЕВЕРНО</div>
+                </div>
+                <div class="statement-text">
+                    Работа силы тяжести по перемещению тела между двумя точками зависит только от длины траектории.
+                </div>
+                <div class="explanation">
+                    <strong>Почему неверно:</strong> Сила тяжести — потенциальная (консервативная) сила. Её работа зависит ТОЛЬКО от разности высот начальной и конечной точек, а НЕ от пути.
+                    <div style="margin-top: 10px;">
+                        <strong>Формула:</strong> A = mg(h₁ - h₂) = mgΔh
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <strong>Пример:</strong> Подъём на гору по прямой или по извилистой тропе — работа одинакова!
+                    </div>
+                </div>
+                <div class="visualization">
+                    <canvas id="canvas1" width="500" height="200"></canvas>
+                </div>
+            </div>
+
+            <div class="statement correct">
+                <div class="statement-header">
+                    <div class="statement-number">2</div>
+                    <div class="verdict correct">✓ ВЕРНО</div>
+                </div>
+                <div class="statement-text">
+                    При прочих равных условиях диффузия протекает в твёрдых телах значительно медленнее, чем в жидкостях.
+                </div>
+                <div class="explanation">
+                    <strong>Почему верно:</strong> В твёрдых телах атомы/молекулы образуют жёсткую кристаллическую решётку. Перемещение частиц затруднено. В жидкостях связи слабее → частицы движутся свободнее → диффузия быстрее.
+                    <div style="margin-top: 10px;">
+                        <strong>Скорость диффузии:</strong> Газы > Жидкости >> Твёрдые тела
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <strong>Пример:</strong> Капля чернил в воде распространяется за минуты. В металле — годы/века!
+                    </div>
+                </div>
+                <div class="visualization">
+                    <canvas id="canvas2" width="500" height="200"></canvas>
+                </div>
+            </div>
+
+            <div class="statement correct">
+                <div class="statement-header">
+                    <div class="statement-number">3</div>
+                    <div class="verdict correct">✓ ВЕРНО</div>
+                </div>
+                <div class="statement-text">
+                    Весь электростатический заряд проводника сосредоточен на его поверхности.
+                </div>
+                <div class="explanation">
+                    <strong>Почему верно:</strong> В проводнике свободные электроны могут двигаться. Одноимённые заряды отталкиваются и "разбегаются" на максимальное расстояние друг от друга → на поверхность. Внутри проводника электрическое поле = 0.
+                    <div style="margin-top: 10px;">
+                        <strong>Это объясняет:</strong> Клетку Фарадея (защита от молнии), экранирование кабелей
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <strong>Важно:</strong> Это справедливо для СТАТИЧЕСКОГО заряда в равновесии
+                    </div>
+                </div>
+                <div class="visualization">
+                    <canvas id="canvas3" width="500" height="200"></canvas>
+                </div>
+            </div>
+
+            <div class="statement correct">
+                <div class="statement-header">
+                    <div class="statement-number">4</div>
+                    <div class="verdict correct">✓ ВЕРНО</div>
+                </div>
+                <div class="statement-text">
+                    Свободные электромагнитные колебания гармонические, если заряд на обкладках конденсатора меняется по закону синуса или косинуса.
+                </div>
+                <div class="explanation">
+                    <strong>Почему верно:</strong> Это определение гармонических колебаний! Если величина меняется по закону sin(ωt) или cos(ωt) — колебания называются гармоническими.
+                    <div style="margin-top: 10px;">
+                        <strong>В LC-контуре:</strong> q(t) = q₀·cos(ωt + φ) — идеальный пример
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <strong>Альтернатива:</strong> Затухающие, ангармонические колебания (с трением/сопротивлением)
+                    </div>
+                </div>
+                <div class="visualization">
+                    <canvas id="canvas4" width="500" height="200"></canvas>
+                </div>
+            </div>
+
+            <div class="statement incorrect">
+                <div class="statement-header">
+                    <div class="statement-number">5</div>
+                    <div class="verdict incorrect">✗ НЕВЕРНО</div>
+                </div>
+                <div class="statement-text">
+                    Атомы изотопов одного и того же химического элемента различаются числом протонов.
+                </div>
+                <div class="explanation">
+                    <strong>Почему неверно:</strong> Изотопы ОДНОГО элемента имеют ОДИНАКОВОЕ число протонов (это определяет химический элемент), но РАЗНОЕ число нейтронов!
+                    <div style="margin-top: 10px;">
+                        <strong>Примеры:</strong>
+                        <ul style="margin-top: 5px; margin-left: 20px;">
+                            <li>¹²C и ¹⁴C: оба имеют 6 протонов, но 6 и 8 нейтронов</li>
+                            <li>¹H, ²H (дейтерий), ³H (тритий): 1 протон, но 0, 1, 2 нейтрона</li>
+                        </ul>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <strong>Правильно:</strong> Различаются числом НЕЙТРОНОВ
+                    </div>
+                </div>
+                <div class="visualization">
+                    <canvas id="canvas5" width="500" height="200"></canvas>
+                </div>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: 234 (верные утверждения — 2, 3, 4)
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Canvas 1: Работа силы тяжести
+        const ctx1 = document.getElementById('canvas1').getContext('2d');
+        ctx1.fillStyle = '#f8f9fa';
+        ctx1.fillRect(0, 0, 500, 200);
+        
+        // Две траектории
+        ctx1.strokeStyle = '#3498db';
+        ctx1.lineWidth = 3;
+        ctx1.setLineDash([5, 5]);
+        ctx1.beginPath();
+        ctx1.moveTo(50, 150);
+        ctx1.lineTo(250, 50);
+        ctx1.stroke();
+        
+        ctx1.strokeStyle = '#e74c3c';
+        ctx1.beginPath();
+        ctx1.moveTo(50, 150);
+        ctx1.quadraticCurveTo(150, 180, 250, 50);
+        ctx1.stroke();
+        ctx1.setLineDash([]);
+        
+        // Точки
+        ctx1.fillStyle = '#2ecc71';
+        ctx1.beginPath();
+        ctx1.arc(50, 150, 10, 0, Math.PI * 2);
+        ctx1.fill();
+        ctx1.fillStyle = '#e74c3c';
+        ctx1.beginPath();
+        ctx1.arc(250, 50, 10, 0, Math.PI * 2);
+        ctx1.fill();
+        
+        ctx1.fillStyle = '#2c3e50';
+        ctx1.font = 'bold 16px Arial';
+        ctx1.fillText('A', 40, 170);
+        ctx1.fillText('B', 240, 40);
+        ctx1.fillText('Разные пути — одинаковая работа!', 280, 100);
+        ctx1.fillText('A = mgΔh (не зависит от пути)', 280, 130);
+        
+        // Canvas 2: Диффузия
+        const ctx2 = document.getElementById('canvas2').getContext('2d');
+        ctx2.fillStyle = '#f8f9fa';
+        ctx2.fillRect(0, 0, 500, 200);
+        
+        // Твёрдое тело (решётка)
+        ctx2.fillStyle = '#95a5a6';
+        ctx2.font = 'bold 14px Arial';
+        ctx2.fillText('Твёрдое тело', 50, 30);
+        for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < 3; j++) {
+                ctx2.fillStyle = '#7f8c8d';
+                ctx2.beginPath();
+                ctx2.arc(60 + i * 30, 50 + j * 40, 8, 0, Math.PI * 2);
+                ctx2.fill();
+            }
+        }
+        ctx2.fillStyle = '#e74c3c';
+        ctx2.beginPath();
+        ctx2.arc(90, 90, 8, 0, Math.PI * 2);
+        ctx2.fill();
+        ctx2.strokeStyle = '#e74c3c';
+        ctx2.lineWidth = 2;
+        ctx2.beginPath();
+        ctx2.arc(90, 90, 15, 0, Math.PI * 2);
+        ctx2.stroke();
+        
+        // Жидкость
+        ctx2.fillStyle = '#3498db';
+        ctx2.font = 'bold 14px Arial';
+        ctx2.fillText('Жидкость', 300, 30);
+        for (let i = 0; i < 20; i++) {
+            const x = 280 + Math.random() * 150;
+            const y = 50 + Math.random() * 120;
+            ctx2.fillStyle = Math.random() > 0.8 ? '#e74c3c' : '#3498db';
+            ctx2.beginPath();
+            ctx2.arc(x, y, 4, 0, Math.PI * 2);
+            ctx2.fill();
+        }
+        
+        // Canvas 3: Заряд на поверхности
+        const ctx3 = document.getElementById('canvas3').getContext('2d');
+        ctx3.fillStyle = '#f8f9fa';
+        ctx3.fillRect(0, 0, 500, 200);
+        
+        // Проводник
+        ctx3.fillStyle = '#95a5a6';
+        ctx3.beginPath();
+        ctx3.arc(250, 100, 80, 0, Math.PI * 2);
+        ctx3.fill();
+        
+        ctx3.fillStyle = '#2c3e50';
+        ctx3.font = 'bold 16px Arial';
+        ctx3.textAlign = 'center';
+        ctx3.fillText('Внутри: E = 0', 250, 100);
+        
+        // Заряды на поверхности
+        for (let i = 0; i < 12; i++) {
+            const angle = (i / 12) * Math.PI * 2;
+            const x = 250 + Math.cos(angle) * 80;
+            const y = 100 + Math.sin(angle) * 80;
+            ctx3.fillStyle = '#e74c3c';
+            ctx3.beginPath();
+            ctx3.arc(x, y, 8, 0, Math.PI * 2);
+            ctx3.fill();
+            ctx3.fillStyle = 'white';
+            ctx3.font = 'bold 12px Arial';
+            ctx3.fillText('+', x, y + 4);
+        }
+        
+        // Canvas 4: Гармонические колебания
+        const ctx4 = document.getElementById('canvas4').getContext('2d');
+        ctx4.fillStyle = '#f8f9fa';
+        ctx4.fillRect(0, 0, 500, 200);
+        
+        ctx4.strokeStyle = '#667eea';
+        ctx4.lineWidth = 3;
+        ctx4.beginPath();
+        for (let x = 0; x < 500; x++) {
+            const y = 100 + 60 * Math.cos(x / 30);
+            if (x === 0) ctx4.moveTo(x, y);
+            else ctx4.lineTo(x, y);
+        }
+        ctx4.stroke();
+        
+        ctx4.fillStyle = '#2c3e50';
+        ctx4.font = 'bold 16px Arial';
+        ctx4.fillText('q(t) = q₀·cos(ωt)', 180, 30);
+        
+        // Canvas 5: Изотопы
+        const ctx5 = document.getElementById('canvas5').getContext('2d');
+        ctx5.fillStyle = '#f8f9fa';
+        ctx5.fillRect(0, 0, 500, 200);
+        
+        function drawAtom(ctx, x, y, protons, neutrons, label) {
+            // Ядро
+            ctx.fillStyle = '#95a5a6';
+            ctx.beginPath();
+            ctx.arc(x, y, 30, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Протоны
+            ctx.fillStyle = '#e74c3c';
+            for (let i = 0; i < protons; i++) {
+                const angle = (i / protons) * Math.PI * 2;
+                ctx.beginPath();
+                ctx.arc(x + Math.cos(angle) * 15, y + Math.sin(angle) * 15, 6, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Нейтроны
+            ctx.fillStyle = '#3498db';
+            for (let i = 0; i < neutrons; i++) {
+                const angle = (i / neutrons) * Math.PI * 2 + Math.PI/4;
+                ctx.beginPath();
+                ctx.arc(x + Math.cos(angle) * 10, y + Math.sin(angle) * 10, 6, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, x, y + 50);
+        }
+        
+        drawAtom(ctx5, 100, 100, 6, 6, '¹²C (6p, 6n)');
+        drawAtom(ctx5, 250, 100, 6, 8, '¹⁴C (6p, 8n)');
+        
+        ctx5.fillStyle = '#2ecc71';
+        ctx5.font = 'bold 16px Arial';
+        ctx5.fillText('Протонов одинаково!', 380, 100);
+        ctx5.fillText('Нейтронов разное!', 380, 120);
+    </script>
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Замена провода — Решение</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1200px;
+        }
+        
+        .comparison-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .wire-container {
+            background: linear-gradient(to bottom, #e3f2fd 0%, #fff 100%);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .wire-title {
+            text-align: center;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+        
+        /* Специфичные стили для этой задачи */
+
+        .comparison-table {
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e0e7ff;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .increased {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .decreased {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .unchanged {
+            color: #95a5a6;
+            font-weight: bold;
+        }
+
+        @media (max-width: 968px) {
+            .comparison-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔌 Замена провода на провод большего диаметра</h1>
+            <p>Влияние площади поперечного сечения на сопротивление и ток</p>
+        </div>
+        
+        <div class="content">
+            <div class="comparison-section">
+                <div class="wire-container">
+                    <div class="wire-title">Исходный провод (диаметр d)</div>
+                    <canvas id="wire1Canvas" width="500" height="500"></canvas>
+                </div>
+                
+                <div class="wire-container">
+                    <div class="wire-title">Новый провод (диаметр 2d)</div>
+                    <canvas id="wire2Canvas" width="500" height="500"></canvas>
+                </div>
+            </div>
+            
+            <div class="physics-insight">
+                <h4>💡 Сопротивление проводника</h4>
+                <p><strong>Формула сопротивления:</strong> R = ρ·l/S</p>
+                <p style="margin-top: 10px;">где:</p>
+                <p style="margin-left: 20px;">• ρ — удельное сопротивление материала (Ом·м)</p>
+                <p style="margin-left: 20px;">• l — длина проводника (м)</p>
+                <p style="margin-left: 20px;">• S — площадь поперечного сечения (м²)</p>
+                <p style="margin-top: 10px;"><strong>Для цилиндрического провода:</strong> S = πd²/4, где d — диаметр</p>
+            </div>
+
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Параметр</th>
+                            <th>Исходный провод</th>
+                            <th>Новый провод</th>
+                            <th>Изменение</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Длина l</strong></td>
+                            <td>l</td>
+                            <td>l</td>
+                            <td class="unchanged">не изменилась</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Материал (ρ)</strong></td>
+                            <td>ρ</td>
+                            <td>ρ</td>
+                            <td class="unchanged">не изменился</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Диаметр d</strong></td>
+                            <td>d</td>
+                            <td>2d</td>
+                            <td class="increased">×2 ↑</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Площадь S = πd²/4</strong></td>
+                            <td>S</td>
+                            <td>4S</td>
+                            <td class="increased">×4 ↑</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Сопротивление R = ρl/S</strong></td>
+                            <td>R</td>
+                            <td>R/4</td>
+                            <td class="decreased">÷4 ↓</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Напряжение U</strong></td>
+                            <td>U</td>
+                            <td>U</td>
+                            <td class="unchanged">не изменилось</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Сила тока I = U/R</strong></td>
+                            <td>I</td>
+                            <td>4I</td>
+                            <td class="increased">×4 ↑</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="solution-section">
+                <h3>🔍 Решение</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Изменение площади поперечного сечения:</strong>
+                    <p style="color: #666; margin: 10px 0;">Площадь круга: S = πd²/4</p>
+                    <div class="formula-box">
+                        S₁ = πd²/4
+                    </div>
+                    <p style="color: #666; margin: 10px 0;">При увеличении диаметра в 2 раза:</p>
+                    <div class="formula-box">
+                        S₂ = π(2d)²/4 = π·4d²/4 = 4·πd²/4 = 4S₁
+                    </div>
+                    <p style="color: #666; margin: 10px 0;"><strong>Вывод:</strong> Площадь увеличилась в <span class="highlight">4 раза</span></p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Изменение сопротивления:</strong>
+                    <div class="formula-box">
+                        R = ρl/S
+                    </div>
+                    <p style="color: #666; margin: 10px 0;">Длина l и материал ρ не изменились. Площадь S увеличилась в 4 раза:</p>
+                    <div class="formula-box">
+                        R₂ = ρl/S₂ = ρl/(4S₁) = R₁/4
+                    </div>
+                    <p style="color: #666; margin: 10px 0;"><strong>Вывод:</strong> Сопротивление <span class="highlight">уменьшилось</span> в 4 раза → Ответ: <span class="highlight">2</span></p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Изменение силы тока:</strong>
+                    <p style="color: #666; margin: 10px 0;">По закону Ома: I = U/R</p>
+                    <p style="color: #666; margin: 10px 0;">Напряжение U не изменилось. Сопротивление уменьшилось в 4 раза:</p>
+                    <div class="formula-box">
+                        I₂ = U/R₂ = U/(R₁/4) = 4U/R₁ = 4I₁
+                    </div>
+                    <p style="color: #666; margin: 10px 0;"><strong>Вывод:</strong> Сила тока <span class="highlight">увеличилась</span> в 4 раза → Ответ: <span class="highlight">1</span></p>
+                </div>
+            </div>
+
+            <div class="physics-insight" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); border-color: #0984e3;">
+                <h4 style="color: white;">⚡ Физический смысл</h4>
+                <p style="color: white;"><strong>Более толстый провод = меньше сопротивление</strong></p>
+                <p style="color: white; margin-top: 10px;">Представьте водопроводную трубу: чем больше диаметр, тем легче течёт вода (меньше сопротивление). То же самое с электронами в проводе!</p>
+                <p style="color: white; margin-top: 10px;">При увеличении диаметра в 2 раза:</p>
+                <p style="color: white; margin-top: 5px;">• Площадь сечения ↑ в 4 раза → больше "места" для электронов</p>
+                <p style="color: white; margin-top: 5px;">• Сопротивление ↓ в 4 раза → электронам легче двигаться</p>
+                <p style="color: white; margin-top: 5px;">• Сила тока ↑ в 4 раза → через провод проходит больше заряда</p>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: I — 1 (увеличится), R — 2 (уменьшится) → 12
+            </div>
+        </div>
+    </div>
+
+    <script src="canvas-utils.js"></script>
+    <script>
+        function drawWire(canvasId, diameter, isFat) {
+            const canvas = getCanvas(canvasId);
+            if (!canvas) {
+                console.error(`Canvas ${canvasId} не найден`);
+                return;
+            }
+            const ctx = getContext(canvasId);
+            if (!ctx) {
+                console.error(`Контекст ${canvasId} не получен`);
+                return;
+            }
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Фон
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#f8f9fa');
+            gradient.addColorStop(1, '#e9ecef');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const centerY = canvas.height / 2;
+            const wireLength = 350;
+            const wireStartX = 75;
+            
+            // Провод (цилиндр в перспективе)
+            const wireGradient = ctx.createLinearGradient(0, centerY - diameter/2, 0, centerY + diameter/2);
+            wireGradient.addColorStop(0, '#e67e22');
+            wireGradient.addColorStop(0.5, '#d35400');
+            wireGradient.addColorStop(1, '#a04000');
+            
+            ctx.fillStyle = wireGradient;
+            ctx.fillRect(wireStartX, centerY - diameter/2, wireLength, diameter);
+            
+            // Торцы провода (эллипсы)
+            // Левый торец
+            ctx.fillStyle = '#d35400';
+            ctx.beginPath();
+            ctx.ellipse(wireStartX, centerY, 8, diameter/2, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Правый торец
+            ctx.fillStyle = '#a04000';
+            ctx.beginPath();
+            ctx.ellipse(wireStartX + wireLength, centerY, 8, diameter/2, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Поперечное сечение (слева)
+            const crossSectionX = wireStartX - 50;
+            const crossSectionRadius = diameter / 2;
+            
+            const crossGradient = ctx.createRadialGradient(crossSectionX, centerY, 0, crossSectionX, centerY, crossSectionRadius);
+            crossGradient.addColorStop(0, '#f39c12');
+            crossGradient.addColorStop(1, '#e67e22');
+            
+            ctx.fillStyle = crossGradient;
+            ctx.beginPath();
+            ctx.arc(crossSectionX, centerY, crossSectionRadius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.strokeStyle = '#a04000';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Стрелки тока (анимированные)
+            ctx.strokeStyle = '#3498db';
+            ctx.fillStyle = '#3498db';
+            ctx.lineWidth = 3;
+            
+            const numArrows = isFat ? 8 : 4;
+            const time = Date.now() / 1000;
+            
+            for (let i = 0; i < numArrows; i++) {
+                const x = wireStartX + ((time * 100 + i * 50) % wireLength);
+                const y = centerY + (Math.random() - 0.5) * (diameter - 20);
+                
+                ctx.beginPath();
+                ctx.moveTo(x - 20, y);
+                ctx.lineTo(x + 20, y);
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.moveTo(x + 20, y);
+                ctx.lineTo(x + 10, y - 6);
+                ctx.lineTo(x + 10, y + 6);
+                ctx.closePath();
+                ctx.fill();
+            }
+            
+            // Размеры
+            ctx.strokeStyle = '#e74c3c';
+            ctx.fillStyle = '#e74c3c';
+            ctx.lineWidth = 2;
+            
+            // Диаметр
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(wireStartX - 70, centerY - diameter/2);
+            ctx.lineTo(wireStartX - 70, centerY + diameter/2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Стрелки диаметра
+            ctx.beginPath();
+            ctx.moveTo(wireStartX - 70, centerY - diameter/2);
+            ctx.lineTo(wireStartX - 76, centerY - diameter/2 + 10);
+            ctx.lineTo(wireStartX - 64, centerY - diameter/2 + 10);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.moveTo(wireStartX - 70, centerY + diameter/2);
+            ctx.lineTo(wireStartX - 76, centerY + diameter/2 - 10);
+            ctx.lineTo(wireStartX - 64, centerY + diameter/2 - 10);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.font = 'bold 18px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(isFat ? '2d' : 'd', wireStartX - 100, centerY + 5);
+            
+            // Длина
+            ctx.strokeStyle = '#2ecc71';
+            ctx.fillStyle = '#2ecc71';
+            
+            ctx.beginPath();
+            ctx.moveTo(wireStartX, centerY + diameter/2 + 40);
+            ctx.lineTo(wireStartX + wireLength, centerY + diameter/2 + 40);
+            ctx.stroke();
+            
+            ctx.fillText('l', wireStartX + wireLength/2, centerY + diameter/2 + 65);
+            
+            // Информация
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'left';
+            
+            const infoX = 50;
+            const infoY = 50;
+            
+            ctx.fillText('Параметры:', infoX, infoY);
+            ctx.font = '18px Arial';
+            ctx.fillText(`Диаметр: ${isFat ? '2d' : 'd'}`, infoX, infoY + 35);
+            ctx.fillText(`Площадь: ${isFat ? '4S' : 'S'}`, infoX, infoY + 65);
+            ctx.fillText(`Сопротивление: ${isFat ? 'R/4' : 'R'}`, infoX, infoY + 95);
+            
+            ctx.fillStyle = '#3498db';
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText(`Ток: ${isFat ? '4I (↑×4)' : 'I'}`, infoX, infoY + 125);
+            
+            // Визуализация "плотности" тока
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(`${numArrows} стрелок = ${isFat ? 'высокий' : 'низкий'} ток`, canvas.width / 2, canvas.height - 30);
+        }
+        
+        function animate() {
+            drawWire('wire1Canvas', 60, false);
+            drawWire('wire2Canvas', 120, true);
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>

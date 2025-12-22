@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Закон Кулона — Решение</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1200px;
+        }
+        
+        .animation-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .animation-container {
+            background: linear-gradient(to bottom, #e3f2fd 0%, #fff 100%);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .animation-title {
+            text-align: center;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+        
+        /* Специфичные стили для этой задачи */
+
+        .comparison-table {
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e0e7ff;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        @media (max-width: 968px) {
+            .animation-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ Закон Кулона</h1>
+            <p>Сила электростатического взаимодействия точечных зарядов</p>
+        </div>
+        
+        <div class="content">
+            <div class="animation-section">
+                <div class="animation-container">
+                    <div class="animation-title">До: q₁ и q₂</div>
+                    <canvas id="beforeCanvas" width="500" height="400"></canvas>
+                </div>
+                
+                <div class="animation-container">
+                    <div class="animation-title">После: 2q₁ и q₂</div>
+                    <canvas id="afterCanvas" width="500" height="400"></canvas>
+                </div>
+            </div>
+            
+            <div class="physics-insight">
+                <h4>💡 Закон Кулона</h4>
+                <p><strong>Сила взаимодействия</strong> между двумя точечными неподвижными зарядами прямо пропорциональна произведению модулей зарядов и обратно пропорциональна квадрату расстояния между ними:</p>
+                <div class="formula-box" style="background: white; border-color: #fdcb6e; margin-top: 15px;">
+                    F = k · |q₁| · |q₂| / r²
+                </div>
+                <p style="margin-top: 10px;">где k ≈ 9×10⁹ Н·м²/Кл² — коэффициент пропорциональности (константа Кулона)</p>
+            </div>
+
+            <div class="solution-section">
+                <h3>📋 Исходные данные</h3>
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Параметр</th>
+                                <th>Начальное</th>
+                                <th>После изменения</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Заряд 1</strong></td>
+                                <td>q₁</td>
+                                <td style="color: #e74c3c; font-weight: bold;">2q₁</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Заряд 2</strong></td>
+                                <td>q₂</td>
+                                <td>q₂ (не изменился)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Расстояние</strong></td>
+                                <td>r</td>
+                                <td>r (не изменилось)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Сила</strong></td>
+                                <td>F₁ = 50 мН</td>
+                                <td style="color: #28a745; font-weight: bold;">F₂ = ?</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="solution-section">
+                <h3>🔍 Решение</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Исходная сила (закон Кулона):</strong>
+                    <div class="formula-box">
+                        F₁ = k · q₁ · q₂ / r²
+                    </div>
+                    <p style="color: #666; margin: 10px 0;">По условию: F₁ = 50 мН</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Новая сила после увеличения q₁ в 2 раза:</strong>
+                    <div class="formula-box">
+                        F₂ = k · (2q₁) · q₂ / r²
+                    </div>
+                    <div class="formula-box">
+                        F₂ = 2 · (k · q₁ · q₂ / r²)
+                    </div>
+                    <div class="formula-box">
+                        F₂ = 2 · F₁
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Подставляем значение F₁:</strong>
+                    <div class="formula-box">
+                        F₂ = 2 × 50 мН = <span class="highlight">100 мН</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="physics-insight" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); border-color: #0984e3;">
+                <h4 style="color: white;">⚙️ Общее правило</h4>
+                <p style="color: white;"><strong>F ∝ q₁ · q₂</strong> (при r = const)</p>
+                <p style="color: white; margin-top: 10px;">• Если один заряд увеличить в n раз → сила увеличится в n раз</p>
+                <p style="color: white; margin-top: 5px;">• Если оба заряда увеличить в n раз → сила увеличится в n² раз</p>
+                <p style="color: white; margin-top: 5px;">• Если расстояние увеличить в n раз → сила уменьшится в n² раз</p>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: F₂ = 100 мН
+            </div>
+        </div>
+    </div>
+
+    <script src="canvas-utils.js"></script>
+    <script>
+        const beforeCanvas = getCanvas('beforeCanvas');
+        if (!beforeCanvas) throw new Error('Canvas beforeCanvas не найден');
+        const afterCanvas = getCanvas('afterCanvas');
+        if (!afterCanvas) throw new Error('Canvas afterCanvas не найден');
+        const beforeCtx = getContext('beforeCanvas');
+        if (!beforeCtx) throw new Error('Контекст beforeCanvas не получен');
+        const afterCtx = getContext('afterCanvas');
+        if (!afterCtx) throw new Error('Контекст afterCanvas не получен');
+        
+        let time = 0;
+        
+        function drawCharge(ctx, x, y, charge, color, label) {
+            // Тень
+            ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.beginPath();
+            ctx.arc(x + 3, y + 3, 35, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Заряд (сфера)
+            const gradient = ctx.createRadialGradient(x - 10, y - 10, 10, x, y, 35);
+            gradient.addColorStop(0, color === 'red' ? '#ff6b6b' : '#4dabf7');
+            gradient.addColorStop(1, color === 'red' ? '#e74c3c' : '#339af0');
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(x, y, 35, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.strokeStyle = color === 'red' ? '#c0392b' : '#1971c2';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Знак заряда
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 30px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(charge > 0 ? '+' : '−', x, y);
+            
+            // Подпись
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 18px Arial';
+            ctx.fillText(label, x, y + 60);
+        }
+        
+        function drawForceArrow(ctx, x1, y1, x2, y2, magnitude, label) {
+            const angle = Math.atan2(y2 - y1, x2 - x1);
+            const length = magnitude * 2;
+            
+            // Стрелка
+            ctx.strokeStyle = '#e74c3c';
+            ctx.fillStyle = '#e74c3c';
+            ctx.lineWidth = 4;
+            
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x1 + Math.cos(angle) * length, y1 + Math.sin(angle) * length);
+            ctx.stroke();
+            
+            // Наконечник
+            const arrowX = x1 + Math.cos(angle) * length;
+            const arrowY = y1 + Math.sin(angle) * length;
+            
+            ctx.save();
+            ctx.translate(arrowX, arrowY);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(-15, -10);
+            ctx.lineTo(-15, 10);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+            
+            // Подпись силы
+            ctx.fillStyle = '#e74c3c';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'center';
+            const labelX = x1 + Math.cos(angle) * (length / 2);
+            const labelY = y1 + Math.sin(angle) * (length / 2) - 20;
+            ctx.fillText(label, labelX, labelY);
+        }
+        
+        function drawScene(ctx, isAfter) {
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            
+            // Фон
+            const gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
+            gradient.addColorStop(0, '#f8f9fa');
+            gradient.addColorStop(1, '#e9ecef');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            
+            const centerY = ctx.canvas.height / 2;
+            const charge1X = 150;
+            const charge2X = 350;
+            const distance = charge2X - charge1X;
+            
+            // Расстояние между зарядами
+            ctx.strokeStyle = '#95a5a6';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(charge1X, centerY + 80);
+            ctx.lineTo(charge2X, centerY + 80);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            ctx.fillStyle = '#95a5a6';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('r', (charge1X + charge2X) / 2, centerY + 100);
+            
+            // Силы (анимированная пульсация)
+            const pulse = Math.sin(time * 2) * 0.1 + 1;
+            const forceMagnitude = isAfter ? 50 : 25; // после - вдвое больше
+            
+            // Сила на заряд 1 (влево)
+            drawForceArrow(ctx, charge1X - 40, centerY, charge1X - 100, centerY, forceMagnitude * pulse, isAfter ? 'F₂=100мН' : 'F₁=50мН');
+            
+            // Сила на заряд 2 (вправо)
+            drawForceArrow(ctx, charge2X + 40, centerY, charge2X + 100, centerY, forceMagnitude * pulse, isAfter ? 'F₂=100мН' : 'F₁=50мН');
+            
+            // Заряды
+            drawCharge(ctx, charge1X, centerY, 1, 'red', isAfter ? '2q₁' : 'q₁');
+            drawCharge(ctx, charge2X, centerY, 1, 'blue', 'q₂');
+            
+            // Формула внизу
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'center';
+            
+            if (isAfter) {
+                ctx.fillText('F₂ = k · (2q₁) · q₂ / r² = 2F₁', ctx.canvas.width / 2, ctx.canvas.height - 30);
+            } else {
+                ctx.fillText('F₁ = k · q₁ · q₂ / r²', ctx.canvas.width / 2, ctx.canvas.height - 30);
+            }
+        }
+        
+        function animate() {
+            time += 0.016; // ~60 FPS
+            
+            drawScene(beforeCtx, false);
+            drawScene(afterCtx, true);
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>

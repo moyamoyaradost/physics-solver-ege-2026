@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задача №19 — Манометр</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1000px;
+        }
+        
+        .manometer-container {
+            background: linear-gradient(to bottom, #2d3436 0%, #1a1a1a 100%);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        canvas {
+            display: block;
+            margin: 0 auto;
+        }
+        
+        /* Специфичные стили для этой задачи */
+
+        .info-card {
+            background: white;
+            border: 3px solid #e0e7ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .info-card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .reading {
+            font-size: 48px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 20px 0;
+        }
+
+        .uncertainty {
+            font-size: 36px;
+            color: #e74c3c;
+            margin: 15px 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #c0392b;
+        }
+
+        .warning-box h4 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📏 Задача №19: Манометр</h1>
+            <p>Измерение давления с учётом погрешности</p>
+        </div>
+        
+        <div class="content">
+            <div class="manometer-container">
+                <canvas id="manometerCanvas" width="800" height="600"></canvas>
+            </div>
+            
+            <div class="info-card">
+                <h4>📊 Результат измерения</h4>
+                <div class="reading">
+                    Показание манометра: <span style="color: #667eea;">136 мм рт. ст.</span>
+                </div>
+                <div class="uncertainty">
+                    Абсолютная погрешность: <span style="color: #e74c3c;">±3 мм рт. ст.</span>
+                </div>
+            </div>
+            
+            <div class="physics-insight">
+                <h4>💡 Погрешность измерений</h4>
+                <p><strong>Абсолютная погрешность Δp</strong> — это максимальное отклонение измеренного значения от истинного.</p>
+                <p style="margin-top: 10px;"><strong>Запись результата:</strong> p = p₀ ± Δp</p>
+                <p style="margin-top: 10px;">где p₀ — измеренное значение (показание прибора)</p>
+                <p style="margin-top: 10px;"><strong>Означает:</strong> истинное давление лежит в интервале [p₀ - Δp, p₀ + Δp]</p>
+                <p style="margin-top: 10px;"><strong>В нашем случае:</strong> давление находится в диапазоне [133, 139] мм рт. ст.</p>
+            </div>
+
+            <div class="solution-section">
+                <h3>🔍 Решение</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Считываем показание манометра:</strong>
+                    <p style="color: #666; margin: 10px 0;">Стрелка указывает на деление между 130 и 140</p>
+                    <div class="formula-box">
+                        p₀ = 136 мм рт. ст.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Учитываем заданную погрешность:</strong>
+                    <p style="color: #666; margin: 10px 0;">По условию Δp = 3 мм рт. ст.</p>
+                    <div class="formula-box">
+                        Полный результат: p = 136 ± 3 мм рт. ст.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Записываем ответ в формате ЕГЭ:</strong>
+                    <p style="color: #666; margin: 10px 0;">В ЕГЭ результат записывается БЕЗ пробелов и знаков ±</p>
+                    <p style="color: #666; margin: 10px 0;">Просто пишем: значение + погрешность слитно</p>
+                    <div class="formula-box">
+                        136 и 3 → <span class="highlight">1363</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <h4>⚠️ ВАЖНО: Правила записи в ЕГЭ</h4>
+                <p><strong>ПРАВИЛЬНО:</strong> 1363 (без пробелов, без символов)</p>
+                <p style="margin-top: 5px;"><strong>НЕПРАВИЛЬНО:</strong> 136±3, 136 3, 136/3, 136-3</p>
+                <p style="margin-top: 10px;">Записывается как: [значение][погрешность] — просто два числа подряд!</p>
+            </div>
+
+            <div class="physics-insight" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); border-color: #0984e3;">
+                <h4 style="color: white;">📐 Как читать шкалу манометра</h4>
+                <p style="color: white;"><strong>Цена деления</strong> = (максимум - минимум) / число делений</p>
+                <p style="color: white; margin-top: 10px;">На нашем манометре: (200 - 0) / 20 = 10 мм рт. ст.</p>
+                <p style="color: white; margin-top: 10px;"><strong>Стрелка между делениями?</strong> Оцениваем "на глаз" промежуточное значение</p>
+                <p style="color: white; margin-top: 10px;"><strong>Погрешность обычно:</strong> половина цены деления (±5 мм), но в задаче дана точно: ±3 мм</p>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: 1363
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('manometerCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let time = 0;
+        
+        function drawManometer() {
+            // Фон
+            ctx.fillStyle = '#2d3436';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2 + 50;
+            const radius = 200;
+            
+            // Корпус манометра
+            const gradient = ctx.createRadialGradient(centerX, centerY, radius * 0.8, centerX, centerY, radius);
+            gradient.addColorStop(0, '#34495e');
+            gradient.addColorStop(1, '#2c3e50');
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Внутренняя часть
+            ctx.fillStyle = '#ecf0f1';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius * 0.9, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Шкала
+            ctx.strokeStyle = '#2c3e50';
+            ctx.lineWidth = 3;
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            
+            const startAngle = -3 * Math.PI / 4;
+            const endAngle = Math.PI / 4;
+            const angleRange = endAngle - startAngle;
+            
+            // Деления и цифры
+            for (let i = 0; i <= 20; i++) {
+                const angle = startAngle + (i / 20) * angleRange;
+                const value = i * 10;
+                
+                const innerRadius = radius * 0.75;
+                const outerRadius = i % 2 === 0 ? radius * 0.85 : radius * 0.8;
+                
+                const x1 = centerX + Math.cos(angle) * innerRadius;
+                const y1 = centerY + Math.sin(angle) * innerRadius;
+                const x2 = centerX + Math.cos(angle) * outerRadius;
+                const y2 = centerY + Math.sin(angle) * outerRadius;
+                
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+                
+                // Цифры (каждое второе деление)
+                if (i % 2 === 0) {
+                    const textX = centerX + Math.cos(angle) * (radius * 0.65);
+                    const textY = centerY + Math.sin(angle) * (radius * 0.65);
+                    ctx.fillText(value.toString(), textX, textY + 5);
+                }
+            }
+            
+            // Подпись единиц
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText('мм рт. ст.', centerX, centerY + 80);
+            
+            // Стрелка на 136
+            const targetValue = 136;
+            const targetAngle = startAngle + (targetValue / 200) * angleRange;
+            const pointerLength = radius * 0.7;
+            
+            // Анимация колебания стрелки
+            const wobble = Math.sin(time * 2) * 0.01;
+            const pointerAngle = targetAngle + wobble;
+            
+            // Тень стрелки
+            ctx.save();
+            ctx.translate(5, 5);
+            ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(
+                centerX + Math.cos(pointerAngle) * pointerLength,
+                centerY + Math.sin(pointerAngle) * pointerLength
+            );
+            ctx.stroke();
+            ctx.restore();
+            
+            // Стрелка
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(
+                centerX + Math.cos(pointerAngle) * pointerLength,
+                centerY + Math.sin(pointerAngle) * pointerLength
+            );
+            ctx.stroke();
+            
+            // Наконечник стрелки
+            const tipX = centerX + Math.cos(pointerAngle) * pointerLength;
+            const tipY = centerY + Math.sin(pointerAngle) * pointerLength;
+            
+            ctx.fillStyle = '#e74c3c';
+            ctx.beginPath();
+            ctx.arc(tipX, tipY, 8, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Центральная ось
+            ctx.fillStyle = '#34495e';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 15, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.strokeStyle = '#95a5a6';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Диапазон погрешности (затемнённая область)
+            const minValue = 133;
+            const maxValue = 139;
+            const minAngle = startAngle + (minValue / 200) * angleRange;
+            const maxAngle = startAngle + (maxValue / 200) * angleRange;
+            
+            ctx.fillStyle = 'rgba(231, 76, 60, 0.2)';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius * 0.9, minAngle, maxAngle);
+            ctx.lineTo(centerX, centerY);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Текст значения
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 48px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('136', centerX, 80);
+            
+            ctx.font = 'bold 24px Arial';
+            ctx.fillText('мм рт. ст.', centerX, 110);
+            
+            // Погрешность
+            ctx.fillStyle = '#e74c3c';
+            ctx.font = 'bold 32px Arial';
+            ctx.fillText('±3 мм рт. ст.', centerX, 150);
+            
+            // Диапазон внизу
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText(`[${minValue}, ${maxValue}] мм рт. ст.`, centerX, canvas.height - 30);
+            
+            time += 0.016;
+        }
+        
+        function animate() {
+            drawManometer();
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>

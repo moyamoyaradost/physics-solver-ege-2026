@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задача №16 — Ядерная реакция</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1200px;
+        }
+        
+        .animation-container {
+            background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        canvas {
+            display: block;
+            margin: 0 auto;
+        }
+        
+        /* Специфичные стили для этой задачи */
+
+        .conservation-law {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .side {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .side h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .equals {
+            font-size: 40px;
+            font-weight: bold;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚛️ Задача №16: Ядерная реакция</h1>
+            <p>Законы сохранения в ядерных реакциях</p>
+        </div>
+        
+        <div class="content">
+            <div class="animation-container">
+                <canvas id="reactionCanvas" width="1100" height="500"></canvas>
+            </div>
+            
+            <div class="physics-insight">
+                <h4>💡 Законы сохранения в ядерных реакциях</h4>
+                <p><strong>1. Закон сохранения массового числа (A):</strong> Сумма массовых чисел (верхние индексы) слева = сумме справа</p>
+                <p style="margin-top: 10px;"><strong>2. Закон сохранения зарядового числа (Z):</strong> Сумма зарядов (нижние индексы) слева = сумме справа</p>
+                <p style="margin-top: 10px;"><strong>Реакция:</strong> ⁶₃Li + ²₁H → ᴬ_Z X + ⁴₂He</p>
+            </div>
+
+            <div class="conservation-law">
+                <div class="side">
+                    <h4>До реакции</h4>
+                    <div class="formula-box" style="margin: 10px 0;">
+                        A: 6 + 2 = 8
+                    </div>
+                    <div class="formula-box" style="margin: 10px 0;">
+                        Z: 3 + 1 = 4
+                    </div>
+                </div>
+                
+                <div class="equals">=</div>
+                
+                <div class="side">
+                    <h4>После реакции</h4>
+                    <div class="formula-box" style="margin: 10px 0;">
+                        A: A + 4
+                    </div>
+                    <div class="formula-box" style="margin: 10px 0;">
+                        Z: Z + 2
+                    </div>
+                </div>
+            </div>
+
+            <div class="solution-section">
+                <h3>🔍 Решение</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Закон сохранения массового числа:</strong>
+                    <div class="formula-box">
+                        A_до = A_после
+                    </div>
+                    <div class="formula-box">
+                        6 + 2 = A + 4
+                    </div>
+                    <div class="formula-box">
+                        8 = A + 4
+                    </div>
+                    <div class="formula-box">
+                        A = 8 - 4 = <span class="highlight">4</span>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Закон сохранения зарядового числа (проверка):</strong>
+                    <div class="formula-box">
+                        3 + 1 = Z + 2
+                    </div>
+                    <div class="formula-box">
+                        4 = Z + 2
+                    </div>
+                    <div class="formula-box">
+                        Z = 2
+                    </div>
+                    <p style="color: #666; margin: 10px 0;"><strong>Вывод:</strong> Получилось ядро ⁴₂He — это ещё один атом гелия!</p>
+                </div>
+            </div>
+
+            <div class="physics-insight" style="background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); border-color: #00b894;">
+                <h4 style="color: white;">⚡ Что произошло?</h4>
+                <p style="color: white;">Литий-6 (3 протона, 3 нейтрона) столкнулся с дейтерием (1 протон, 1 нейтрон). Образовались два ядра гелия-4 (альфа-частицы)!</p>
+                <p style="color: white; margin-top: 10px;"><strong>⁶₃Li + ²₁H → ⁴₂He + ⁴₂He</strong></p>
+                <p style="color: white; margin-top: 10px;">Это термоядерная реакция синтеза — объединение лёгких ядер в более тяжёлые с выделением энергии!</p>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: A = 4
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('reactionCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let time = 0;
+        let phase = 0; // 0: сближение, 1: столкновение, 2: разлёт
+        
+        function drawNucleus(x, y, protons, neutrons, label, color) {
+            const radius = 40;
+            const particleRadius = 8;
+            
+            // Ядро
+            const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+            gradient.addColorStop(0, color + 'cc');
+            gradient.addColorStop(1, color + '66');
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Протоны (красные)
+            ctx.fillStyle = '#e74c3c';
+            for (let i = 0; i < protons; i++) {
+                const angle = (i / protons) * Math.PI * 2;
+                const px = x + Math.cos(angle) * 20;
+                const py = y + Math.sin(angle) * 20;
+                ctx.beginPath();
+                ctx.arc(px, py, particleRadius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Нейтроны (синие)
+            ctx.fillStyle = '#3498db';
+            for (let i = 0; i < neutrons; i++) {
+                const angle = (i / neutrons) * Math.PI * 2 + Math.PI / (protons + neutrons);
+                const px = x + Math.cos(angle) * 15;
+                const py = y + Math.sin(angle) * 15;
+                ctx.beginPath();
+                ctx.arc(px, py, particleRadius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Подпись
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, x, y + radius + 30);
+        }
+        
+        function drawArrow(x1, y1, x2, y2, label) {
+            ctx.strokeStyle = '#ffeaa7';
+            ctx.fillStyle = '#ffeaa7';
+            ctx.lineWidth = 4;
+            
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            
+            const angle = Math.atan2(y2 - y1, x2 - x1);
+            ctx.save();
+            ctx.translate(x2, y2);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(-15, -10);
+            ctx.lineTo(-15, 10);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+            
+            if (label) {
+                ctx.fillStyle = '#ffeaa7';
+                ctx.font = 'bold 24px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(label, (x1 + x2) / 2, (y1 + y2) / 2 - 20);
+            }
+        }
+        
+        function drawExplosion(x, y, radius) {
+            const particles = 20;
+            ctx.fillStyle = '#f39c12';
+            
+            for (let i = 0; i < particles; i++) {
+                const angle = (i / particles) * Math.PI * 2;
+                const dist = radius * Math.sin(time * 5);
+                const px = x + Math.cos(angle) * dist;
+                const py = y + Math.sin(angle) * dist;
+                
+                ctx.beginPath();
+                ctx.arc(px, py, 5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        function animate() {
+            time += 0.016;
+            
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Звёзды на фоне
+            ctx.fillStyle = 'white';
+            for (let i = 0; i < 50; i++) {
+                const x = (i * 137) % canvas.width;
+                const y = (i * 219) % canvas.height;
+                const twinkle = Math.sin(time * 2 + i) * 0.5 + 0.5;
+                ctx.globalAlpha = twinkle;
+                ctx.fillRect(x, y, 2, 2);
+            }
+            ctx.globalAlpha = 1;
+            
+            const centerY = canvas.height / 2;
+            const t = (Math.sin(time * 0.5) + 1) / 2;
+            
+            if (t < 0.3) {
+                phase = 0; // Сближение
+                const liX = 200 + t * 300;
+                const hX = 900 - t * 300;
+                
+                drawNucleus(liX, centerY, 3, 3, '⁶₃Li', '#9b59b6');
+                drawNucleus(hX, centerY, 1, 1, '²₁H', '#3498db');
+                
+                drawArrow(liX + 60, centerY, liX + 120, centerY);
+                drawArrow(hX - 60, centerY, hX - 120, centerY);
+                
+            } else if (t < 0.5) {
+                phase = 1; // Столкновение
+                const centerX = canvas.width / 2;
+                
+                drawExplosion(centerX, centerY, 80);
+                
+                ctx.fillStyle = '#f39c12';
+                ctx.font = 'bold 40px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('💥 СИНТЕЗ! 💥', centerX, centerY - 100);
+                
+            } else {
+                phase = 2; // Разлёт
+                const separation = (t - 0.5) * 400;
+                const he1X = canvas.width / 2 - separation;
+                const he2X = canvas.width / 2 + separation;
+                
+                drawNucleus(he1X, centerY, 2, 2, '⁴₂He', '#e74c3c');
+                drawNucleus(he2X, centerY, 2, 2, '⁴₂He', '#e74c3c');
+                
+                drawArrow(he1X + 60, centerY, he1X + 120, centerY);
+                drawArrow(he2X - 60, centerY, he2X - 120, centerY);
+            }
+            
+            // Информация вверху
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            
+            if (phase === 0) {
+                ctx.fillText('Ядра сближаются...', canvas.width / 2, 50);
+            } else if (phase === 1) {
+                ctx.fillText('Ядерная реакция!', canvas.width / 2, 50);
+            } else {
+                ctx.fillText('Образовались 2 ядра гелия-4', canvas.width / 2, 50);
+            }
+            
+            // Уравнение внизу
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText('⁶₃Li + ²₁H → ⁴₂X + ⁴₂He', canvas.width / 2, canvas.height - 30);
+            
+            // Легенда
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillText('● Протон', 20, canvas.height - 60);
+            ctx.fillStyle = '#3498db';
+            ctx.fillText('● Нейтрон', 20, canvas.height - 30);
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>

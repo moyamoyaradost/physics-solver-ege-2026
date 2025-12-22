@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Насыщенный пар — Решение</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1200px;
+        }
+        
+        .animation-container {
+            background: linear-gradient(to bottom, #e3f2fd 0%, #fff 100%);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+        
+        /* Специфичные стили для этой задачи */
+
+        .key-principle {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .comparison-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-card {
+            background: white;
+            border: 3px solid #e0e7ff;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .comparison-card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .parameter {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .parameter-label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .parameter-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .unchanged {
+            color: #28a745;
+        }
+
+        .changed {
+            color: #e74c3c;
+        }
+
+
+        .highlight {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💧 Насыщенный пар под поршнем</h1>
+            <p>Изотермическое сжатие при постоянной температуре</p>
+        </div>
+        
+        <div class="content">
+            <div class="animation-container">
+                <canvas id="cylinderCanvas" width="900" height="550"></canvas>
+            </div>
+
+            <div class="key-principle">
+                🔑 КЛЮЧЕВОЙ ПРИНЦИП: p<sub>насыщ</sub> зависит ТОЛЬКО от T → при T=const → p=const
+            </div>
+            
+            <div class="physics-insight">
+                <h4>💡 Что такое насыщенный пар?</h4>
+                <p><strong>Насыщенный пар</strong> — это пар, находящийся в динамическом равновесии со своей жидкостью. Число молекул, испаряющихся с поверхности жидкости, равно числу молекул, конденсирующихся обратно.</p>
+                <p style="margin-top: 10px;">В состоянии равновесия скорость испарения = скорость конденсации. Это равновесие зависит только от температуры!</p>
+            </div>
+
+            <div class="physics-insight" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); border-color: #0984e3;">
+                <h4 style="color: white;">⚗️ Свойства насыщенного пара</h4>
+                <p style="color: white;"><strong>1. Давление:</strong> p<sub>нас</sub> = p(T) — функция только температуры</p>
+                <p style="color: white; margin-top: 5px;"><strong>2. Концентрация:</strong> n = p/(kT) — при T=const и p=const → n=const</p>
+                <p style="color: white; margin-top: 5px;"><strong>3. При сжатии:</strong> часть пара конденсируется, p и n не меняются</p>
+                <p style="color: white; margin-top: 5px;"><strong>4. При расширении:</strong> часть жидкости испаряется, p и n не меняются</p>
+            </div>
+
+            <div class="comparison-section">
+                <div class="comparison-card">
+                    <h4>До сжатия (начальное)</h4>
+                    <div class="parameter">
+                        <div class="parameter-label">Объем</div>
+                        <div class="parameter-value changed">V₀</div>
+                    </div>
+                    <div class="parameter">
+                        <div class="parameter-label">Давление пара</div>
+                        <div class="parameter-value unchanged">p<sub>нас</sub></div>
+                    </div>
+                    <div class="parameter">
+                        <div class="parameter-label">Концентрация n</div>
+                        <div class="parameter-value unchanged">n₀</div>
+                    </div>
+                    <div class="parameter">
+                        <div class="parameter-label">Число молекул пара</div>
+                        <div class="parameter-value changed">N₀</div>
+                    </div>
+                    <div class="parameter">
+                        <div class="parameter-label">Масса жидкости</div>
+                        <div class="parameter-value changed">m₀</div>
+                    </div>
+                </div>
+
+                <div class="comparison-card">
+                    <h4>После сжатия (финальное)</h4>
+                    <div class="parameter">
+                        <div class="parameter-label">Объем</div>
+                        <div class="parameter-value changed">V < V₀ ↓</div>
+                    </div>
+                    <div class="parameter">
+                        <div class="parameter-label">Давление пара</div>
+                        <div class="parameter-value unchanged">p<sub>нас</sub> = const ✓</div>
+                    </div>
+                    <div class="parameter">
+                        <div class="parameter-label">Концентрация n</div>
+                        <div class="parameter-value unchanged">n₀ = const ✓</div>
+                    </div>
+                    <div class="parameter">
+                        <div class="parameter-label">Число молекул пара</div>
+                        <div class="parameter-value changed">N < N₀ ↓</div>
+                    </div>
+                    <div class="parameter">
+                        <div class="parameter-label">Масса жидкости</div>
+                        <div class="parameter-value changed">m > m₀ ↑</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="solution-section">
+                <h3>🔍 Решение</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Давление насыщенного пара:</strong>
+                    <p style="color: #666; margin: 10px 0;">Давление насыщенного пара зависит ТОЛЬКО от температуры:</p>
+                    <div class="formula-box">
+                        p<sub>нас</sub> = f(T)
+                    </div>
+                    <p style="color: #666; margin: 10px 0;">Температура не меняется (медленный процесс, контакт с жидкостью) → T = const</p>
+                    <div class="formula-box">
+                        p<sub>нас</sub> = const → <span class="highlight">НЕ ИЗМЕНИТСЯ (3)</span>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Концентрация молекул пара:</strong>
+                    <p style="color: #666; margin: 10px 0;">Из уравнения состояния идеального газа:</p>
+                    <div class="formula-box">
+                        p = nkT, где n = N/V — концентрация
+                    </div>
+                    <p style="color: #666; margin: 10px 0;">При T = const и p = const:</p>
+                    <div class="formula-box">
+                        n = p/(kT) = const
+                    </div>
+                    <p style="color: #666; margin: 10px 0;">Что происходит физически: V↓ → часть пара конденсируется → N↓ пропорционально V↓ → n = N/V = const</p>
+                    <div class="formula-box">
+                        n = const → <span class="highlight">НЕ ИЗМЕНИТСЯ (3)</span>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Что изменяется:</strong>
+                    <p style="color: #666; margin: 10px 0;">При сжатии изменяются:</p>
+                    <div class="formula-box">
+                        • Объём V — уменьшается
+                    </div>
+                    <div class="formula-box">
+                        • Число молекул пара N — уменьшается (конденсация)
+                    </div>
+                    <div class="formula-box">
+                        • Масса жидкости — увеличивается
+                    </div>
+                    <p style="color: #666; margin: 10px 0;">Но соотношение n = N/V остаётся постоянным!</p>
+                </div>
+            </div>
+
+            <div class="physics-insight">
+                <h4>🔬 Динамическое равновесие</h4>
+                <p><strong>При сжатии:</strong></p>
+                <p style="margin-top: 5px;">1. Поршень опускается → объём уменьшается</p>
+                <p style="margin-top: 5px;">2. Концентрация молекул пара временно растёт → давление начинает расти</p>
+                <p style="margin-top: 5px;">3. Скорость конденсации становится больше скорости испарения</p>
+                <p style="margin-top: 5px;">4. Избыточные молекулы конденсируются в жидкость</p>
+                <p style="margin-top: 5px;">5. Устанавливается новое равновесие с теми же p и n, но меньшим N</p>
+            </div>
+
+            <div class="physics-insight" style="background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); border-color: #00b894;">
+                <h4 style="color: white;">✓ Ответ</h4>
+                <p style="color: white; font-size: 20px; margin-top: 10px;"><strong>Давление пара:</strong> 3 (не изменится)</p>
+                <p style="color: white; font-size: 20px; margin-top: 5px;"><strong>Концентрация молекул:</strong> 3 (не изменится)</p>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: 3 3
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cylinderCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let time = 0;
+        
+        function drawCylinder() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Фон
+            const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            skyGradient.addColorStop(0, '#e3f2fd');
+            skyGradient.addColorStop(1, '#fff');
+            ctx.fillStyle = skyGradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Параметры цилиндра
+            const cylinderX = 150;
+            const cylinderWidth = 200;
+            const cylinderBottom = 500;
+            const cylinderWalls = 10;
+            
+            // Анимация сжатия
+            const t = (Math.sin(time * 0.8) + 1) / 2; // от 0 до 1
+            const pistonY = 150 + t * 150; // от 150 до 300
+            
+            const liquidLevel = cylinderBottom - 80 - t * 50; // жидкость поднимается при сжатии
+            
+            // Стенки цилиндра
+            ctx.fillStyle = '#7f8c8d';
+            ctx.fillRect(cylinderX - cylinderWalls, pistonY, cylinderWalls, cylinderBottom - pistonY);
+            ctx.fillRect(cylinderX + cylinderWidth, pistonY, cylinderWalls, cylinderBottom - pistonY);
+            
+            // Дно цилиндра
+            ctx.fillRect(cylinderX - cylinderWalls, cylinderBottom, cylinderWidth + 2 * cylinderWalls, cylinderWalls);
+            
+            // Жидкость
+            const liquidGradient = ctx.createLinearGradient(0, liquidLevel, 0, cylinderBottom);
+            liquidGradient.addColorStop(0, '#3498db');
+            liquidGradient.addColorStop(1, '#2980b9');
+            ctx.fillStyle = liquidGradient;
+            ctx.fillRect(cylinderX, liquidLevel, cylinderWidth, cylinderBottom - liquidLevel);
+            
+            // Поверхность жидкости (волны)
+            ctx.strokeStyle = '#85c1e9';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            for (let x = cylinderX; x <= cylinderX + cylinderWidth; x += 5) {
+                const wave = Math.sin((x - cylinderX) / 20 + time * 2) * 2;
+                ctx.lineTo(x, liquidLevel + wave);
+            }
+            ctx.stroke();
+            
+            // Пар (легкий голубой фон)
+            ctx.fillStyle = 'rgba(174, 214, 241, 0.3)';
+            ctx.fillRect(cylinderX, pistonY + 20, cylinderWidth, liquidLevel - pistonY - 20);
+            
+            // Молекулы пара (постоянная концентрация!)
+            const vaporHeight = liquidLevel - pistonY - 20;
+            const vaporVolume = vaporHeight * cylinderWidth;
+            const moleculesPerUnit = 0.002; // постоянная концентрация
+            const numMolecules = Math.floor(vaporVolume * moleculesPerUnit);
+            
+            ctx.fillStyle = '#3498db';
+            for (let i = 0; i < numMolecules; i++) {
+                const x = cylinderX + 10 + Math.random() * (cylinderWidth - 20);
+                const y = pistonY + 30 + Math.random() * (liquidLevel - pistonY - 40);
+                const offset = Math.sin(time * 3 + i) * 3;
+                
+                ctx.beginPath();
+                ctx.arc(x + offset, y + offset, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Стрелки испарения/конденсации
+            ctx.strokeStyle = '#e74c3c';
+            ctx.fillStyle = '#e74c3c';
+            ctx.lineWidth = 2;
+            
+            // Испарение (вверх от жидкости)
+            for (let i = 0; i < 3; i++) {
+                const x = cylinderX + (i + 1) * cylinderWidth / 4;
+                const offset = Math.sin(time * 2 + i) * 5;
+                
+                ctx.beginPath();
+                ctx.moveTo(x, liquidLevel - 5);
+                ctx.lineTo(x, liquidLevel - 30 + offset);
+                ctx.stroke();
+                
+                // Стрелка
+                ctx.beginPath();
+                ctx.moveTo(x, liquidLevel - 30 + offset);
+                ctx.lineTo(x - 4, liquidLevel - 24 + offset);
+                ctx.lineTo(x + 4, liquidLevel - 24 + offset);
+                ctx.closePath();
+                ctx.fill();
+            }
+            
+            // Конденсация (вниз к жидкости)
+            for (let i = 0; i < 3; i++) {
+                const x = cylinderX + (i + 1.5) * cylinderWidth / 5;
+                const offset = Math.sin(time * 2 + i + Math.PI) * 5;
+                
+                ctx.beginPath();
+                ctx.moveTo(x, liquidLevel - 30 + offset);
+                ctx.lineTo(x, liquidLevel - 5);
+                ctx.stroke();
+                
+                // Стрелка
+                ctx.beginPath();
+                ctx.moveTo(x, liquidLevel - 5);
+                ctx.lineTo(x - 4, liquidLevel - 11);
+                ctx.lineTo(x + 4, liquidLevel - 11);
+                ctx.closePath();
+                ctx.fill();
+            }
+            
+            // Поршень
+            const pistonGradient = ctx.createLinearGradient(0, pistonY, 0, pistonY + 20);
+            pistonGradient.addColorStop(0, '#95a5a6');
+            pistonGradient.addColorStop(1, '#7f8c8d');
+            ctx.fillStyle = pistonGradient;
+            ctx.fillRect(cylinderX, pistonY, cylinderWidth, 20);
+            
+            ctx.strokeStyle = '#34495e';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(cylinderX, pistonY, cylinderWidth, 20);
+            
+            // Стрелка направления сжатия
+            ctx.strokeStyle = '#e74c3c';
+            ctx.fillStyle = '#e74c3c';
+            ctx.lineWidth = 4;
+            
+            ctx.beginPath();
+            ctx.moveTo(cylinderX + cylinderWidth + 50, pistonY + 10);
+            ctx.lineTo(cylinderX + cylinderWidth + 100, pistonY + 10);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(cylinderX + cylinderWidth + 100, pistonY + 10);
+            ctx.lineTo(cylinderX + cylinderWidth + 88, pistonY + 3);
+            ctx.lineTo(cylinderX + cylinderWidth + 88, pistonY + 17);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.fillStyle = '#e74c3c';
+            ctx.font = 'bold 18px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText(t < 0.5 ? 'Сжатие ↓' : 'Расширение ↑', cylinderX + cylinderWidth + 50, pistonY - 10);
+            
+            // Информация справа
+            const infoX = 500;
+            const infoY = 100;
+            
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Параметры системы:', infoX, infoY);
+            
+            ctx.font = '18px Arial';
+            ctx.fillText(`T = T₀ = const`, infoX, infoY + 40);
+            ctx.fillText(`p = p нас = const`, infoX, infoY + 70);
+            ctx.fillText(`n = ${numMolecules} молекул`, infoX, infoY + 100);
+            ctx.fillText(`V = ${vaporHeight.toFixed(0)} у.е.`, infoX, infoY + 130);
+            
+            // Концентрация
+            const concentration = (numMolecules / vaporVolume * 1000).toFixed(2);
+            ctx.fillStyle = '#28a745';
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText(`n = N/V = ${concentration}`, infoX, infoY + 170);
+            ctx.fillText(`(ПОСТОЯННА!)`, infoX, infoY + 195);
+            
+            // Подписи
+            ctx.fillStyle = '#2980b9';
+            ctx.font = 'bold 18px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('ЖИДКОСТЬ', cylinderX + cylinderWidth / 2, cylinderBottom - 30);
+            
+            ctx.fillStyle = '#3498db';
+            ctx.fillText('НАСЫЩЕННЫЙ ПАР', cylinderX + cylinderWidth / 2, (pistonY + liquidLevel) / 2);
+            
+            // Динамическое равновесие
+            ctx.fillStyle = '#e74c3c';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Динамическое', cylinderX + cylinderWidth / 2, liquidLevel - 50);
+            ctx.fillText('равновесие', cylinderX + cylinderWidth / 2, liquidLevel - 32);
+            
+            // Процесс внизу
+            ctx.fillStyle = '#667eea';
+            ctx.font = 'bold 22px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('При сжатии: V↓, N↓, но p=const и n=const!', canvas.width / 2, canvas.height - 20);
+        }
+        
+        function animate() {
+            time += 0.016; // ~60 FPS
+            drawCylinder();
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задача №17 — Фотоэффект</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1400px;
+        }
+        
+        .comparison-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .experiment-container {
+            background: linear-gradient(to bottom, #2d3436 0%, #1a1a1a 100%);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .experiment-title {
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        canvas {
+            display: block;
+            margin: 0 auto;
+        }
+        
+        /* Специфичные стили для этой задачи */
+
+        .spectrum-bar {
+            display: flex;
+            height: 60px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .spectrum-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .comparison-table {
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e0e7ff;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .increased {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .decreased {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        @media (max-width: 1200px) {
+            .comparison-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💡 Задача №17: Фотоэффект</h1>
+            <p>Влияние длины волны света на энергию фотоэлектронов</p>
+        </div>
+        
+        <div class="content">
+            <div class="physics-insight">
+                <h4>🌈 Электромагнитный спектр</h4>
+                <p><strong>Запоминалка:</strong> "Каждый Охотник Желает Знать Где Сидит Фазан"</p>
+                <div class="spectrum-bar">
+                    <div class="spectrum-section" style="background: #8b00ff;">УФ</div>
+                    <div class="spectrum-section" style="background: #4B0082;">Фиолетовый</div>
+                    <div class="spectrum-section" style="background: #0000FF;">Синий</div>
+                    <div class="spectrum-section" style="background: #00FFFF;">Голубой</div>
+                    <div class="spectrum-section" style="background: #00FF00;">Зелёный</div>
+                    <div class="spectrum-section" style="background: #FFFF00; color: black;">Жёлтый</div>
+                    <div class="spectrum-section" style="background: #FF7F00;">Оранжевый</div>
+                    <div class="spectrum-section" style="background: #FF0000;">Красный</div>
+                    <div class="spectrum-section" style="background: #8B0000;">ИК</div>
+                </div>
+                <p style="text-align: center; color: #2c3e50; margin-top: 10px;">
+                    <strong>←</strong> Высокая частота (ν), малая λ | Низкая частота, большая λ <strong>→</strong>
+                </p>
+            </div>
+
+            <div class="comparison-section">
+                <div class="experiment-container">
+                    <div class="experiment-title">Опыт 1: УФ-фильтр</div>
+                    <canvas id="uvCanvas" width="600" height="450"></canvas>
+                </div>
+                
+                <div class="experiment-container">
+                    <div class="experiment-title">Опыт 2: Синий фильтр</div>
+                    <canvas id="blueCanvas" width="600" height="450"></canvas>
+                </div>
+            </div>
+            
+            <div class="physics-insight" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); border-color: #0984e3;">
+                <h4 style="color: white;">⚡ Формула Эйнштейна для фотоэффекта</h4>
+                <p style="color: white;"><strong>hν = A + E<sub>k</sub></strong></p>
+                <p style="color: white; margin-top: 10px;">где:</p>
+                <p style="color: white; margin-left: 20px;">• h — постоянная Планка</p>
+                <p style="color: white; margin-left: 20px;">• ν — частота света</p>
+                <p style="color: white; margin-left: 20px;">• A — работа выхода</p>
+                <p style="color: white; margin-left: 20px;">• E<sub>k</sub> — кинетическая энергия электронов</p>
+                <p style="color: white; margin-top: 10px;"><strong>⇒ E<sub>k</sub> = hν - A</strong></p>
+                <p style="color: white; margin-top: 10px;">Чем выше частота → тем больше энергия электронов!</p>
+            </div>
+
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Параметр</th>
+                            <th>УФ-излучение</th>
+                            <th>Синий свет</th>
+                            <th>Изменение</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Частота ν</strong></td>
+                            <td>Высокая (~10¹⁵ Гц)</td>
+                            <td>Средняя (~6×10¹⁴ Гц)</td>
+                            <td class="decreased">↓ Уменьшилась</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Длина волны λ</strong></td>
+                            <td>Малая (~300 нм)</td>
+                            <td>Большая (~480 нм)</td>
+                            <td class="increased">↑ Увеличилась (1)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Энергия фотона hν</strong></td>
+                            <td>Высокая (~4 эВ)</td>
+                            <td>Средняя (~2.6 эВ)</td>
+                            <td class="decreased">↓ Уменьшилась</td>
+                        </tr>
+                        <tr>
+                            <td><strong>E<sub>k</sub> электронов</strong></td>
+                            <td>Высокая</td>
+                            <td>Низкая</td>
+                            <td class="decreased">↓ Уменьшилась (2)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="solution-section">
+                <h3>🔍 Решение</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Изменение длины волны:</strong>
+                    <p style="color: #666; margin: 10px 0;">УФ-излучение имеет меньшую длину волны, чем синий свет</p>
+                    <div class="formula-box">
+                        λ<sub>УФ</sub> < λ<sub>синий</sub>
+                    </div>
+                    <p style="color: #666; margin: 10px 0;">При переходе от УФ к синему:</p>
+                    <div class="formula-box">
+                        λ <span class="highlight">УВЕЛИЧИЛАСЬ</span> → Ответ: <span class="highlight">1</span>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Изменение энергии электронов:</strong>
+                    <p style="color: #666; margin: 10px 0;">Связь частоты и длины волны: c = λν</p>
+                    <div class="formula-box">
+                        λ↑ ⇒ ν↓
+                    </div>
+                    <p style="color: #666; margin: 10px 0;">Из формулы Эйнштейна:</p>
+                    <div class="formula-box">
+                        E<sub>k</sub> = hν - A
+                    </div>
+                    <p style="color: #666; margin: 10px 0;">Работа выхода A не меняется (тот же материал фотокатода)</p>
+                    <div class="formula-box">
+                        ν↓ ⇒ E<sub>k</sub> <span class="highlight">УМЕНЬШИЛАСЬ</span> → Ответ: <span class="highlight">2</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="physics-insight">
+                <h4>🎯 Интуитивное понимание</h4>
+                <p><strong>Фотон = порция энергии</strong></p>
+                <p style="margin-top: 10px;">• УФ-фотон — это "сильный удар" по электрону → выбивает с большой энергией</p>
+                <p style="margin-top: 5px;">• Синий фотон — "слабее" → выбивает с меньшей энергией</p>
+                <p style="margin-top: 10px;"><strong>Аналогия:</strong> УФ — это тяжёлый молоток, синий — лёгкий молоток. Оба могут выбить гвоздь (электрон), но тяжёлый придаст ему большую скорость!</p>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: λ — 1 (увеличилась), E<sub>k</sub> — 2 (уменьшилась) → 12
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function drawPhotoeffect(canvasId, isUV) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            ctx.fillStyle = '#2d3436';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const time = Date.now() / 1000;
+            
+            // Фотокатод
+            const cathodeX = 450;
+            const cathodeY = 200;
+            const cathodeWidth = 20;
+            const cathodeHeight = 150;
+            
+            const gradient = ctx.createLinearGradient(cathodeX, 0, cathodeX + cathodeWidth, 0);
+            gradient.addColorStop(0, '#95a5a6');
+            gradient.addColorStop(1, '#7f8c8d');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(cathodeX, cathodeY, cathodeWidth, cathodeHeight);
+            
+            // Подпись
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Фотокатод', cathodeX + cathodeWidth/2, cathodeY - 10);
+            
+            // Свет
+            const lightColor = isUV ? '#8b00ff' : '#0066ff';
+            const photonSpeed = isUV ? 150 : 100;
+            const numPhotons = 5;
+            
+            for (let i = 0; i < numPhotons; i++) {
+                const photonX = 50 + ((time * photonSpeed + i * 80) % 400);
+                const photonY = cathodeY + cathodeHeight/2 + Math.sin(time * 3 + i) * 40;
+                
+                // Волна света
+                ctx.strokeStyle = lightColor;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                for (let x = photonX - 30; x < photonX + 30; x += 2) {
+                    const y = photonY + Math.sin((x - photonX) / 5) * 10;
+                    if (x === photonX - 30) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                ctx.stroke();
+                
+                // Фотон (частица)
+                ctx.fillStyle = lightColor;
+                ctx.beginPath();
+                ctx.arc(photonX, photonY, 6, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Выбитые электроны
+            const electronSpeed = isUV ? 200 : 120;
+            const numElectrons = isUV ? 6 : 4;
+            
+            for (let i = 0; i < numElectrons; i++) {
+                const electronX = cathodeX + cathodeWidth + ((time * electronSpeed + i * 60) % 150);
+                const electronY = cathodeY + cathodeHeight/2 + Math.sin(time * 2 + i) * 50;
+                
+                // След электрона
+                ctx.strokeStyle = 'rgba(52, 152, 219, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(electronX - 20, electronY);
+                ctx.lineTo(electronX, electronY);
+                ctx.stroke();
+                
+                // Электрон
+                ctx.fillStyle = '#3498db';
+                ctx.beginPath();
+                ctx.arc(electronX, electronY, 5, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Знак минус
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 10px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('−', electronX, electronY + 3);
+            }
+            
+            // Информация
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 18px Arial';
+            ctx.textAlign = 'left';
+            
+            ctx.fillText(`Свет: ${isUV ? 'УФ' : 'Синий'}`, 20, 30);
+            ctx.fillText(`λ: ${isUV ? '~300 нм (малая)' : '~480 нм (большая)'}`, 20, 55);
+            ctx.fillText(`ν: ${isUV ? 'высокая' : 'средняя'}`, 20, 80);
+            
+            ctx.fillStyle = isUV ? '#00ff00' : '#ffaa00';
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText(`E электронов: ${isUV ? 'ВЫСОКАЯ' : 'НИЗКАЯ'}`, 20, 420);
+            
+            // Стрелки скорости
+            const arrowY = 430;
+            ctx.strokeStyle = isUV ? '#00ff00' : '#ffaa00';
+            ctx.fillStyle = isUV ? '#00ff00' : '#ffaa00';
+            ctx.lineWidth = 3;
+            
+            const arrowLength = isUV ? 100 : 60;
+            ctx.beginPath();
+            ctx.moveTo(20, arrowY);
+            ctx.lineTo(20 + arrowLength, arrowY);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(20 + arrowLength, arrowY);
+            ctx.lineTo(20 + arrowLength - 10, arrowY - 7);
+            ctx.lineTo(20 + arrowLength - 10, arrowY + 7);
+            ctx.closePath();
+            ctx.fill();
+        }
+        
+        function animate() {
+            drawPhotoeffect('uvCanvas', true);
+            drawPhotoeffect('blueCanvas', false);
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>

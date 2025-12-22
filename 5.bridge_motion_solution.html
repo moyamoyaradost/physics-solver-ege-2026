@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Движение по выпуклому мосту — Решение</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1100px;
+        }
+        
+        .animation-container {
+            background: linear-gradient(to bottom, #e3f2fd 0%, #fff 100%);
+            border-radius: 15px;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        canvas {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+        }
+        
+        /* Специфичные стили для этой задачи */
+        .info-cards {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        }
+
+        .statements-section {
+            margin: 30px 0;
+        }
+
+        .statement {
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid;
+            transition: transform 0.3s ease;
+        }
+
+        .statement:hover {
+            transform: translateX(5px);
+        }
+
+        .statement.correct {
+            background: linear-gradient(to right, #d4edda, #ffffff);
+            border-color: #28a745;
+        }
+
+        .statement.incorrect {
+            background: linear-gradient(to right, #f8d7da, #ffffff);
+            border-color: #dc3545;
+        }
+
+        .statement-number {
+            display: inline-block;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .statement.correct .statement-number {
+            color: #28a745;
+        }
+
+        .statement.incorrect .statement-number {
+            color: #dc3545;
+        }
+
+        .verdict {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+        .verdict.correct {
+            background: #28a745;
+            color: white;
+        }
+
+        .verdict.incorrect {
+            background: #dc3545;
+            color: white;
+        }
+
+        .explanation {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            font-size: 14px;
+            color: #666;
+        }
+
+        .answer-box {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .force-legend {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .legend-arrow {
+            width: 40px;
+            height: 4px;
+            position: relative;
+        }
+
+        .legend-arrow::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -3px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚛 Грузовик на выпуклом мосту</h1>
+            <p>Движение по окружности и центростремительное ускорение</p>
+        </div>
+        
+        <div class="content">
+            <div class="animation-container">
+                <canvas id="bridgeCanvas" width="900" height="500"></canvas>
+            </div>
+
+            <div class="force-legend">
+                <div class="legend-item">
+                    <div class="legend-arrow" style="background: #e74c3c;">
+                        <div style="position: absolute; right: 0; top: -3px; width: 0; height: 0; border-left: 8px solid #e74c3c; border-top: 5px solid transparent; border-bottom: 5px solid transparent;"></div>
+                    </div>
+                    <span><strong>mg = 100 кН</strong> (вниз)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-arrow" style="background: #3498db;">
+                        <div style="position: absolute; right: 0; top: -3px; width: 0; height: 0; border-left: 8px solid #3498db; border-top: 5px solid transparent; border-bottom: 5px solid transparent;"></div>
+                    </div>
+                    <span><strong>N = 50 кН</strong> (вверх)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-arrow" style="background: #9b59b6;">
+                        <div style="position: absolute; right: 0; top: -3px; width: 0; height: 0; border-left: 8px solid #9b59b6; border-top: 5px solid transparent; border-bottom: 5px solid transparent;"></div>
+                    </div>
+                    <span><strong>ma = 50 кН</strong> (к центру)</span>
+                </div>
+            </div>
+            
+            <div class="solution-section">
+                <h3>📋 Исходные данные</h3>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="label">Масса m</div>
+                        <div class="value">10 т</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Радиус R</div>
+                        <div class="value">80 м</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Скорость v</div>
+                        <div class="value">72 км/ч</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">v в м/с</div>
+                        <div class="value">20 м/с</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="physics-insight">
+                <h4>💡 Ключевая идея</h4>
+                <p><strong>Движение по окружности</strong> требует центростремительного ускорения, направленного к центру. На вершине выпуклого моста центр окружности находится <strong>ниже</strong> грузовика, поэтому равнодействующая сил направлена вниз: <strong>mg - N = ma</strong>. Из-за этого сила реакции опоры N <strong>меньше</strong> силы тяжести mg.</p>
+            </div>
+            
+            <div class="solution-section">
+                <h3>🔍 Решение</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Переводим скорость в м/с:</strong>
+                    <div class="formula-box">
+                        v = 72 км/ч = 72 / 3,6 = 20 м/с
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Центростремительное ускорение:</strong>
+                    <div class="formula-box">
+                        a = v² / R = (20)² / 80 = 400 / 80 = <span class="highlight">5 м/с²</span>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Сила тяжести:</strong>
+                    <div class="formula-box">
+                        mg = 10000 кг × 10 м/с² = <span class="highlight">100 000 Н = 100 кН</span>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Второй закон Ньютона (направление к центру — вниз):</strong>
+                    <div class="formula-box">
+                        mg - N = ma
+                    </div>
+                    <div class="formula-box">
+                        N = mg - ma = m(g - a) = 10000 × (10 - 5) = <span class="highlight">50 000 Н = 50 кН</span>
+                    </div>
+                    <p style="margin-top: 10px; color: #666;">Сила реакции опоры направлена вверх</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <strong>Третий закон Ньютона:</strong>
+                    <div class="formula-box">
+                        Сила грузовика на мост = N = 50 кН (направлена вниз)
+                    </div>
+                </div>
+            </div>
+
+            <div class="physics-insight">
+                <h4>⚡ Важный момент</h4>
+                <p><strong>Состояние невесомости:</strong> Если бы скорость была такой, что a = g, то N = 0 — грузовик бы оторвался от моста! При v² / R = g → v = √(gR) = √(10×80) ≈ 28,3 м/с ≈ 102 км/ч. В нашем случае v = 20 м/с < 28,3 м/с, поэтому грузовик остаётся на мосту.</p>
+            </div>
+
+            <div class="solution-section">
+                <h3>✅ Проверка утверждений</h3>
+                <div class="statements-section">
+                    <div class="statement incorrect">
+                        <span class="statement-number">1.</span>
+                        Сила, с которой мост действует на грузовик, меньше 40 кН и направлена вверх.
+                        <span class="verdict incorrect">✗ НЕВЕРНО</span>
+                        <div class="explanation">
+                            <strong>Факт:</strong> N = 50 кН > 40 кН. Направление верное (вверх), но величина неверна.
+                        </div>
+                    </div>
+
+                    <div class="statement incorrect">
+                        <span class="statement-number">2.</span>
+                        Равнодействующая сил на грузовик направлена вверх и перпендикулярна скорости.
+                        <span class="verdict incorrect">✗ НЕВЕРНО</span>
+                        <div class="explanation">
+                            <strong>Факт:</strong> Равнодействующая = mg - N = ma = 50 кН направлена <strong>вниз</strong> (к центру окружности). Направление перпендикулярно скорости — это верно, но направление вверх — неверно.
+                        </div>
+                    </div>
+
+                    <div class="statement correct">
+                        <span class="statement-number">3.</span>
+                        Сила, с которой грузовик действует на мост, направлена вниз и равна 50 кН.
+                        <span class="verdict correct">✓ ВЕРНО</span>
+                        <div class="explanation">
+                            <strong>Факт:</strong> По третьему закону Ньютона: если мост действует на грузовик с силой N = 50 кН вверх, то грузовик действует на мост с силой 50 кН вниз.
+                        </div>
+                    </div>
+
+                    <div class="statement incorrect">
+                        <span class="statement-number">4.</span>
+                        Сила тяжести, действующая на грузовик, равна 10 кН.
+                        <span class="verdict incorrect">✗ НЕВЕРНО</span>
+                        <div class="explanation">
+                            <strong>Факт:</strong> mg = 10000 кг × 10 м/с² = 100 000 Н = <strong>100 кН</strong>, а не 10 кН. Ошибка на порядок!
+                        </div>
+                    </div>
+
+                    <div class="statement correct">
+                        <span class="statement-number">5.</span>
+                        Центростремительное ускорение равно 5 м/с².
+                        <span class="verdict correct">✓ ВЕРНО</span>
+                        <div class="explanation">
+                            <strong>Факт:</strong> a = v² / R = 400 / 80 = 5 м/с². Прямой расчёт подтверждает это.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: утверждения 3 и 5 верны
+            </div>
+        </div>
+    </div>
+
+    <script src="canvas-utils.js"></script>
+    <script>
+        const canvas = getCanvas('bridgeCanvas');
+        if (!canvas) throw new Error('Canvas bridgeCanvas не найден');
+        const ctx = getContext('bridgeCanvas');
+        if (!ctx) throw new Error('Контекст bridgeCanvas не получен');
+        
+        let time = 0;
+        
+        function drawBridge(centerX, centerY, radius) {
+            // Арка моста (верхняя часть окружности)
+            ctx.strokeStyle = '#7f8c8d';
+            ctx.lineWidth = 8;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, Math.PI * 0.8, Math.PI * 0.2, false);
+            ctx.stroke();
+            
+            // Дорожное покрытие
+            ctx.strokeStyle = '#34495e';
+            ctx.lineWidth = 12;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, Math.PI * 0.8, Math.PI * 0.2, false);
+            ctx.stroke();
+            
+            // Разметка
+            ctx.strokeStyle = '#f39c12';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([10, 10]);
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, Math.PI * 0.8, Math.PI * 0.2, false);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Центр окружности
+            ctx.fillStyle = '#e74c3c';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 6, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#e74c3c';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Центр', centerX, centerY + 25);
+            ctx.fillText('окружности', centerX, centerY + 40);
+        }
+        
+        function drawTruck(x, y, angle) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+            
+            // Тень
+            ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.fillRect(-25, 5, 50, 30);
+            
+            // Кабина
+            const cabGradient = ctx.createLinearGradient(-25, -30, -25, 0);
+            cabGradient.addColorStop(0, '#3498db');
+            cabGradient.addColorStop(1, '#2980b9');
+            ctx.fillStyle = cabGradient;
+            ctx.fillRect(-25, -30, 20, 25);
+            
+            // Окно кабины
+            ctx.fillStyle = '#85c1e9';
+            ctx.fillRect(-23, -27, 16, 10);
+            
+            // Кузов
+            const bodyGradient = ctx.createLinearGradient(0, -35, 0, 0);
+            bodyGradient.addColorStop(0, '#95a5a6');
+            bodyGradient.addColorStop(1, '#7f8c8d');
+            ctx.fillStyle = bodyGradient;
+            ctx.fillRect(-5, -35, 30, 30);
+            
+            // Колёса
+            ctx.fillStyle = '#2c3e50';
+            ctx.beginPath();
+            ctx.arc(-15, 0, 5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(15, 0, 5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Диски
+            ctx.fillStyle = '#95a5a6';
+            ctx.beginPath();
+            ctx.arc(-15, 0, 3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(15, 0, 3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.restore();
+        }
+        
+        function drawForceArrow(x, y, dx, dy, color, label, magnitude) {
+            // Тень
+            ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+            ctx.lineWidth = 6;
+            ctx.beginPath();
+            ctx.moveTo(x + 2, y + 2);
+            ctx.lineTo(x + dx + 2, y + dy + 2);
+            ctx.stroke();
+            
+            // Стрелка
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + dx, y + dy);
+            ctx.stroke();
+            
+            // Наконечник
+            const angle = Math.atan2(dy, dx);
+            ctx.save();
+            ctx.translate(x + dx, y + dy);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(-12, -8);
+            ctx.lineTo(-12, 8);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+            
+            // Подпись
+            ctx.fillStyle = color;
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            const labelX = x + dx / 2;
+            const labelY = y + dy / 2;
+            
+            if (Math.abs(dx) < 5) {
+                ctx.textAlign = dx < 0 ? 'right' : 'left';
+                ctx.fillText(label, labelX + (dx < 0 ? -15 : 15), labelY);
+                ctx.font = '14px Arial';
+                ctx.fillText(magnitude, labelX + (dx < 0 ? -15 : 15), labelY + 18);
+            } else {
+                ctx.fillText(label, labelX, labelY - 10);
+                ctx.font = '14px Arial';
+                ctx.fillText(magnitude, labelX, labelY + 10);
+            }
+        }
+        
+        function drawRadiusLine(centerX, centerY, truckX, truckY) {
+            ctx.strokeStyle = '#95a5a6';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(truckX, truckY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Подпись радиуса
+            const midX = (centerX + truckX) / 2;
+            const midY = (centerY + truckY) / 2;
+            ctx.fillStyle = '#7f8c8d';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('R = 80 м', midX - 30, midY);
+        }
+        
+        function animate() {
+            time += 0.015;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Фон
+            const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            skyGradient.addColorStop(0, '#e3f2fd');
+            skyGradient.addColorStop(1, '#fff');
+            ctx.fillStyle = skyGradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const centerX = canvas.width / 2;
+            const centerY = 350; // Центр окружности ниже верхней точки моста
+            const radius = 200; // Визуальный радиус (масштабированный)
+            
+            // Мост
+            drawBridge(centerX, centerY, radius);
+            
+            // Позиция грузовика (в верхней точке)
+            const truckAngle = Math.PI / 2; // Верхняя точка
+            const truckX = centerX + radius * Math.cos(truckAngle);
+            const truckY = centerY - radius * Math.sin(truckAngle);
+            
+            // Радиус
+            drawRadiusLine(centerX, centerY, truckX, truckY);
+            
+            // Грузовик
+            drawTruck(truckX, truckY, Math.PI);
+            
+            // Силы
+            const forceScale = 0.8;
+            
+            // mg (вниз, красная) - пропорционально 100 кН
+            drawForceArrow(truckX, truckY - 20, 0, 100 * forceScale, '#e74c3c', 'mg', '100 кН');
+            
+            // N (вверх, синяя) - пропорционально 50 кН
+            drawForceArrow(truckX, truckY - 20, 0, -50 * forceScale, '#3498db', 'N', '50 кН');
+            
+            // ma (равнодействующая вниз, фиолетовая) - пропорционально 50 кН
+            drawForceArrow(truckX + 60, truckY - 20, 0, 50 * forceScale, '#9b59b6', 'ma', '50 кН');
+            
+            // Скорость (горизонтально вправо)
+            ctx.strokeStyle = '#27ae60';
+            ctx.fillStyle = '#27ae60';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(truckX - 40, truckY - 50);
+            ctx.lineTo(truckX + 40, truckY - 50);
+            ctx.stroke();
+            
+            ctx.save();
+            ctx.translate(truckX + 40, truckY - 50);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(-12, -8);
+            ctx.lineTo(-12, 8);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+            
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('v = 20 м/с', truckX, truckY - 65);
+            
+            // Информация
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 18px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Верхняя точка выпуклого моста', 50, 50);
+            ctx.font = '16px Arial';
+            ctx.fillText('mg - N = ma (направление к центру — вниз)', 50, 75);
+            ctx.fillText('N = mg - ma = 100 - 50 = 50 кН', 50, 100);
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>

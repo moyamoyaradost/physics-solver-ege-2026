@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задача №20 — Эксперимент с конденсатором</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1400px;
+        }
+        
+        /* Специфичные стили для этой задачи */
+
+        .table-container {
+            overflow-x: auto;
+            margin: 30px 0;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e0e7ff;
+            font-size: 15px;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        tr.selected {
+            background: linear-gradient(to right, #d4edda 0%, #f1f9f3 100%) !important;
+            font-weight: bold;
+        }
+
+        tr.selected td {
+            color: #28a745;
+        }
+
+        .selection-mark {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #28a745;
+            color: white;
+            border-radius: 50%;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .visualizations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .capacitor-card {
+            background: linear-gradient(to bottom, #2d3436 0%, #1a1a1a 100%);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .capacitor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .capacitor-card.selected {
+            border: 4px solid #28a745;
+            background: linear-gradient(to bottom, #1e4620 0%, #0d3d10 100%);
+        }
+
+        .capacitor-card canvas {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .capacitor-label {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .capacitor-card.selected .capacitor-label {
+            color: #00ff88;
+        }
+
+        .solution-section {
+            background: #fff;
+            border-left: 4px solid #667eea;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .solution-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .step {
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(to right, #f8f9fa, #ffffff);
+            border-radius: 10px;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .formula-box {
+            background: #f0f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            text-align: center;
+            border: 2px dashed #667eea;
+        }
+
+        .highlight {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .answer-box {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(40, 167, 69, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .method-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .method-box h3 {
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .method-box p {
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-item {
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #e0e7ff;
+        }
+
+        .comparison-item h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .same {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .different {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔬 Задача №20: Эксперимент с конденсатором</h1>
+            <p>Исследование зависимости ёмкости от площади пластин</p>
+        </div>
+        
+        <div class="content">
+            <div class="physics-insight">
+                <h4>💡 Ёмкость плоского конденсатора</h4>
+                <p><strong>Формула ёмкости:</strong> C = ε₀·ε·S / d</p>
+                <p style="margin-top: 10px;">где:</p>
+                <p style="margin-left: 20px;">• ε₀ — электрическая постоянная</p>
+                <p style="margin-left: 20px;">• ε — диэлектрическая проницаемость</p>
+                <p style="margin-left: 20px;">• S — площадь пластин</p>
+                <p style="margin-left: 20px;">• d — расстояние между пластинами</p>
+                <p style="margin-top: 10px;"><strong>Вывод:</strong> C ∝ S (при ε и d постоянных)</p>
+            </div>
+
+            <div class="method-box">
+                <h3>🎯 Метод исследования зависимости</h3>
+                <p><strong>Золотое правило эксперимента:</strong></p>
+                <p style="margin-top: 10px;">Чтобы проверить влияние ОДНОГО параметра, нужно:</p>
+                <p style="margin-top: 10px;">✓ Изменить ТОЛЬКО этот параметр</p>
+                <p style="margin-top: 5px;">✓ Все остальные параметры оставить НЕИЗМЕННЫМИ</p>
+                <p style="margin-top: 15px; font-size: 18px;"><strong>Для нашей задачи:</strong></p>
+                <p style="margin-top: 5px;">• Меняем: <span style="color: #00ff88;">Площадь S</span></p>
+                <p style="margin-top: 5px;">• Оставляем неизменными: <span style="color: #ffd93d;">Расстояние d и Диэлектрик ε</span></p>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Площадь пластин S, см²</th>
+                            <th>Расстояние d, мм</th>
+                            <th>Диэлектрик</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>100</td>
+                            <td>0.2</td>
+                            <td>Парафин</td>
+                        </tr>
+                        <tr class="selected">
+                            <td><span class="selection-mark">✓</span>2</td>
+                            <td>200</td>
+                            <td>0.4</td>
+                            <td>Парафин</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>100</td>
+                            <td>0.4</td>
+                            <td>Стекло</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>200</td>
+                            <td>0.2</td>
+                            <td>Стекло</td>
+                        </tr>
+                        <tr class="selected">
+                            <td><span class="selection-mark">✓</span>5</td>
+                            <td>300</td>
+                            <td>0.4</td>
+                            <td>Парафин</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="visualizations">
+                <div class="capacitor-card">
+                    <canvas id="cap1" width="280" height="200"></canvas>
+                    <div class="capacitor-label">Конденсатор №1</div>
+                </div>
+                <div class="capacitor-card selected">
+                    <canvas id="cap2" width="280" height="200"></canvas>
+                    <div class="capacitor-label">✓ Конденсатор №2</div>
+                </div>
+                <div class="capacitor-card">
+                    <canvas id="cap3" width="280" height="200"></canvas>
+                    <div class="capacitor-label">Конденсатор №3</div>
+                </div>
+                <div class="capacitor-card">
+                    <canvas id="cap4" width="280" height="200"></canvas>
+                    <div class="capacitor-label">Конденсатор №4</div>
+                </div>
+                <div class="capacitor-card selected">
+                    <canvas id="cap5" width="280" height="200"></canvas>
+                    <div class="capacitor-label">✓ Конденсатор №5</div>
+                </div>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-item">
+                    <h4>Конденсатор №2</h4>
+                    <p>Площадь: <span class="different">200 см²</span></p>
+                    <p>Расстояние: <span class="same">0.4 мм</span></p>
+                    <p>Диэлектрик: <span class="same">Парафин</span></p>
+                </div>
+                <div class="comparison-item">
+                    <h4>Конденсатор №5</h4>
+                    <p>Площадь: <span class="different">300 см²</span></p>
+                    <p>Расстояние: <span class="same">0.4 мм</span></p>
+                    <p>Диэлектрик: <span class="same">Парафин</span></p>
+                </div>
+            </div>
+
+            <div class="solution-section">
+                <h3>🔍 Решение</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Определяем цель эксперимента:</strong>
+                    <p style="color: #666; margin: 10px 0;">Нужно исследовать зависимость ёмкости C от площади пластин S</p>
+                    <div class="formula-box">
+                        C = f(S) при const(d, ε)
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Определяем требования к выбору:</strong>
+                    <p style="color: #666; margin: 10px 0;">Нужны два конденсатора с:</p>
+                    <p style="color: #28a745; margin: 10px 0; font-weight: bold;">✓ РАЗНОЙ площадью S</p>
+                    <p style="color: #e74c3c; margin: 10px 0; font-weight: bold;">✓ ОДИНАКОВЫМ расстоянием d</p>
+                    <p style="color: #e74c3c; margin: 10px 0; font-weight: bold;">✓ ОДИНАКОВЫМ диэлектриком ε</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Проверяем все пары:</strong>
+                    <p style="color: #666; margin: 10px 0;">Конденсаторы 1-2: d разное ❌</p>
+                    <p style="color: #666; margin: 10px 0;">Конденсаторы 1-3: S одинаковое ❌</p>
+                    <p style="color: #666; margin: 10px 0;">Конденсаторы 1-4: d и диэлектрик разные ❌</p>
+                    <p style="color: #666; margin: 10px 0;">Конденсаторы 1-5: d разное ❌</p>
+                    <p style="color: #28a745; margin: 10px 0; font-weight: bold;">Конденсаторы 2-5: S разное (200≠300), d одинаковое (0.4), диэлектрик одинаковый (парафин) ✓</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Ответ:</strong>
+                    <div class="formula-box">
+                        Конденсаторы <span class="highlight">№2 и №5</span> → <span class="highlight">25</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="physics-insight" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); border-color: #0984e3;">
+                <h4 style="color: white;">⚙️ Почему именно эти?</h4>
+                <p style="color: white;"><strong>Конденсаторы №2 и №5 — идеальная пара для эксперимента!</strong></p>
+                <p style="color: white; margin-top: 10px;">• Площадь меняется: 200 см² → 300 см² (в 1.5 раза)</p>
+                <p style="color: white; margin-top: 5px;">• Ожидаем: C₅ / C₂ = S₅ / S₂ = 300/200 = 1.5</p>
+                <p style="color: white; margin-top: 10px;"><strong>Все остальные пары НЕ подходят:</strong></p>
+                <p style="color: white; margin-top: 5px;">• 1-2, 1-4, 1-5: разное расстояние d</p>
+                <p style="color: white; margin-top: 5px;">• 1-3: одинаковая площадь (не проверим зависимость!)</p>
+                <p style="color: white; margin-top: 5px;">• 3-4, 3-5: разный диэлектрик</p>
+                <p style="color: white; margin-top: 5px;">• 2-3, 2-4: разный диэлектрик</p>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: 25
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const capacitors = [
+            {id: 'cap1', area: 100, distance: 0.2, dielectric: 'Парафин', color: '#95a5a6'},
+            {id: 'cap2', area: 200, distance: 0.4, dielectric: 'Парафин', color: '#2ecc71'},
+            {id: 'cap3', area: 100, distance: 0.4, dielectric: 'Стекло', color: '#95a5a6'},
+            {id: 'cap4', area: 200, distance: 0.2, dielectric: 'Стекло', color: '#95a5a6'},
+            {id: 'cap5', area: 300, distance: 0.4, dielectric: 'Парафин', color: '#2ecc71'}
+        ];
+        
+        function drawCapacitor(cap) {
+            const canvas = document.getElementById(cap.id);
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            // Масштабируем размеры
+            const plateWidth = (cap.area / 300) * 200 + 50; // от 100 до 250
+            const plateHeight = 60;
+            const gap = cap.distance * 50 + 20; // от 30 до 40
+            
+            // Верхняя пластина
+            const gradient1 = ctx.createLinearGradient(0, centerY - gap/2 - plateHeight, 0, centerY - gap/2);
+            gradient1.addColorStop(0, cap.color);
+            gradient1.addColorStop(1, '#7f8c8d');
+            ctx.fillStyle = gradient1;
+            ctx.fillRect(centerX - plateWidth/2, centerY - gap/2 - plateHeight, plateWidth, plateHeight);
+            
+            ctx.strokeStyle = '#34495e';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(centerX - plateWidth/2, centerY - gap/2 - plateHeight, plateWidth, plateHeight);
+            
+            // Заряд + на верхней
+            ctx.fillStyle = '#e74c3c';
+            ctx.font = 'bold 30px Arial';
+            ctx.textAlign = 'center';
+            for (let i = 0; i < 5; i++) {
+                const x = centerX - plateWidth/2 + (i + 1) * plateWidth/6;
+                ctx.fillText('+', x, centerY - gap/2 - plateHeight/2 + 10);
+            }
+            
+            // Нижняя пластина
+            const gradient2 = ctx.createLinearGradient(0, centerY + gap/2, 0, centerY + gap/2 + plateHeight);
+            gradient2.addColorStop(0, '#7f8c8d');
+            gradient2.addColorStop(1, cap.color);
+            ctx.fillStyle = gradient2;
+            ctx.fillRect(centerX - plateWidth/2, centerY + gap/2, plateWidth, plateHeight);
+            
+            ctx.strokeStyle = '#34495e';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(centerX - plateWidth/2, centerY + gap/2, plateWidth, plateHeight);
+            
+            // Заряд - на нижней
+            ctx.fillStyle = '#3498db';
+            ctx.font = 'bold 30px Arial';
+            for (let i = 0; i < 5; i++) {
+                const x = centerX - plateWidth/2 + (i + 1) * plateWidth/6;
+                ctx.fillText('−', x, centerY + gap/2 + plateHeight/2 + 10);
+            }
+            
+            // Размеры
+            ctx.strokeStyle = '#f39c12';
+            ctx.fillStyle = '#f39c12';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            
+            // Расстояние
+            const arrowX = centerX + plateWidth/2 + 30;
+            ctx.beginPath();
+            ctx.moveTo(arrowX, centerY - gap/2);
+            ctx.lineTo(arrowX, centerY + gap/2);
+            ctx.stroke();
+            
+            // Стрелки
+            ctx.setLineDash([]);
+            ctx.fillStyle = '#f39c12';
+            ctx.beginPath();
+            ctx.moveTo(arrowX, centerY - gap/2);
+            ctx.lineTo(arrowX - 5, centerY - gap/2 + 8);
+            ctx.lineTo(arrowX + 5, centerY - gap/2 + 8);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.moveTo(arrowX, centerY + gap/2);
+            ctx.lineTo(arrowX - 5, centerY + gap/2 - 8);
+            ctx.lineTo(arrowX + 5, centerY + gap/2 - 8);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Подписи
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 12px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText(`S=${cap.area} см²`, 10, 20);
+            ctx.fillText(`d=${cap.distance} мм`, 10, 35);
+            ctx.fillText(cap.dielectric, 10, 50);
+        }
+        
+        capacitors.forEach(cap => drawCapacitor(cap));
+    </script>
+</body>
+</html>

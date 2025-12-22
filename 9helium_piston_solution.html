@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гелий под поршнем — Решение</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1200px;
+        }
+        
+        .animation-container {
+            background: linear-gradient(to bottom, #e3f2fd 0%, #fff 100%);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+        
+        /* Специфичные стили для этой задачи */
+        .statements-section {
+            margin: 30px 0;
+        }
+
+        .statement {
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid;
+            transition: transform 0.3s ease;
+        }
+
+        .statement:hover {
+            transform: translateX(5px);
+        }
+
+        .statement.correct {
+            background: linear-gradient(to right, #d4edda, #ffffff);
+            border-color: #28a745;
+        }
+
+        .statement.incorrect {
+            background: linear-gradient(to right, #f8d7da, #ffffff);
+            border-color: #dc3545;
+        }
+
+        .statement-number {
+            display: inline-block;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .statement.correct .statement-number {
+            color: #28a745;
+        }
+
+        .statement.incorrect .statement-number {
+            color: #dc3545;
+        }
+
+        .verdict {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+        .verdict.correct {
+            background: #28a745;
+            color: white;
+        }
+
+        .verdict.incorrect {
+            background: #dc3545;
+            color: white;
+        }
+
+        .explanation {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            font-size: 14px;
+            color: #666;
+        }
+
+        .answer-box {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .key-principle {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚗️ Гелий в цилиндре с подвижным поршнем</h1>
+            <p>Изобарный процесс при постоянном давлении</p>
+        </div>
+        
+        <div class="content">
+            <div class="animation-container">
+                <canvas id="cylinderCanvas" width="900" height="500"></canvas>
+            </div>
+
+            <div class="key-principle">
+                🔑 КЛЮЧЕВОЙ ПРИНЦИП: Поршень подвижен без трения → p<sub>газа</sub> = p<sub>атм</sub> = const
+            </div>
+            
+            <div class="physics-insight">
+                <h4>💡 Физическая модель</h4>
+                <p><strong>Условие равновесия поршня:</strong> Сила давления газа снизу = Сила атмосферного давления сверху + Вес поршня</p>
+                <p style="margin-top: 10px;"><strong>p<sub>газа</sub>·S = p<sub>атм</sub>·S + mg</strong></p>
+                <p style="margin-top: 10px;">Поскольку поршень движется без трения, при любом изменении температуры он перемещается так, чтобы сохранить это равновесие → <strong>давление газа остаётся постоянным</strong> (изобарный процесс).</p>
+            </div>
+
+            <div class="physics-insight" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); border-color: #0984e3;">
+                <h4 style="color: white;">⚙️ Закон Гей-Люссака (изобара)</h4>
+                <p style="color: white;"><strong>V/T = const</strong> при p = const</p>
+                <p style="color: white; margin-top: 10px;">Или: <strong>V = (νRT)/p</strong></p>
+                <p style="color: white; margin-top: 10px;">При нагреве (T↑) → объём увеличивается (V↑), поршень поднимается</p>
+                <p style="color: white; margin-top: 5px;">При охлаждении (T↓) → объём уменьшается (V↓), поршень опускается</p>
+            </div>
+
+            <div class="statements-section">
+                <h3 style="color: #667eea; margin-bottom: 20px;">✅❌ Проверка утверждений</h3>
+
+                <div class="statement incorrect">
+                    <span class="statement-number">1.</span>
+                    При сжатии гелия внешние силы совершают отрицательную работу.
+                    <span class="verdict incorrect">✗ НЕВЕРНО</span>
+                    <div class="explanation">
+                        <strong>Факт:</strong> При сжатии поршень движется вниз. Внешние силы (p<sub>атм</sub> + вес поршня) направлены вниз, перемещение тоже вниз → работа <strong>положительная</strong> (A > 0). Работа газа при сжатии отрицательна, но работа внешних сил — положительна!
+                    </div>
+                </div>
+
+                <div class="statement incorrect">
+                    <span class="statement-number">2.</span>
+                    При медленном повышении температуры давление гелия увеличивается.
+                    <span class="verdict incorrect">✗ НЕВЕРНО</span>
+                    <div class="explanation">
+                        <strong>Факт:</strong> Поршень подвижен без трения → давление газа <strong>всегда равно p<sub>атм</sub> = const</strong>. При нагреве увеличивается объём (поршень поднимается), а давление остаётся постоянным. Это <strong>изобарный процесс</strong>.
+                    </div>
+                </div>
+
+                <div class="statement correct">
+                    <span class="statement-number">3.</span>
+                    При медленном понижении температуры сила давления гелия на поршень не изменяется.
+                    <span class="verdict correct">✓ ВЕРНО</span>
+                    <div class="explanation">
+                        <strong>Факт:</strong> Давление газа p = p<sub>атм</sub> = const (подвижный поршень). Сила F = p·S, где S — площадь поршня. Поскольку p и S постоянны, то <strong>F = const</strong> при любой температуре.
+                    </div>
+                </div>
+
+                <div class="statement incorrect">
+                    <span class="statement-number">4.</span>
+                    Если на поршень насыпать песок (температура прежняя), то после равновесия давление будет равно первоначальному.
+                    <span class="verdict incorrect">✗ НЕВЕРНО</span>
+                    <div class="explanation">
+                        <strong>Факт:</strong> Добавили песок → вес поршня увеличился → для равновесия нужно большее давление газа: p<sub>новое</sub> = p<sub>атм</sub> + (m<sub>песка</sub>g)/S > p<sub>атм</sub>. Объём уменьшится, давление увеличится (при T = const).
+                    </div>
+                </div>
+
+                <div class="statement correct">
+                    <span class="statement-number">5.</span>
+                    При медленном повышении температуры объём гелия увеличивается.
+                    <span class="verdict correct">✓ ВЕРНО</span>
+                    <div class="explanation">
+                        <strong>Факт:</strong> Закон Гей-Люссака: V/T = const при p = const. При T↑ → V↑. Физически: молекулы движутся быстрее, оказывают большее давление, поршень поднимается до нового равновесия.
+                    </div>
+                </div>
+            </div>
+
+            <div class="physics-insight">
+                <h4>🔬 Важные выводы</h4>
+                <p><strong>1. Изобарный процесс:</strong> p = const, V/T = const</p>
+                <p style="margin-top: 5px;"><strong>2. Подвижный поршень:</strong> автоматически поддерживает постоянное давление</p>
+                <p style="margin-top: 5px;"><strong>3. При нагреве:</strong> V↑, поршень вверх, p = const</p>
+                <p style="margin-top: 5px;"><strong>4. При охлаждении:</strong> V↓, поршень вниз, p = const</p>
+                <p style="margin-top: 5px;"><strong>5. При добавлении груза:</strong> V↓, p↑ (новое равновесие)</p>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: утверждения 3 и 5 верны
+            </div>
+        </div>
+    </div>
+
+    <script src="canvas-utils.js"></script>
+    <script>
+        const canvas = getCanvas('cylinderCanvas');
+        if (!canvas) throw new Error('Canvas cylinderCanvas не найден');
+        const ctx = getContext('cylinderCanvas');
+        if (!ctx) throw new Error('Контекст cylinderCanvas не получен');
+        
+        let time = 0;
+        let phase = 0; // 0: нагрев, 1: охлаждение, 2: добавление песка
+        const phaseDuration = 3; // секунды
+        
+        function drawCylinder(pistonY, temperature, hasSand) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Фон
+            const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            skyGradient.addColorStop(0, '#e3f2fd');
+            skyGradient.addColorStop(1, '#fff');
+            ctx.fillStyle = skyGradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Параметры цилиндра
+            const cylinderX = 200;
+            const cylinderWidth = 150;
+            const cylinderBottom = 450;
+            const cylinderWalls = 10;
+            
+            // Стенки цилиндра
+            ctx.fillStyle = '#7f8c8d';
+            ctx.fillRect(cylinderX - cylinderWalls, pistonY, cylinderWalls, cylinderBottom - pistonY);
+            ctx.fillRect(cylinderX + cylinderWidth, pistonY, cylinderWalls, cylinderBottom - pistonY);
+            
+            // Дно цилиндра
+            ctx.fillRect(cylinderX - cylinderWalls, cylinderBottom, cylinderWidth + 2 * cylinderWalls, cylinderWalls);
+            
+            // Газ внутри (цвет зависит от температуры)
+            const tempColor = Math.floor(temperature * 255 / 2);
+            ctx.fillStyle = `rgba(255, ${255 - tempColor}, ${255 - tempColor}, 0.4)`;
+            ctx.fillRect(cylinderX, pistonY + 20, cylinderWidth, cylinderBottom - pistonY - 20);
+            
+            // Молекулы газа
+            const numMolecules = 30;
+            const moleculeSpeed = temperature * 3;
+            
+            ctx.fillStyle = '#3498db';
+            for (let i = 0; i < numMolecules; i++) {
+                const x = cylinderX + 10 + Math.random() * (cylinderWidth - 20);
+                const y = pistonY + 30 + Math.random() * (cylinderBottom - pistonY - 40);
+                const offset = Math.sin(time * moleculeSpeed + i) * 4;
+                
+                ctx.beginPath();
+                ctx.arc(x + offset, y + offset, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Поршень
+            const pistonGradient = ctx.createLinearGradient(0, pistonY, 0, pistonY + 20);
+            pistonGradient.addColorStop(0, '#95a5a6');
+            pistonGradient.addColorStop(1, '#7f8c8d');
+            ctx.fillStyle = pistonGradient;
+            ctx.fillRect(cylinderX, pistonY, cylinderWidth, 20);
+            
+            ctx.strokeStyle = '#34495e';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(cylinderX, pistonY, cylinderWidth, 20);
+            
+            // Ручка поршня
+            ctx.strokeStyle = '#34495e';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(cylinderX + cylinderWidth / 2, pistonY);
+            ctx.lineTo(cylinderX + cylinderWidth / 2, pistonY - 40);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#7f8c8d';
+            ctx.beginPath();
+            ctx.arc(cylinderX + cylinderWidth / 2, pistonY - 40, 12, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Песок на поршне
+            if (hasSand) {
+                ctx.fillStyle = '#d4a574';
+                for (let i = 0; i < 50; i++) {
+                    const x = cylinderX + 20 + Math.random() * (cylinderWidth - 40);
+                    const y = pistonY + 5 + Math.random() * 10;
+                    ctx.beginPath();
+                    ctx.arc(x, y, 2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                
+                ctx.fillStyle = '#8B4513';
+                ctx.font = 'bold 16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Песок', cylinderX + cylinderWidth / 2, pistonY - 50);
+            }
+            
+            // Атмосферное давление (стрелки сверху)
+            ctx.strokeStyle = '#e74c3c';
+            ctx.fillStyle = '#e74c3c';
+            ctx.lineWidth = 3;
+            
+            for (let i = 0; i < 3; i++) {
+                const x = cylinderX + (i + 1) * cylinderWidth / 4;
+                
+                ctx.beginPath();
+                ctx.moveTo(x, 50);
+                ctx.lineTo(x, pistonY - 60);
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.moveTo(x, pistonY - 60);
+                ctx.lineTo(x - 6, pistonY - 72);
+                ctx.lineTo(x + 6, pistonY - 72);
+                ctx.closePath();
+                ctx.fill();
+            }
+            
+            ctx.fillStyle = '#e74c3c';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('p атм', cylinderX + cylinderWidth / 2, 35);
+            
+            // Давление газа (стрелка вверх от газа)
+            ctx.strokeStyle = '#3498db';
+            ctx.fillStyle = '#3498db';
+            
+            const gasArrowX = cylinderX + cylinderWidth / 2;
+            const gasArrowY = (pistonY + cylinderBottom) / 2;
+            
+            ctx.beginPath();
+            ctx.moveTo(gasArrowX, gasArrowY);
+            ctx.lineTo(gasArrowX, pistonY + 40);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(gasArrowX, pistonY + 40);
+            ctx.lineTo(gasArrowX - 6, pistonY + 52);
+            ctx.lineTo(gasArrowX + 6, pistonY + 52);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.fillStyle = '#3498db';
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText('p газа', gasArrowX + 40, gasArrowY);
+            
+            // Информация справа
+            const infoX = 500;
+            const infoY = 100;
+            
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Параметры:', infoX, infoY);
+            
+            ctx.font = '18px Arial';
+            ctx.fillText(`T = ${temperature.toFixed(1)}T₀`, infoX, infoY + 35);
+            ctx.fillText(`V = ${((cylinderBottom - pistonY) / 200).toFixed(1)}V₀`, infoX, infoY + 65);
+            ctx.fillText(`p = p атм = const`, infoX, infoY + 95);
+            
+            // Текущий процесс
+            ctx.fillStyle = '#667eea';
+            ctx.font = 'bold 22px Arial';
+            ctx.textAlign = 'center';
+            
+            if (phase === 0) {
+                ctx.fillText('НАГРЕВ: T↑ → V↑, p = const', canvas.width / 2, 480);
+            } else if (phase === 1) {
+                ctx.fillText('ОХЛАЖДЕНИЕ: T↓ → V↓, p = const', canvas.width / 2, 480);
+            } else {
+                ctx.fillText('ДОБАВИЛИ ПЕСОК: p↑, V↓', canvas.width / 2, 480);
+            }
+        }
+        
+        function animate() {
+            time += 0.016; // ~60 FPS
+            
+            const cycleTime = time % (phaseDuration * 3);
+            
+            if (cycleTime < phaseDuration) {
+                phase = 0; // Нагрев
+                const t = cycleTime / phaseDuration;
+                const temperature = 1 + t * 0.5; // от 1 до 1.5
+                const pistonY = 300 - t * 80; // поднимается
+                drawCylinder(pistonY, temperature, false);
+            } else if (cycleTime < phaseDuration * 2) {
+                phase = 1; // Охлаждение
+                const t = (cycleTime - phaseDuration) / phaseDuration;
+                const temperature = 1.5 - t * 0.5; // от 1.5 до 1
+                const pistonY = 220 + t * 80; // опускается
+                drawCylinder(pistonY, temperature, false);
+            } else {
+                phase = 2; // Добавление песка
+                const t = (cycleTime - phaseDuration * 2) / phaseDuration;
+                const temperature = 1; // постоянная
+                const pistonY = 300 + t * 60; // опускается из-за песка
+                drawCylinder(pistonY, temperature, true);
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>

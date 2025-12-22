@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система с пружинами — Решение</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1000px;
+        }
+        
+        .diagram-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .solution-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend-color {
+            width: 30px;
+            height: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 Система «Кубик + Две пружины»</h1>
+            <p>Задача на равновесие и закон Гука</p>
+        </div>
+        
+        <div class="content">
+            <div class="diagram-container">
+                <canvas id="systemCanvas" width="900" height="400"></canvas>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #e74c3c;"></div>
+                        <span>Внешняя сила F</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #3498db;"></div>
+                        <span>Сила упругости F₁</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #2ecc71;"></div>
+                        <span>Сила упругости F₂</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="solution-section">
+                <h3>📋 Исходные данные</h3>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="label">Масса кубика</div>
+                        <div class="value">2 кг</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Жёсткость k₁</div>
+                        <div class="value">400 Н/м</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Жёсткость k₂</div>
+                        <div class="value">800 Н/м</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Удлинение Δx₂</div>
+                        <div class="value">2 см</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="physics-insight">
+                <h4>💡 Ключевая идея</h4>
+                <p><strong>Система в равновесии</strong> → сумма всех сил равна нулю. Поскольку трения нет, а кубик покоится, внешняя сила F полностью уравновешивается силами упругости пружин. Все силы действуют вдоль одной прямой (горизонтально).</p>
+            </div>
+            
+            <div class="solution-section">
+                <h3>🔍 Решение</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Закон Гука для второй пружины:</strong>
+                    <div class="formula-box">
+                        F₂ = k₂ × Δx₂
+                    </div>
+                    <p style="margin-top: 10px; color: #666;">Сила упругости пропорциональна удлинению пружины</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Переводим единицы:</strong>
+                    <div class="formula-box">
+                        Δx₂ = 2 см = 0,02 м
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Вычисляем силу упругости F₂:</strong>
+                    <div class="formula-box">
+                        F₂ = 800 Н/м × 0,02 м = <span class="highlight">16 Н</span>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Условие равновесия кубика:</strong>
+                    <div class="formula-box">
+                        F = F₂ = <span class="highlight">16 Н</span>
+                    </div>
+                    <p style="margin-top: 10px; color: #666;">✓ Внешняя сила F уравновешивается силой F₂ (первая пружина сжата и "передаёт" усилие через кубик)</p>
+                </div>
+            </div>
+            
+            <div class="physics-insight">
+                <h4>⚡ Физический смысл</h4>
+                <p>Первая пружина <strong>сжата</strong>, вторая — <strong>растянута</strong>. Кубик находится между ними и испытывает три силы: внешнюю силу F (вправо), силу упругости первой пружины F₁ (вправо, так как она сжата) и силу упругости второй пружины F₂ (влево, так как она растянута). В равновесии: <strong>F + F₁ = F₂</strong>. Но поскольку система покоится как целое, F = F₂.</p>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: F = 16 Н
+            </div>
+        </div>
+    </div>
+
+    <script src="canvas-utils.js"></script>
+    <script>
+        const canvas = getCanvas('systemCanvas');
+        if (!canvas) throw new Error('Canvas systemCanvas не найден');
+        const ctx = getContext('systemCanvas');
+        if (!ctx) throw new Error('Контекст systemCanvas не получен');
+        
+        // Анимация
+        let time = 0;
+        
+        function drawSpring(x, y, length, coils, amplitude, compressed) {
+            ctx.strokeStyle = compressed ? '#3498db' : '#2ecc71';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            const coilWidth = length / coils;
+            ctx.moveTo(x, y);
+            
+            for (let i = 0; i <= coils; i++) {
+                const xPos = x + i * coilWidth;
+                const yOffset = (i % 2 === 0 ? -amplitude : amplitude);
+                ctx.lineTo(xPos, y + yOffset);
+            }
+            
+            ctx.stroke();
+        }
+        
+        function drawBox(x, y, size) {
+            // Тень
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.fillRect(x + 5, y + 5, size, size);
+            
+            // Кубик
+            const gradient = ctx.createLinearGradient(x, y, x + size, y + size);
+            gradient.addColorStop(0, '#95a5a6');
+            gradient.addColorStop(1, '#7f8c8d');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(x, y, size, size);
+            
+            // Рамка
+            ctx.strokeStyle = '#34495e';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(x, y, size, size);
+            
+            // Текст
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('m = 2 кг', x + size/2, y + size/2 + 7);
+        }
+        
+        function drawArrow(x, y, length, color, label) {
+            // Тень стрелки
+            ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+            ctx.lineWidth = 6;
+            ctx.beginPath();
+            ctx.moveTo(x + 2, y + 2);
+            ctx.lineTo(x + length + 2, y + 2);
+            ctx.stroke();
+            
+            // Стрелка
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 5;
+            
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + length, y);
+            ctx.stroke();
+            
+            // Наконечник
+            ctx.beginPath();
+            ctx.moveTo(x + length, y);
+            ctx.lineTo(x + length - 15, y - 10);
+            ctx.lineTo(x + length - 15, y + 10);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Подпись
+            ctx.fillStyle = color;
+            ctx.font = 'bold 18px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, x + length/2, y - 20);
+        }
+        
+        function drawWall(x, y, height) {
+            // Стена
+            ctx.fillStyle = '#34495e';
+            ctx.fillRect(x, y, 15, height);
+            
+            // Штриховка
+            ctx.strokeStyle = '#ecf0f1';
+            ctx.lineWidth = 2;
+            for (let i = 0; i < 8; i++) {
+                ctx.beginPath();
+                ctx.moveTo(x - 15, y + i * 20);
+                ctx.lineTo(x, y + 15 + i * 20);
+                ctx.stroke();
+            }
+        }
+        
+        function drawGround(y) {
+            ctx.strokeStyle = '#34495e';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(canvas.width, y);
+            ctx.stroke();
+            
+            // Штриховка земли
+            for (let i = 0; i < canvas.width; i += 20) {
+                ctx.beginPath();
+                ctx.moveTo(i, y);
+                ctx.lineTo(i + 10, y + 10);
+                ctx.stroke();
+            }
+        }
+        
+        function animate() {
+            time += 0.02;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Фон
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const centerY = 200;
+            const boxSize = 80;
+            const boxX = 450;
+            const boxY = centerY - boxSize/2;
+            
+            // Пульсация для визуализации равновесия
+            const pulse = Math.sin(time) * 2;
+            
+            // Земля
+            drawGround(centerY + boxSize/2 + 100);
+            
+            // Стена
+            drawWall(50, centerY - 100, 200);
+            
+            // Первая пружина (сжата)
+            drawSpring(65, centerY, boxX - 65, 10, 15, true);
+            
+            // Кубик
+            drawBox(boxX + pulse, boxY, boxSize);
+            
+            // Вторая пружина (растянута)
+            const spring2Start = boxX + boxSize;
+            const spring2Length = 250;
+            drawSpring(spring2Start, centerY, spring2Length, 12, 12, false);
+            
+            // Подписи жёсткости
+            ctx.fillStyle = '#3498db';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('k₁ = 400 Н/м', 250, centerY - 50);
+            
+            ctx.fillStyle = '#2ecc71';
+            ctx.fillText('k₂ = 800 Н/м', spring2Start + spring2Length/2, centerY - 50);
+            ctx.fillText('Δx₂ = 2 см', spring2Start + spring2Length/2, centerY + 60);
+            
+            // Стрелки сил
+            drawArrow(boxX + boxSize + 20, boxY - 50, 100, '#e74c3c', 'F = ?');
+            drawArrow(boxX - 120, boxY - 50, 100, '#3498db', 'F₁');
+            drawArrow(spring2Start + spring2Length - 100, boxY + boxSize + 70, -100, '#2ecc71', 'F₂ = 16 Н');
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>

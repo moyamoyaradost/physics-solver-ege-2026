@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>График скорости — Решение задачи</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 900px;
+        }
+        
+        .graph-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .solution {
+            background: #fff;
+            border-left: 4px solid #667eea;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .solution h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .formula {
+            background: #f0f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            text-align: center;
+            border: 2px dashed #667eea;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #ffd89b 0%, #19547b 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+        
+        .values {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .value-card {
+            background: white;
+            border: 2px solid #e0e7ff;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .value-card .label {
+            color: #667eea;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .value-card .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 График v<sub>x</sub>(t)</h1>
+            <p>Определение проекции ускорения на интервале 10–20 с</p>
+        </div>
+        
+        <div class="content">
+            <div class="graph-container">
+                <canvas id="graphCanvas" width="800" height="500"></canvas>
+            </div>
+            
+            <div class="solution">
+                <h3>🎯 Исходные данные:</h3>
+                <div class="values">
+                    <div class="value-card">
+                        <div class="label">Время t₁</div>
+                        <div class="value">10 с</div>
+                    </div>
+                    <div class="value-card">
+                        <div class="label">Скорость v<sub>x</sub>(10)</div>
+                        <div class="value">20 м/с</div>
+                    </div>
+                    <div class="value-card">
+                        <div class="label">Время t₂</div>
+                        <div class="value">20 с</div>
+                    </div>
+                    <div class="value-card">
+                        <div class="label">Скорость v<sub>x</sub>(20)</div>
+                        <div class="value">10 м/с</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="solution">
+                <h3>📝 Решение:</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Формула ускорения:</strong>
+                    <div class="formula">
+                        a<sub>x</sub> = Δv<sub>x</sub> / Δt = (v<sub>x</sub>(t₂) − v<sub>x</sub>(t₁)) / (t₂ − t₁)
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Изменение скорости:</strong>
+                    <div class="formula">
+                        Δv<sub>x</sub> = v<sub>x</sub>(20) − v<sub>x</sub>(10) = 10 − 20 = <span class="highlight">−10 м/с</span>
+                    </div>
+                    <p style="margin-top: 10px; color: #666;">⚠️ Скорость уменьшается → движение замедленное</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Промежуток времени:</strong>
+                    <div class="formula">
+                        Δt = t₂ − t₁ = 20 − 10 = <span class="highlight">10 с</span>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Вычисление ускорения:</strong>
+                    <div class="formula">
+                        a<sub>x</sub> = −10 / 10 = <span class="highlight">−1 м/с²</span>
+                    </div>
+                    <p style="margin-top: 10px; color: #666;">✓ Минус означает, что ускорение направлено против оси X</p>
+                </div>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: a<sub>x</sub> = −1 м/с²
+            </div>
+        </div>
+    </div>
+
+    <script src="canvas-utils.js"></script>
+    <script>
+        const canvas = getCanvas('graphCanvas');
+        if (!canvas) {
+            console.error('Canvas не найден');
+            throw new Error('Canvas не найден');
+        }
+        const ctx = getContext('graphCanvas');
+        if (!ctx) {
+            console.error('Контекст не получен');
+            throw new Error('Контекст не получен');
+        }
+        
+        // Настройки
+        const padding = 60;
+        const width = canvas.width - 2 * padding;
+        const height = canvas.height - 2 * padding;
+        
+        // Данные графика
+        const points = [
+            {t: 0, v: 0},
+            {t: 5, v: 10},
+            {t: 10, v: 20},
+            {t: 20, v: 10},
+            {t: 25, v: 10}
+        ];
+        
+        // Очистка
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Функции масштабирования
+        function scaleX(t) {
+            return padding + (t / 25) * width;
+        }
+        
+        function scaleY(v) {
+            return canvas.height - padding - (v / 25) * height;
+        }
+        
+        // Сетка
+        ctx.strokeStyle = '#e0e0e0';
+        ctx.lineWidth = 1;
+        
+        for (let i = 0; i <= 25; i += 5) {
+            ctx.beginPath();
+            ctx.moveTo(scaleX(i), padding);
+            ctx.lineTo(scaleX(i), canvas.height - padding);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(padding, scaleY(i));
+            ctx.lineTo(canvas.width - padding, scaleY(i));
+            ctx.stroke();
+        }
+        
+        // Оси
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        
+        // Ось X
+        ctx.beginPath();
+        ctx.moveTo(padding, canvas.height - padding);
+        ctx.lineTo(canvas.width - padding + 10, canvas.height - padding);
+        ctx.stroke();
+        
+        // Стрелка X
+        ctx.beginPath();
+        ctx.moveTo(canvas.width - padding + 10, canvas.height - padding);
+        ctx.lineTo(canvas.width - padding, canvas.height - padding - 5);
+        ctx.lineTo(canvas.width - padding, canvas.height - padding + 5);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Ось Y
+        ctx.beginPath();
+        ctx.moveTo(padding, canvas.height - padding);
+        ctx.lineTo(padding, padding - 10);
+        ctx.stroke();
+        
+        // Стрелка Y
+        ctx.beginPath();
+        ctx.moveTo(padding, padding - 10);
+        ctx.lineTo(padding - 5, padding);
+        ctx.lineTo(padding + 5, padding);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Подписи осей
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('t, с', canvas.width - padding + 20, canvas.height - padding + 5);
+        ctx.fillText('vₓ, м/с', padding - 10, padding - 20);
+        
+        // Метки на осях
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        for (let i = 0; i <= 25; i += 5) {
+            ctx.fillText(i, scaleX(i), canvas.height - padding + 25);
+        }
+        
+        ctx.textAlign = 'right';
+        for (let i = 0; i <= 25; i += 5) {
+            ctx.fillText(i, padding - 10, scaleY(i) + 5);
+        }
+        
+        // Выделение интервала 10-20 с
+        ctx.fillStyle = 'rgba(255, 183, 77, 0.2)';
+        ctx.fillRect(scaleX(10), padding, scaleX(20) - scaleX(10), canvas.height - 2 * padding);
+        
+        // График
+        ctx.strokeStyle = '#667eea';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(scaleX(points[0].t), scaleY(points[0].v));
+        
+        for (let i = 1; i < points.length; i++) {
+            ctx.lineTo(scaleX(points[i].t), scaleY(points[i].v));
+        }
+        ctx.stroke();
+        
+        // Точки в ключевых моментах
+        [10, 20].forEach(t => {
+            const point = safeFind(points, p => p.t === t, `Точка с t=${t} не найдена`);
+            if (!point) return;
+            ctx.fillStyle = '#ff6b6b';
+            ctx.beginPath();
+            ctx.arc(scaleX(point.t), scaleY(point.v), 6, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Подписи точек
+            ctx.fillStyle = '#ff6b6b';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(`(${point.t}; ${point.v})`, scaleX(point.t), scaleY(point.v) - 15);
+        });
+        
+        // Стрелки изменения скорости
+        ctx.strokeStyle = '#ff6b6b';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]);
+        
+        // Вертикальные линии
+        ctx.beginPath();
+        ctx.moveTo(scaleX(10), scaleY(20));
+        ctx.lineTo(scaleX(10), canvas.height - padding);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(scaleX(20), scaleY(10));
+        ctx.lineTo(scaleX(20), canvas.height - padding);
+        ctx.stroke();
+        
+        ctx.setLineDash([]);
+        
+        // Подпись интервала
+        ctx.fillStyle = '#ff6b6b';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Δt = 10 с', scaleX(15), canvas.height - padding + 50);
+        ctx.fillText('Δvₓ = -10 м/с', scaleX(15), scaleY(15) - 10);
+    </script>
+</body>
+</html>

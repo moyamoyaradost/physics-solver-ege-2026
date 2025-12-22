@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вращающаяся рамка в магнитном поле</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* Специфичные стили для этой задачи */
+        .container {
+            max-width: 1200px;
+        }
+        
+        .visualization-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .vis-container {
+            background: linear-gradient(to bottom, #e3f2fd 0%, #fff 100%);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .vis-title {
+            text-align: center;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+        
+        /* Специфичные стили для этой задачи */
+
+        @media (max-width: 968px) {
+            .visualization-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Вращающаяся рамка в магнитном поле</h1>
+            <p>Электромагнитная индукция и магнитный поток</p>
+        </div>
+        
+        <div class="content">
+            <div class="visualization-section">
+                <div class="vis-container">
+                    <div class="vis-title">3D визуализация рамки</div>
+                    <canvas id="frameCanvas" width="500" height="500"></canvas>
+                </div>
+                
+                <div class="vis-container">
+                    <div class="vis-title">График магнитного потока Φ(t)</div>
+                    <canvas id="graphCanvas" width="500" height="500"></canvas>
+                </div>
+            </div>
+            
+            <div class="physics-insight">
+                <h4>💡 Магнитный поток через рамку</h4>
+                <p><strong>Магнитный поток Φ</strong> через поверхность площадью S в однородном магнитном поле с индукцией B:</p>
+                <div class="formula-box" style="background: white; border-color: #fdcb6e; margin-top: 10px;">
+                    Φ = B · S · cos(α)
+                </div>
+                <p style="margin-top: 10px;">где α — угол между вектором B и нормалью к поверхности рамки.</p>
+                <p style="margin-top: 10px;">При вращении рамки с угловой скоростью ω: α = ωt → <strong>Φ = BS·cos(ωt)</strong></p>
+            </div>
+
+            <div class="solution-section">
+                <h3>📋 Исходные данные</h3>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="label">Закон изменения потока</div>
+                        <div class="value" style="font-size: 16px;">Φ = 4·10⁻⁷cos(100πt)</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Магнитная индукция B</div>
+                        <div class="value">2 мТл</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">B в системе СИ</div>
+                        <div class="value" style="font-size: 18px;">2×10⁻³ Тл</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Угловая частота ω</div>
+                        <div class="value">100π рад/с</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="solution-section">
+                <h3>🔍 Решение</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Общая формула магнитного потока при вращении:</strong>
+                    <div class="formula-box">
+                        Φ(t) = B · S · cos(ωt)
+                    </div>
+                    <p style="color: #666; margin: 10px 0;">где B — индукция, S — площадь рамки, ω — угловая скорость</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Сравниваем с данным законом:</strong>
+                    <div class="formula-box">
+                        Φ(t) = 4·10⁻⁷ · cos(100πt) Вб
+                    </div>
+                    <p style="color: #666; margin: 10px 0;">Максимальное значение потока (амплитуда):</p>
+                    <div class="formula-box">
+                        Φ<sub>max</sub> = B · S = 4×10⁻⁷ Вб
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Находим площадь рамки:</strong>
+                    <div class="formula-box">
+                        S = Φ<sub>max</sub> / B
+                    </div>
+                    <div class="formula-box">
+                        S = (4×10⁻⁷ Вб) / (2×10⁻³ Тл)
+                    </div>
+                    <div class="formula-box">
+                        S = 2×10⁻⁴ м² = <span class="highlight">2 см²</span>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Проверка размерности:</strong>
+                    <p style="color: #666; margin: 10px 0;">[S] = [Φ]/[B] = Вб/Тл = (Тл·м²)/Тл = м² ✓</p>
+                    <p style="color: #666; margin: 10px 0;">2×10⁻⁴ м² = 2×10⁻⁴ × 10⁴ см² = 2 см²</p>
+                </div>
+            </div>
+
+            <div class="physics-insight" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); border-color: #0984e3;">
+                <h4 style="color: white;">⚙️ Физический смысл</h4>
+                <p style="color: white;">Рамка площадью <strong>2 см²</strong> (примерно 1,4×1,4 см) вращается с частотой ν = ω/(2π) = 100π/(2π) = 50 Гц (50 оборотов в секунду) в магнитном поле с индукцией 2 мТл.</p>
+                <p style="color: white; margin-top: 10px;">Магнитный поток меняется от <strong>+4×10⁻⁷ Вб</strong> (рамка перпендикулярна полю) до <strong>-4×10⁻⁷ Вб</strong> (рамка развернулась на 180°), проходя через ноль (рамка параллельна полю).</p>
+            </div>
+            
+            <div class="answer-box">
+                Ответ: S = 2 см²
+            </div>
+        </div>
+    </div>
+
+    <script src="canvas-utils.js"></script>
+    <script>
+        const frameCanvas = getCanvas('frameCanvas');
+        if (!frameCanvas) throw new Error('Canvas frameCanvas не найден');
+        const graphCanvas = getCanvas('graphCanvas');
+        if (!graphCanvas) throw new Error('Canvas graphCanvas не найден');
+        const frameCtx = getContext('frameCanvas');
+        if (!frameCtx) throw new Error('Контекст frameCanvas не получен');
+        const graphCtx = getContext('graphCanvas');
+        if (!graphCtx) throw new Error('Контекст graphCanvas не получен');
+        
+        let time = 0;
+        const omega = 100 * Math.PI; // угловая скорость
+        const B = 2e-3; // Тл
+        const S = 2e-4; // м²
+        const phiMax = B * S; // максимальный поток
+        
+        function draw3DFrame() {
+            frameCtx.clearRect(0, 0, frameCanvas.width, frameCanvas.height);
+            
+            // Фон
+            const gradient = frameCtx.createLinearGradient(0, 0, 0, frameCanvas.height);
+            gradient.addColorStop(0, '#f8f9fa');
+            gradient.addColorStop(1, '#e9ecef');
+            frameCtx.fillStyle = gradient;
+            frameCtx.fillRect(0, 0, frameCanvas.width, frameCanvas.height);
+            
+            const centerX = frameCanvas.width / 2;
+            const centerY = frameCanvas.height / 2;
+            
+            // Угол поворота рамки
+            const angle = omega * time;
+            
+            // Линии магнитного поля (вертикальные)
+            frameCtx.strokeStyle = 'rgba(231, 76, 60, 0.3)';
+            frameCtx.lineWidth = 2;
+            
+            for (let x = 50; x < frameCanvas.width; x += 30) {
+                frameCtx.beginPath();
+                frameCtx.moveTo(x, 50);
+                frameCtx.lineTo(x, frameCanvas.height - 50);
+                frameCtx.stroke();
+                
+                // Стрелки (вниз - в экран)
+                frameCtx.fillStyle = 'rgba(231, 76, 60, 0.5)';
+                frameCtx.beginPath();
+                frameCtx.arc(x, 70, 5, 0, Math.PI * 2);
+                frameCtx.fill();
+                
+                frameCtx.strokeStyle = 'rgba(231, 76, 60, 0.5)';
+                frameCtx.lineWidth = 2;
+                frameCtx.beginPath();
+                frameCtx.moveTo(x - 4, 70 - 4);
+                frameCtx.lineTo(x + 4, 70 + 4);
+                frameCtx.stroke();
+                frameCtx.beginPath();
+                frameCtx.moveTo(x - 4, 70 + 4);
+                frameCtx.lineTo(x + 4, 70 - 4);
+                frameCtx.stroke();
+                
+                frameCtx.strokeStyle = 'rgba(231, 76, 60, 0.3)';
+                frameCtx.lineWidth = 2;
+            }
+            
+            // Подпись поля
+            frameCtx.fillStyle = '#e74c3c';
+            frameCtx.font = 'bold 20px Arial';
+            frameCtx.textAlign = 'left';
+            frameCtx.fillText('B (в экран ⊗)', 20, 40);
+            
+            // Ось вращения
+            frameCtx.strokeStyle = '#95a5a6';
+            frameCtx.lineWidth = 3;
+            frameCtx.setLineDash([10, 5]);
+            frameCtx.beginPath();
+            frameCtx.moveTo(centerX - 150, centerY);
+            frameCtx.lineTo(centerX + 150, centerY);
+            frameCtx.stroke();
+            frameCtx.setLineDash([]);
+            
+            // Рамка (прямоугольник, вращающийся вокруг горизонтальной оси)
+            const frameWidth = 120;
+            const frameHeight = 80;
+            
+            // Проекция рамки при повороте
+            const projectedHeight = frameHeight * Math.cos(angle);
+            
+            // Рамка
+            frameCtx.strokeStyle = '#3498db';
+            frameCtx.fillStyle = 'rgba(52, 152, 219, 0.3)';
+            frameCtx.lineWidth = 4;
+            
+            frameCtx.fillRect(centerX - frameWidth/2, centerY - projectedHeight/2, 
+                            frameWidth, projectedHeight);
+            frameCtx.strokeRect(centerX - frameWidth/2, centerY - projectedHeight/2, 
+                              frameWidth, projectedHeight);
+            
+            // Нормаль к рамке (стрелка)
+            const normalLength = 80;
+            const normalX = centerX + normalLength * Math.sin(angle);
+            const normalY = centerY;
+            
+            frameCtx.strokeStyle = '#2ecc71';
+            frameCtx.fillStyle = '#2ecc71';
+            frameCtx.lineWidth = 3;
+            
+            frameCtx.beginPath();
+            frameCtx.moveTo(centerX, centerY);
+            frameCtx.lineTo(normalX, normalY);
+            frameCtx.stroke();
+            
+            // Стрелка нормали
+            const arrowAngle = Math.atan2(normalY - centerY, normalX - centerX);
+            frameCtx.save();
+            frameCtx.translate(normalX, normalY);
+            frameCtx.rotate(arrowAngle);
+            frameCtx.beginPath();
+            frameCtx.moveTo(0, 0);
+            frameCtx.lineTo(-12, -8);
+            frameCtx.lineTo(-12, 8);
+            frameCtx.closePath();
+            frameCtx.fill();
+            frameCtx.restore();
+            
+            frameCtx.fillStyle = '#2ecc71';
+            frameCtx.font = 'bold 18px Arial';
+            frameCtx.textAlign = 'center';
+            frameCtx.fillText('n⃗', normalX + 20, normalY - 10);
+            
+            // Угол между B и n
+            frameCtx.fillStyle = '#2c3e50';
+            frameCtx.font = 'bold 16px Arial';
+            frameCtx.textAlign = 'center';
+            
+            const angleText = `α = ${(angle % (2*Math.PI) * 180 / Math.PI).toFixed(0)}°`;
+            frameCtx.fillText(angleText, centerX, centerY + 120);
+            
+            // Магнитный поток
+            const phi = phiMax * Math.cos(angle);
+            frameCtx.fillStyle = '#667eea';
+            frameCtx.font = 'bold 20px Arial';
+            frameCtx.fillText(`Φ = ${(phi * 1e7).toFixed(2)}×10⁻⁷ Вб`, centerX, frameCanvas.height - 30);
+            
+            // Информация
+            frameCtx.fillStyle = '#2c3e50';
+            frameCtx.font = '16px Arial';
+            frameCtx.textAlign = 'left';
+            frameCtx.fillText(`t = ${time.toFixed(2)} с`, 20, frameCanvas.height - 30);
+        }
+        
+        function drawGraph() {
+            graphCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
+            
+            const padding = 60;
+            const width = graphCanvas.width - 2 * padding;
+            const height = graphCanvas.height - 2 * padding;
+            
+            // Фон
+            graphCtx.fillStyle = '#fff';
+            graphCtx.fillRect(0, 0, graphCanvas.width, graphCanvas.height);
+            
+            // Сетка
+            graphCtx.strokeStyle = '#e0e0e0';
+            graphCtx.lineWidth = 1;
+            
+            for (let i = 0; i <= 10; i++) {
+                graphCtx.beginPath();
+                graphCtx.moveTo(padding, padding + i * height / 10);
+                graphCtx.lineTo(graphCanvas.width - padding, padding + i * height / 10);
+                graphCtx.stroke();
+                
+                graphCtx.beginPath();
+                graphCtx.moveTo(padding + i * width / 10, padding);
+                graphCtx.lineTo(padding + i * width / 10, graphCanvas.height - padding);
+                graphCtx.stroke();
+            }
+            
+            // Оси
+            graphCtx.strokeStyle = '#333';
+            graphCtx.lineWidth = 2;
+            
+            // Ось t
+            graphCtx.beginPath();
+            graphCtx.moveTo(padding, graphCanvas.height / 2);
+            graphCtx.lineTo(graphCanvas.width - padding + 10, graphCanvas.height / 2);
+            graphCtx.stroke();
+            
+            // Ось Φ
+            graphCtx.beginPath();
+            graphCtx.moveTo(padding, padding - 10);
+            graphCtx.lineTo(padding, graphCanvas.height - padding);
+            graphCtx.stroke();
+            
+            // Подписи осей
+            graphCtx.fillStyle = '#333';
+            graphCtx.font = 'bold 16px Arial';
+            graphCtx.textAlign = 'center';
+            graphCtx.fillText('t (с)', graphCanvas.width - padding + 25, graphCanvas.height / 2 + 5);
+            graphCtx.fillText('Φ (Вб)', padding - 10, padding - 25);
+            
+            // График Φ(t) = Φ_max · cos(ωt)
+            graphCtx.strokeStyle = '#3498db';
+            graphCtx.lineWidth = 3;
+            graphCtx.beginPath();
+            
+            const tMax = 0.04; // 2 периода
+            for (let t = 0; t <= tMax; t += 0.0001) {
+                const x = padding + (t / tMax) * width;
+                const phi = phiMax * Math.cos(omega * t);
+                const y = graphCanvas.height / 2 - phi / phiMax * (height / 3);
+                
+                if (t === 0) {
+                    graphCtx.moveTo(x, y);
+                } else {
+                    graphCtx.lineTo(x, y);
+                }
+            }
+            graphCtx.stroke();
+            
+            // Текущая точка
+            const currentPhi = phiMax * Math.cos(omega * time);
+            const currentX = padding + (time % tMax / tMax) * width;
+            const currentY = graphCanvas.height / 2 - currentPhi / phiMax * (height / 3);
+            
+            graphCtx.fillStyle = '#e74c3c';
+            graphCtx.beginPath();
+            graphCtx.arc(currentX, currentY, 6, 0, Math.PI * 2);
+            graphCtx.fill();
+            
+            // Подписи значений
+            graphCtx.fillStyle = '#666';
+            graphCtx.font = '14px Arial';
+            graphCtx.textAlign = 'right';
+            graphCtx.fillText('4×10⁻⁷', padding - 10, graphCanvas.height / 2 - height / 3 + 5);
+            graphCtx.fillText('0', padding - 10, graphCanvas.height / 2 + 5);
+            graphCtx.fillText('-4×10⁻⁷', padding - 10, graphCanvas.height / 2 + height / 3 + 5);
+            
+            // Формула
+            graphCtx.fillStyle = '#3498db';
+            graphCtx.font = 'bold 18px Arial';
+            graphCtx.textAlign = 'center';
+            graphCtx.fillText('Φ(t) = 4×10⁻⁷·cos(100πt)', graphCanvas.width / 2, graphCanvas.height - 20);
+        }
+        
+        function animate() {
+            time += 0.016; // ~60 FPS
+            
+            draw3DFrame();
+            drawGraph();
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>

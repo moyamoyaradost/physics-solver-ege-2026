@@ -1,0 +1,231 @@
+/**
+ * Модуль общих стилей
+ * 
+ * Модуль: common.css
+ * Назначение: Единообразное оформление всех компонентов проекта
+ * Версия: 2.0
+ * Дата: 2026
+ * 
+ * Принципы:
+ * - DRY (Don't Repeat Yourself) - нет дублирования стилей
+ * - Модульность - стили разделены по функциональности
+ * - Адаптивность - поддержка разных размеров экрана
+ * - Расширяемость - легко добавлять новые стили
+ * 
+ * Использование:
+ * <link rel="stylesheet" href="common.css">
+ * 
+ * @module common-styles
+ * @author [Ваше имя]
+ */
+
+/* Общие стили для всех задач решебника */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    max-width: 1200px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.header p {
+    opacity: 0.9;
+    font-size: 16px;
+}
+
+.content {
+    padding: 40px;
+}
+
+/* Общие компоненты */
+.solution-section {
+    background: #fff;
+    border-left: 4px solid #667eea;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.solution-section h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.step {
+    margin: 20px 0;
+    padding: 20px;
+    background: linear-gradient(to right, #f8f9fa, #ffffff);
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.step:hover {
+    transform: translateX(5px);
+}
+
+.step-number {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 35px;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.formula-box {
+    background: #f0f3ff;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    text-align: center;
+    border: 2px dashed #667eea;
+}
+
+.highlight {
+    color: #ff6b6b;
+    font-weight: bold;
+}
+
+.answer-box {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+.physics-insight {
+    background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border-left: 4px solid #fdcb6e;
+}
+
+.physics-insight h4 {
+    color: #d63031;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.physics-insight p {
+    color: #2d3436;
+    line-height: 1.6;
+}
+
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.info-card {
+    background: white;
+    border: 2px solid #e0e7ff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+}
+
+.info-card .label {
+    color: #667eea;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.info-card .value {
+    font-size: 26px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Canvas контейнеры */
+.animation-container,
+.diagram-container,
+.graph-container {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+canvas {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .content {
+        padding: 20px;
+    }
+    
+    .header h1 {
+        font-size: 24px;
+    }
+    
+    .info-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
