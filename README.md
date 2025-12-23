@@ -59,9 +59,7 @@
 │   ├── README.md                    # Общее описание проекта
 │   ├── TECHNICAL_DOCUMENTATION.md   # Техническая документация
 │   ├── MODULE_DESCRIPTION.md        # Описание модулей
-│   ├── ARCHITECTURE.md              # Архитектура системы
-│   ├── PROJECT_REPORT.md            # Отчет о работе
-│   └── ANALYSIS.md                  # Анализ качества кода
+│   └── PROJECT_REPORT.md            # Отчет о работе
 │
 └── 📦 Модули задач (20 модулей)
     ├── 1.physics_graph_solution.html
@@ -82,7 +80,7 @@
 3. **Слой утилит** - переиспользуемые функции (`canvas-utils.js`)
 4. **Слой стилей** - общие стили (`common.css`)
 
-Подробнее см. [ARCHITECTURE.md](ARCHITECTURE.md)
+Подробнее см. [TECHNICAL_DOCUMENTATION.md](TECHNICAL_DOCUMENTATION.md)
 
 ---
 
@@ -154,7 +152,7 @@
 | Функций в утилитах | 8 |
 | Задач решено | 20 |
 | Убрано дублирования | ~4000 строк CSS |
-| Документация | 6 файлов |
+| Документация | 4 файла |
 
 ---
 
@@ -172,7 +170,6 @@
 
 - **[TECHNICAL_DOCUMENTATION.md](TECHNICAL_DOCUMENTATION.md)** - техническая документация
 - **[MODULE_DESCRIPTION.md](MODULE_DESCRIPTION.md)** - описание модулей
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - архитектура системы
 - **[PROJECT_REPORT.md](PROJECT_REPORT.md)** - отчет о работе
 
 ---
